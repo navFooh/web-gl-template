@@ -4,7 +4,7 @@ define([
 	// views
 	'view/scene/Scene',
 	'view/dom/Info',
-	'view/dom/fallback/Fallback'
+	'view/dom/Fallback'
 ], function (
 	// models
 	AppModel,

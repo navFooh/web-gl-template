@@ -9,7 +9,6 @@ define([
 		renderer: null,
 
 		initialize: function (options) {
-			this.autoBind();
 			this.createRenderer(options.$parent);
 		},
 

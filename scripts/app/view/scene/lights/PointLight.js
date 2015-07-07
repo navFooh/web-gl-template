@@ -9,7 +9,6 @@ define([
 		angle: 0,
 
 		initialize: function () {
-			this.autoBind();
 			this.createLight();
 			this.listenTo(SceneModel, 'change:elapsed', this.update);
 		},

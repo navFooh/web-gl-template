@@ -9,7 +9,6 @@ define([
 		camera: null,
 
 		initialize: function () {
-			this.autoBind();
 			this.createCamera();
 		},
 

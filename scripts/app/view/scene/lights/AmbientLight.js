@@ -8,7 +8,6 @@ define([
 		light: null,
 
 		initialize: function () {
-			this.autoBind();
 			this.createLight();
 		},
 

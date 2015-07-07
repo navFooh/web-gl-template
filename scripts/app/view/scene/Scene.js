@@ -15,7 +15,7 @@ define([
 		clock: null,
 
 		initialize: function (options) {
-			this.autoBind();
+			_.bindAll(this, 'loop');
 
 			StateModel.startLoading();
 			SceneModel.set({ scene: new THREE.Scene() });

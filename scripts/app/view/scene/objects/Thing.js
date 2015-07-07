@@ -9,7 +9,6 @@ define([
 		mesh: null,
 
 		initialize: function () {
-			this.autoBind();
 			this.createMesh();
 			this.listenTo(SceneModel, 'change:elapsed', this.update);
 		},
