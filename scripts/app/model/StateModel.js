@@ -1,9 +1,19 @@
-define(['util/Loader'], function (Loader) {
+define([
+	'model/AppModel',
+	'util/Loader'
+], function (AppModel, Loader) {
 
 	var StateModel = Backbone.Model.extend({
 
 		defaults: {
 			loading: false
+		},
+
+		initialize: function() {
+			var dev = AppModel.get('dev');
+			if (dev) this.on('change', function() {
+				console.log('StateModel', this.changed);
+			});
 		},
 
 		startLoading: function() {
