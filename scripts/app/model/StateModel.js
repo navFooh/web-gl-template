@@ -6,22 +6,11 @@ define(['util/Loader'], function (Loader) {
 			loading: false
 		},
 
-		initialize: function() {
-			_.bindAll(this, 'onLoaderProgress', 'onLoaderFinished');
-		},
-
 		startLoading: function() {
 			this.set({ loading: true });
-			Loader.startBatch(this.onLoaderFinished, this.onLoaderProgress);
-		},
-
-		onLoaderProgress: function(loaded, total) {
-			this.trigger('loader:progress', loaded, total)
-		},
-
-		onLoaderFinished: function() {
-			this.trigger('loader:finished');
-			this.set({ loading: false });
+			var onProgress = _.bind(this.trigger, this, 'loaderProgress'),
+				onFinished = _.bind(this.set, this, { loading: false });
+			Loader.startBatch(onFinished, onProgress);
 		}
 	});
 
