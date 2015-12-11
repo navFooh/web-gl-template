@@ -25,12 +25,6 @@ define([
 			}
 		},
 
-		onAdd = function(count) {
-			if (batching) {
-				total += count ? count : 1;
-			}
-		},
-
 		onLoad = function() {
 			this.apply(this, arguments);
 			onProgress();
@@ -60,37 +54,37 @@ define([
 		},
 
 		loadObj: function(url, callback) {
-			onAdd();
+			batching && total++;
 			objLoader.load(url, onLoad.bind(callback));
 		},
 
 		loadJSON: function(url, callback, texturePath) {
-			onAdd();
+			batching && total++;
 			jsonLoader.load(url, onLoad.bind(callback), texturePath);
 		},
 
 		loadImage: function(url, callback) {
-			onAdd();
+			batching && total++;
 			imageLoader.load(url, onLoad.bind(callback));
 		},
 
 		loadTexture: function(url, mapping) {
-			onAdd();
+			batching && total++;
 			return THREE.ImageUtils.loadTexture(url, mapping, onProgress);
 		},
 
 		loadTextureCube: function(urls, mapping) {
-			onAdd();
+			batching && total++;
 			return THREE.ImageUtils.loadTextureCube(urls, mapping, onProgress);
 		},
 
 		loadAudioList: function(context, urls, callback) {
-			onAdd(urls.length);
+			batching && (total += urls.length);
 			BufferLoader.loadList(context, urls, callback, onProgress);
 		},
 
 		loadAudio: function(context, url, callback) {
-			onAdd();
+			batching && total++;
 			BufferLoader.load(context, url, onLoad.bind(callback));
 		}
 	};
