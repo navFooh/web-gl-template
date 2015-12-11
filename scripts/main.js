@@ -17,6 +17,7 @@ require.config({
 		'TimelineMax':          'vendor/greensock/src/uncompressed/TimelineMax',
 		'three':                'vendor/threejs/build/three',
 		// plugins
+		'three-CanvasRenderer': 'plugins/three-CanvasRenderer',
 		'three-OBJLoader':      'plugin/three-OBJLoader',
 		'three-Projector':      'plugin/three-Projector',
 		// directories
