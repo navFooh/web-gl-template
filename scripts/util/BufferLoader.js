@@ -10,12 +10,12 @@ define(['underscore'], function(_) {
 			_.each(urls, function(url, index) {
 
 				var onLoad = function(buffer) {
-						buffers[index] = buffer;
-						if (++loaded == urls.length) {
-							callback(buffers);
-						}
-						onProgress();
-					};
+					buffers[index] = buffer;
+					if (++loaded == urls.length) {
+						callback(buffers);
+					}
+					onProgress();
+				};
 
 				this.load(context, url, onLoad);
 
