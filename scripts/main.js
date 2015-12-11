@@ -17,6 +17,7 @@ require.config({
 		'TimelineMax':          'vendor/greensock/src/uncompressed/TimelineMax',
 		'three':                'vendor/threejs/build/three',
 		// plugins
+		'backbone-Object3D':    'plugin/backbone-Object3D',
 		'three-CanvasRenderer': 'plugin/three-CanvasRenderer',
 		'three-OBJLoader':      'plugin/three-OBJLoader',
 		'three-Projector':      'plugin/three-Projector',
@@ -32,7 +33,10 @@ require.config({
 	}
 });
 
-require(['backbone-super'], function() {
+require([
+	'backbone-super',
+	'backbone-Object3D'
+], function() {
 
 	require(['app/App'], function(App) {
 		App.initialize();
