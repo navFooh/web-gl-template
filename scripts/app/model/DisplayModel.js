@@ -21,7 +21,8 @@ define(function () {
 			onResize: function () {
 				this.set({
 					width: window.innerWidth,
-					height: window.innerHeight
+					height: window.innerHeight,
+					aspect: window.innerWidth / window.innerHeight
 				}).trigger('resize');
 			},
 
