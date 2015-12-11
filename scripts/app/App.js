@@ -1,23 +1,14 @@
 define([
-	// models
 	'model/AppModel',
-	// views
-	'view/scene/Scene',
+	'view/world/World',
 	'view/dom/Info',
 	'view/dom/Fallback'
-], function (
-	// models
-	AppModel,
-	// views
-	Scene,
-	Info,
-	Fallback
-	) {
+], function (AppModel, World, Info, Fallback) {
 
 	return new function() {
 
 		var loadExperiment = function() {
-				new Scene({ $parent: 'body' });
+				new World().render('body');
 				new Info().render('body');
 			},
 
