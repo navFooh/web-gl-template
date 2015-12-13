@@ -34,7 +34,6 @@
 		{{/if}}
 
 		{{! Google Analytics }}
-		{{#if tracking}}
 		{{#unless dev}}
 		<script type="text/javascript">
 			var _gaq = _gaq || [];
@@ -47,7 +46,6 @@
 			})();
 		</script>
 		{{/unless}}
-		{{/if}}
 	</head>
 
 	<body{{#if dev}} class="dev"{{/if}}></body>
