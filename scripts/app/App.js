@@ -1,15 +1,13 @@
 define([
 	'model/AppModel',
 	'view/world/World',
-	'view/dom/Info',
 	'view/dom/Fallback'
-], function (AppModel, World, Info, Fallback) {
+], function (AppModel, World, Fallback) {
 
 	return new function() {
 
 		var loadExperiment = function() {
 				new World().render('body');
-				new Info().render('body');
 			},
 
 			loadFallback = function() {
