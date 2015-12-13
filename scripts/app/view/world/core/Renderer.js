@@ -14,6 +14,7 @@ define([
 			this.renderer.autoClear = true;
 			this.renderer.sortObjects = false;
 			this.renderer.setClearColor(0x000000, 1);
+			this.renderer.setPixelRatio(window.devicePixelRatio || 1);
 			this.onResize();
 
 			this.listenTo(DisplayModel, 'resize', this.onResize);
