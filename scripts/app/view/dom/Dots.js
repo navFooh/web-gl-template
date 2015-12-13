@@ -5,7 +5,7 @@ define([
 
 	return Backbone.View.extend({
 
-		tagName: 'p',
+		tagName: 'span',
 		className: 'dots',
 
 		duration: 0.7,
@@ -13,8 +13,8 @@ define([
 		delay: 0.8,
 
 		initialize: function (options) {
-			this.message  = options && options.message  ? options.message  : null;
-			this.dotCount = options && options.dotCount ? options.dotCount : 3;
+			this.message  = options && options.message || null;
+			this.dotCount = options && options.dotCount || 3;
 		},
 
 		render: function($parent) {
