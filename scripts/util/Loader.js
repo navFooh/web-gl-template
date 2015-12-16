@@ -17,6 +17,8 @@ define([
 		objLoader = new THREE.OBJLoader(),
 		jsonLoader = new THREE.JSONLoader(),
 		imageLoader = new THREE.ImageLoader(),
+		textureLoader = new THREE.TextureLoader(),
+		cubeTextureLoader = new THREE.CubeTextureLoader(),
 
 		checkBatch = function() {
 			if (total == 0) {
@@ -68,14 +70,14 @@ define([
 			imageLoader.load(url, onLoad.bind(callback));
 		},
 
-		loadTexture: function(url, mapping) {
+		loadTexture: function(url, callback) {
 			batching && total++;
-			return THREE.ImageUtils.loadTexture(url, mapping, onProgress);
+			textureLoader.load(url, onLoad.bind(callback));
 		},
 
-		loadTextureCube: function(urls, mapping) {
+		loadCubeTexture: function(urls, callback) {
 			batching && total++;
-			return THREE.ImageUtils.loadTextureCube(urls, mapping, onProgress);
+			cubeTextureLoader.load(url, onLoad.bind(callback));
 		},
 
 		loadAudioList: function(context, urls, callback) {
