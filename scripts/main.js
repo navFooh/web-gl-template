@@ -9,7 +9,6 @@ require.config({
 		'jquery':               'vendor/jquery/dist/jquery',
 		'underscore':           'vendor/underscore/underscore',
 		'backbone':             'vendor/backbone/backbone',
-		'backbone-super':       'vendor/backbone-super/backbone-super/backbone-super',
 		'handlebars.runtime':   'vendor/handlebars/handlebars.runtime',
 		'TweenLite':            'vendor/greensock/src/uncompressed/TweenLite',
 		'TweenMax':             'vendor/greensock/src/uncompressed/TweenMax',
@@ -33,12 +32,6 @@ require.config({
 	}
 });
 
-require([
-	'backbone-super',
-	'backbone-Object3D'
-], function() {
-
-	require(['app/App'], function(App) {
-		App.initialize();
-	});
+require(['app/AppMain'], function(App) {
+	new App();
 });
