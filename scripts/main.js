@@ -32,6 +32,13 @@ require.config({
 	}
 });
 
-require(['app/AppMain'], function(App) {
-	new App();
+require([
+	'model/AppModel',
+	'app/AppFallback',
+	'app/AppMain'
+], function(AppModel, AppFallback, AppMain) {
+
+	AppModel.isSupported()
+		? new AppMain()
+		: new AppFallback();
 });
