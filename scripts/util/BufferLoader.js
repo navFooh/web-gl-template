@@ -31,8 +31,8 @@ define(['underscore'], function(_) {
 				decode = function(buffer) {
 					buffer ? callback(buffer) : onError('error decoding audio');
 				},
-				onError = function( error ) {
-					console.error( 'BufferLoader error for ' + url + ': ' + error );
+				onError = function(error) {
+					console.error('BufferLoader error for ' + url + ': ' + error);
 				};
 
 			request.open('GET', url, true);
