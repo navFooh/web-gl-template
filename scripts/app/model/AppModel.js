@@ -1,13 +1,14 @@
 define([
-	'json!../../../metadata.json',
-	'util/Detector'
-], function (metadata, Detector) {
+	'backbone',
+	'util/Detector',
+	'json!../../../metadata.json'
+], function (Backbone, Detector, metadata) {
 
 	var AppModel = Backbone.Model.extend({
 
 		defaults: {
 			metadata: metadata,
-			dev: $('body').hasClass('dev')
+			dev: $('body').data('dev')
 		},
 
 		isSupported: function() {
