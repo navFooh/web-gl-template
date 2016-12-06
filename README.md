@@ -1,5 +1,5 @@
 # WebGL Template
-This is a variation on my [Web Project Template](https://github.com/navFooh/web-project-template) for WebGL.
+This is a variation on [Web Project Template](https://github.com/navFooh/web-project-template) for WebGL.
 
 ## Installation
 ```
@@ -7,24 +7,20 @@ npm install
 bower install
 ```
 
-## Grunt tasks
+## Gulp tasks
 ```
-grunt
+gulp
 ```
-- runs `grunt dev`
-- watches for changes in .scss and .hbs files to recompile
+- compiles `index.hbs` to `index.html` for development
+- compiles runtime `.hbs` files to `.js`
+- compiles `.scss` to nested `.css`
+- runs watchers for changes to above files
+- serves the public folder with BrowserSync and injects CSS or reloads on HTML / JS changes
 
 ```
-grunt dev
+gulp --dist
 ```
-- builds a development version of index.html
-- compiles the CSS to an expanded file
-- compiles the Handlebars templates to javascript
-
-```
-grunt dist
-```
-- builds a distribution version of index.html
-- compiles the CSS to a compressed file
-- compiles the Handlebars templates to javascript
-- packages all the javascript in main.min.js
+- compiles `index.hbs` to `index.html` for production
+- compiles runtime `.hbs` files to `.js`
+- compiles `.scss` to compressed `.css`
+- compiles all Javascript to `main.min.js`
