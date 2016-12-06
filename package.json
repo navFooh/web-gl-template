@@ -2,12 +2,22 @@
   "name": "web-gl-template",
   "version": "0.2.0",
   "dependencies": {
-    "grunt": "~1.0.1",
-    "grunt-compile-handlebars": "^2.0.2",
-    "grunt-contrib-clean": "^1.0.0",
-    "grunt-contrib-compass": "~1.1.1",
-    "grunt-contrib-handlebars": "~1.0.0",
-    "grunt-contrib-requirejs": "~1.0.0",
-    "grunt-contrib-watch": "~1.0.0"
+    "browser-sync": "^2.16.0",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-compile-handlebars": "^0.6.1",
+    "gulp-define-module": "^0.1.4",
+    "gulp-handlebars": "^4.0.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-require-tasks": "^1.0.5",
+    "gulp-requirejs-optimize": "^1.2.0",
+    "gulp-sass": "^2.3.2",
+    "gulp-watch": "^4.3.9",
+    "handlebars": "^4.0.5",
+    "run-sequence": "^1.2.2",
+    "underscore": "^1.8.3",
+    "yargs": "^4.8.1"
   }
 }
