@@ -1,12 +1,8 @@
 #fallback {
-	@include fill();
-
-	.text {
-		position: absolute;
-		top: 50%;
-		left: 0;
-		width: 100%;
-		text-align: center;
-		@include translateY(-50%);
-	}
+	position: absolute;
+	top: 50%;
+	left: 0;
+	width: 100%;
+	text-align: center;
+	@include translateY(-50%);
 }
