@@ -22,13 +22,7 @@ require.config({
 		'three-Projector':      'plugin/three-Projector',
 		// directories
 		'model':                'app/model',
-		'view':                 'app/view',
-		'templates':            '../templates/build'
-	},
-
-	shim: {
-		'TimelineMax': { deps: ['TweenMax'] },
-		'three': { exports: 'THREE' }
+		'view':                 'app/view'
 	}
 });
 
