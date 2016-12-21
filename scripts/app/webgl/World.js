@@ -1,9 +1,9 @@
 define([
 	'model/WorldModel',
 	'model/StateModel',
-	'view/world/core/Scene',
-	'view/world/core/Camera',
-	'view/world/core/Renderer'
+	'webgl/core/Scene',
+	'webgl/core/Camera',
+	'webgl/core/Renderer'
 ], function(WorldModel, StateModel, Scene, Camera, Renderer) {
 
 	return Backbone.View.extend({

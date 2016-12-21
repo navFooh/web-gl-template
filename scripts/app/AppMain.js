@@ -1,6 +1,6 @@
 define([
 	'app/AppBase',
-	'view/world/World'
+	'webgl/World'
 ], function (AppBase, World) {
 
 	return AppBase.extend({

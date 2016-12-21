@@ -1,7 +1,7 @@
 define([
-	'view/world/lights/AmbientLight',
-	'view/world/lights/PointLight',
-	'view/world/objects/Thing'
+	'webgl/lights/AmbientLight',
+	'webgl/lights/PointLight',
+	'webgl/objects/Thing'
 ], function(AmbientLight, PointLight, Thing) {
 
 	return Backbone.Object3D.extend({
