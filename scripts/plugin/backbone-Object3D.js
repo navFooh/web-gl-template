@@ -1,15 +1,15 @@
 define(['backbone'], function(Backbone) {
 
-	var Object3D = Backbone.Object3D = function(options) {
-		this.cid = _.uniqueId('object3d');
+	var WebGL = Backbone.WebGL = function(options) {
+		this.cid = _.uniqueId('webgl');
 		options || (options = {});
-		_.extend(this, _.pick(options, ['scene', 'model', 'collection']));
+		_.extend(this, _.pick(options, ['parent', 'model', 'collection']));
 		this.initialize.apply(this, arguments);
 	};
 
-	_.extend(Object3D.prototype, Backbone.Events, {
+	_.extend(WebGL.prototype, Backbone.Events, {
 
-		initialize: function(){},
+		initialize: function() {},
 
 		render: function() {
 			return this;
@@ -21,8 +21,8 @@ define(['backbone'], function(Backbone) {
 		}
 	});
 
-	Object3D.extend = Backbone.Model.extend;
+	WebGL.extend = Backbone.Model.extend;
 
-	return Object3D;
+	return WebGL;
 
 });
