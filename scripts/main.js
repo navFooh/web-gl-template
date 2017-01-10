@@ -16,13 +16,13 @@ require.config({
 		'TimelineMax':          'vendor/greensock/src/uncompressed/TimelineMax',
 		'three':                'vendor/threejs/build/three',
 		// plugins
-		'backbone-Object3D':    'plugin/backbone-Object3D',
-		'three-CanvasRenderer': 'plugin/three-CanvasRenderer',
+		'backbone-WebGL':       'plugin/backbone-WebGL',
 		'three-OBJLoader':      'plugin/three-OBJLoader',
 		'three-Projector':      'plugin/three-Projector',
 		// directories
 		'model':                'app/model',
-		'view':                 'app/view'
+		'view':                 'app/view',
+		'webgl':                'app/webgl'
 	}
 });
 
