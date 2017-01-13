@@ -1,21 +1,18 @@
-define(function () {
+define(['backbone'], function (Backbone) {
 
-	var debounce = 250,
-		DisplayModel = Backbone.Model.extend({
+	var DisplayModel = Backbone.Model.extend({
 
 			defaults: {
 				width: 0,
-				height: 0
+				height: 0,
+				aspect: 1
 			},
 
 			initialize: function () {
-				_.bindAll(this, 'onResize');
-
 				this.onResize();
-
-				$(window).on('resize', this.onResize);
-				this.on('resize', this.onResizeStart);
-				this.on('resize', this.onResizeEnd);
+				window.addEventListener('resize', this.onResize.bind(this));
+				this.on('resize', _.debounce(_.partial(this.trigger, 'resizeStart'), 250, true));
+				this.on('resize', _.debounce(_.partial(this.trigger, 'resizeEnd'), 250));
 			},
 
 			onResize: function () {
@@ -24,15 +21,7 @@ define(function () {
 					height: window.innerHeight,
 					aspect: window.innerWidth / window.innerHeight
 				}).trigger('resize');
-			},
-
-			onResizeStart: _.debounce(function() {
-				this.trigger('resizeStart');
-			}, debounce, true),
-
-			onResizeEnd: _.debounce(function() {
-				this.trigger('resizeEnd');
-			}, debounce)
+			}
 		});
 
 	return new DisplayModel();
