@@ -1,17 +1,18 @@
 define([
-	'model/WorldModel',
+	'backbone-WebGL',
+	'model/WebGLModel',
 	'three'
-], function(WorldModel, THREE) {
+], function(WebGL, WebGLModel, THREE) {
 
-	return Backbone.Object3D.extend({
+	return WebGL.extend({
 
 		initialize: function () {
-			this.light = new THREE.PointLight(0x0000ff, 1, 500);
-			this.scene.add(this.light);
 
 			this.angle = 0;
+			this.light = new THREE.PointLight(0x0000ff, 1, 500);
+			this.parent.add(this.light);
 
-			this.listenTo(WorldModel, 'update', this.update);
+			this.listenTo(WebGLModel, 'update', this.update);
 		},
 
 		update: function (delta, elapsed) {
