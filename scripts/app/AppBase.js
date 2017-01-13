@@ -5,6 +5,7 @@ define([
 
 	var App = function(options) {
 		this.createViews.apply(this, arguments);
+		this.createWebGL.apply(this, arguments);
 		this.createModels.apply(this, arguments);
 		this.createRouters.apply(this, arguments);
 		this.addListeners();
@@ -13,6 +14,7 @@ define([
 
 	_.extend(App.prototype, Backbone.Events, {
 		createViews: function() {},
+		createWebGL: function() {},
 		createModels: function() {},
 		createRouters: function() {},
 		addListeners: function() {},
