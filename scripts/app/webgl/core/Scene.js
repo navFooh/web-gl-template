@@ -1,16 +1,23 @@
 define([
+	'backbone-WebGL',
 	'webgl/lights/AmbientLight',
 	'webgl/lights/PointLight',
 	'webgl/objects/Thing'
-], function(AmbientLight, PointLight, Thing) {
+], function(WebGL, AmbientLight, PointLight, Thing) {
 
-	return Backbone.Object3D.extend({
+	return WebGL.extend({
 
 		initialize: function () {
+
 			this.scene = new THREE.Scene();
-			new AmbientLight({ scene: this.scene });
-			new PointLight({ scene: this.scene });
-			new Thing({ scene: this.scene });
+
+			new AmbientLight({ parent: this.scene });
+			new PointLight({ parent: this.scene });
+			new Thing({ parent: this.scene });
+		},
+
+		getScene: function() {
+			return this.scene;
 		}
 	});
 });
