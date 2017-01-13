@@ -21,6 +21,7 @@ require.config({
 		'three-Projector':      'plugin/three-Projector',
 		// directories
 		'model':                'app/model',
+		'util':                 'app/util',
 		'view':                 'app/view',
 		'webgl':                'app/webgl'
 	}
