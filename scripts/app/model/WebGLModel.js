@@ -1,8 +1,8 @@
 define(['three'], function (THREE) {
 
-	var clock = new THREE.Clock(),
+	var clock = new THREE.Clock(false),
 		requestId = null,
-		WorldModel = Backbone.Model.extend({
+		WebGLModel = Backbone.Model.extend({
 
 			defaults: {
 				scene: null,
@@ -10,12 +10,9 @@ define(['three'], function (THREE) {
 				renderer: null
 			},
 
-			initialize: function() {
-				_.bindAll(this, 'update');
-			},
-
-			run: function() {
+			start: function() {
 				if (requestId) return;
+				clock.start();
 				this.update();
 			},
 
@@ -23,15 +20,16 @@ define(['three'], function (THREE) {
 				if (!requestId) return;
 				cancelAnimationFrame(requestId);
 				requestId = null;
+				clock.stop();
 			},
 
 			update: function() {
-				requestId = requestAnimationFrame(this.update, document.body);
-				var delta = Math.min(0.1, clock.getDelta()),
+				requestId = requestAnimationFrame(this.update);
+				var delta = clock.getDelta(),
 					elapsed = clock.elapsedTime;
 				this.trigger('update', delta, elapsed);
 				this.render();
-			},
+			}.bind(this),
 
 			render: function() {
 				var scene = this.get('scene'),
@@ -41,5 +39,5 @@ define(['three'], function (THREE) {
 			}
 		});
 
-	return new WorldModel();
+	return new WebGLModel();
 });
