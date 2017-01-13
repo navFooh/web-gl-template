@@ -35,9 +35,9 @@ define([
 			}.bind(this),
 
 			render: function() {
-				var scene = this.get('scene'),
-					camera = this.get('camera'),
-					renderer = this.get('renderer');
+				var scene = this.get('scene').getScene(),
+					camera = this.get('camera').getCamera(),
+					renderer = this.get('renderer').getRenderer();
 				renderer.render(scene, camera);
 			}
 		});
