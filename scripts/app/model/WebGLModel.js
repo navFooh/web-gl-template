@@ -1,4 +1,7 @@
-define(['three'], function (THREE) {
+define([
+	'backbone',
+	'three'
+], function (Backbone, THREE) {
 
 	var clock = new THREE.Clock(false),
 		requestId = null,
