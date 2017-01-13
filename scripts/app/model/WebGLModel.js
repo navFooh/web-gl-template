@@ -13,6 +13,10 @@ define([
 				renderer: null
 			},
 
+			initialize: function() {
+				_.bindAll(this, 'update');
+			},
+
 			start: function() {
 				if (requestId) return;
 				clock.start();
@@ -32,7 +36,7 @@ define([
 					elapsed = clock.elapsedTime;
 				this.trigger('update', delta, elapsed);
 				this.render();
-			}.bind(this),
+			},
 
 			render: function() {
 				var scene = this.get('scene').getScene(),
