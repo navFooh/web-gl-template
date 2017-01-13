@@ -8,7 +8,7 @@ define([
 	return WebGL.extend({
 
 		initialize: function () {
-			AssetModel.load(AssetModel.TEXTURE, 'assets/images/og-image.jpg', this.onLoad);
+			AssetModel.load(AssetModel.TEXTURE, 'img/og-image.jpg', this.onLoad.bind(this));
 		},
 
 		onLoad: function(texture) {

@@ -36,7 +36,7 @@ define([
 			});
 		},
 
-		assetModel = new Backbone.Model.extend({
+		AssetModel = Backbone.Model.extend({
 
 			ANIMATION: { instance: null, CLASS: THREE.AnimationLoader },
 			AUDIO: { instance: null, CLASS: THREE.AudioLoader },
@@ -59,7 +59,9 @@ define([
 				loader.instance.load(url, onLoad.bind(callback), onProgress, onError);
 				increase();
 			}
-		});
+		}),
+
+		assetModel = new AssetModel();
 
 	return assetModel;
 });
