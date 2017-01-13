@@ -13,7 +13,7 @@ define([
 			WebGLModel.set({
 				scene: new Scene(),
 				camera: new Camera(),
-				renderer: new Renderer(options.canvas)
+				renderer: new Renderer({ canvas: options.canvas })
 			});
 		}
 	});
