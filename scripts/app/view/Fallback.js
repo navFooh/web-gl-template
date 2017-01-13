@@ -1,7 +1,8 @@
 define([
-	'templates/fallback',
-	'model/AppModel'
-], function(template, AppModel) {
+	'backbone',
+	'model/AppModel',
+	'templates/fallback'
+], function(Backbone, AppModel, template) {
 
 	return Backbone.View.extend({
 
