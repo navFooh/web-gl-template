@@ -1,10 +1,10 @@
 define([
 	'backbone-WebGL',
-	'webgl/light/AmbientLight',
-	'webgl/light/PointLight',
+	'webgl/light/Ambient',
+	'webgl/light/Directional',
 	'webgl/object/Thing',
 	'three'
-], function(WebGL, AmbientLight, PointLight, Thing, THREE) {
+], function(WebGL, Ambient, Directional, Thing, THREE) {
 
 	return WebGL.extend({
 
@@ -12,8 +12,8 @@ define([
 
 			this.scene = new THREE.Scene();
 
-			new AmbientLight({ parent: this.scene });
-			new PointLight({ parent: this.scene });
+			new Ambient({ parent: this.scene });
+			new Directional({ parent: this.scene });
 			new Thing({ parent: this.scene });
 		},
 
