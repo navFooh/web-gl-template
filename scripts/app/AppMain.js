@@ -15,7 +15,7 @@ define([
 		},
 
 		createWebGL: function() {
-			new Engine({ el: this.canvas.el });
+			new Engine({ canvas: this.canvas.el });
 		},
 
 		start: function() {
