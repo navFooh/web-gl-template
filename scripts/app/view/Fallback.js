@@ -8,6 +8,7 @@ define([
 		render: function($parent) {
 			this.setElement(template(AppModel.toJSON()));
 			this.$el.appendTo($parent);
+			return this;
 		}
 	});
 });

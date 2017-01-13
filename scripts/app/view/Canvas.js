@@ -6,6 +6,7 @@ define(['backbone'], function(Backbone) {
 
 		render: function($parent) {
 			this.$el.appendTo($parent);
+			return this;
 		}
 	});
 });
