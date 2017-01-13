@@ -1,8 +1,8 @@
 define([
 	'backbone-WebGL',
-	'webgl/lights/AmbientLight',
-	'webgl/lights/PointLight',
-	'webgl/objects/Thing'
+	'webgl/light/AmbientLight',
+	'webgl/light/PointLight',
+	'webgl/object/Thing'
 ], function(WebGL, AmbientLight, PointLight, Thing) {
 
 	return WebGL.extend({
