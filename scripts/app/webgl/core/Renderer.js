@@ -4,7 +4,7 @@ define([
 	'three'
 ], function(WebGL, DisplayModel, THREE) {
 
-	return Backbone.Object3D.extend({
+	return WebGL.extend({
 
 		initialize: function (options) {
 
