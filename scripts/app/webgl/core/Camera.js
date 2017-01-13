@@ -1,19 +1,19 @@
 define([
+	'backbone-WebGL',
 	'model/DisplayModel',
-	'model/WorldModel',
 	'three'
-], function(DisplayModel, WorldModel, THREE) {
+], function(WebGL, DisplayModel, THREE) {
 
-	return Backbone.Object3D.extend({
+	return WebGL.extend({
 
 		initialize: function () {
 			var aspect = DisplayModel.get('aspect');
 
 			this.camera = new THREE.PerspectiveCamera(35, aspect, 1, 1000);
 			this.camera.position.set(0, 0, 500);
+			this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 			this.listenTo(DisplayModel, 'resize', this.onResize);
-			this.listenTo(WorldModel, 'update', this.update);
 		},
 
 		onResize: function() {
@@ -21,8 +21,8 @@ define([
 			this.camera.updateProjectionMatrix();
 		},
 
-		update: function(delta, elapsed) {
-			this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+		getCamera: function() {
+			return this.camera;
 		}
 	});
 });
