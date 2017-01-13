@@ -7,6 +7,7 @@ require.config({
 		'json':                 'vendor/requirejs-plugins/src/json',
 		// vendor
 		'jquery':               'vendor/jquery/dist/jquery',
+		'jquery-mousewheel':    'vendor/jquery-mousewheel/jquery.mousewheel',
 		'underscore':           'vendor/underscore/underscore',
 		'backbone':             'vendor/backbone/backbone',
 		'handlebars':           'vendor/handlebars/handlebars.runtime',
