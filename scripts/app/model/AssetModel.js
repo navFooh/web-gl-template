@@ -10,7 +10,7 @@ define([
 		},
 
 		onProgress = function(xhr) {
-			console.log(xhr.loaded, xhr.total)
+			// console.log(xhr.loaded, xhr.total)
 		},
 
 		onError = function(xhr) {
