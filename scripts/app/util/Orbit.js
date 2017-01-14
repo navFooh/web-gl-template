@@ -18,7 +18,7 @@ define(['three'], function (THREE) {
 
 		var offset = new THREE.Vector3();
 
-		// so camera.up is the orbit axis
+		// object.up is the orbit axis
 		var quat = new THREE.Quaternion().setFromUnitVectors(object.up, new THREE.Vector3(0, 1, 0));
 		var quatInverse = quat.clone().inverse();
 
@@ -48,8 +48,6 @@ define(['three'], function (THREE) {
 
 		this.update = function () {
 			offset.copy(object.position).sub(this.target);
-
-			// rotate offset to "y-axis-is-up" space
 			offset.applyQuaternion(quat);
 
 			spherical.setFromVector3(offset);
@@ -62,8 +60,6 @@ define(['three'], function (THREE) {
 			spherical.radius = Math.max(this.minDistance, Math.min(this.maxDistance, spherical.radius));
 
 			offset.setFromSpherical(spherical);
-
-			// rotate offset back to "camera-up-vector-is-up" space
 			offset.applyQuaternion(quatInverse);
 
 			object.position.copy(this.target).add(offset);
