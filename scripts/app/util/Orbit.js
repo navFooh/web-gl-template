@@ -13,7 +13,6 @@ define(['three'], function (THREE) {
 		this.maxAzimuthAngle = Infinity;
 
 		var scale = 1;
-		var panOffset = new THREE.Vector3();
 		var spherical = new THREE.Spherical();
 		var sphericalDelta = new THREE.Spherical();
 
@@ -24,24 +23,6 @@ define(['three'], function (THREE) {
 		this.getAzimuthalAngle = function () {
 			return spherical.theta;
 		};
-
-		this.panLeft = function () {
-			var v = new THREE.Vector3();
-			return function panLeft(distance, objectMatrix) {
-				v.setFromMatrixColumn(objectMatrix, 0); // get X column of objectMatrix
-				v.multiplyScalar(-distance);
-				panOffset.add(v);
-			};
-		}();
-
-		this.panUp = function () {
-			var v = new THREE.Vector3();
-			return function panUp(distance, objectMatrix) {
-				v.setFromMatrixColumn(objectMatrix, 1); // get Y column of objectMatrix
-				v.multiplyScalar(distance);
-				panOffset.add(v);
-			};
-		}();
 
 		this.dollyIn = function (dollyScale) {
 			scale /= dollyScale;
@@ -84,8 +65,6 @@ define(['three'], function (THREE) {
 				spherical.radius *= scale;
 				spherical.radius = Math.max(scope.minDistance, Math.min(scope.maxDistance, spherical.radius));
 
-				scope.target.add(panOffset);
-
 				offset.setFromSpherical(spherical);
 
 				// rotate offset back to "camera-up-vector-is-up" space
@@ -102,7 +81,6 @@ define(['three'], function (THREE) {
 				}
 
 				scale = 1;
-				panOffset.set(0, 0, 0);
 			};
 		}(this);
 	};
