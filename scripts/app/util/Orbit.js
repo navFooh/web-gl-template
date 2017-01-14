@@ -16,6 +16,12 @@ define(['three'], function (THREE) {
 		var spherical = new THREE.Spherical();
 		var sphericalDelta = new THREE.Spherical();
 
+		var offset = new THREE.Vector3();
+
+		// so camera.up is the orbit axis
+		var quat = new THREE.Quaternion().setFromUnitVectors(object.up, new THREE.Vector3(0, 1, 0));
+		var quatInverse = quat.clone().inverse();
+
 		this.getPolarAngle = function () {
 			return spherical.phi;
 		};
@@ -40,48 +46,37 @@ define(['three'], function (THREE) {
 			sphericalDelta.phi -= angle;
 		};
 
-		this.update = function (scope) {
+		this.update = function () {
+			offset.copy(object.position).sub(this.target);
 
-			var offset = new THREE.Vector3();
+			// rotate offset to "y-axis-is-up" space
+			offset.applyQuaternion(quat);
 
-			// so camera.up is the orbit axis
-			var quat = new THREE.Quaternion().setFromUnitVectors(object.up, new THREE.Vector3(0, 1, 0));
-			var quatInverse = quat.clone().inverse();
+			spherical.setFromVector3(offset);
+			spherical.theta += sphericalDelta.theta;
+			spherical.theta = Math.max(this.minAzimuthAngle, Math.min(this.maxAzimuthAngle, spherical.theta));
+			spherical.phi += sphericalDelta.phi;
+			spherical.phi = Math.max(this.minPolarAngle, Math.min(this.maxPolarAngle, spherical.phi));
+			spherical.makeSafe();
+			spherical.radius *= scale;
+			spherical.radius = Math.max(this.minDistance, Math.min(this.maxDistance, spherical.radius));
 
-			return function update() {
+			offset.setFromSpherical(spherical);
 
-				var position = object.position;
-				offset.copy(position).sub(scope.target);
+			// rotate offset back to "camera-up-vector-is-up" space
+			offset.applyQuaternion(quatInverse);
 
-				// rotate offset to "y-axis-is-up" space
-				offset.applyQuaternion(quat);
+			object.position.copy(this.target).add(offset);
+			object.lookAt(this.target);
 
-				spherical.setFromVector3(offset);
-				spherical.theta += sphericalDelta.theta;
-				spherical.theta = Math.max(scope.minAzimuthAngle, Math.min(scope.maxAzimuthAngle, spherical.theta));
-				spherical.phi += sphericalDelta.phi;
-				spherical.phi = Math.max(scope.minPolarAngle, Math.min(scope.maxPolarAngle, spherical.phi));
-				spherical.makeSafe();
-				spherical.radius *= scale;
-				spherical.radius = Math.max(scope.minDistance, Math.min(scope.maxDistance, spherical.radius));
+			if (this.enableDamping === true) {
+				sphericalDelta.theta *= (1 - this.dampingFactor);
+				sphericalDelta.phi *= (1 - this.dampingFactor);
+			} else {
+				sphericalDelta.set(0, 0, 0);
+			}
 
-				offset.setFromSpherical(spherical);
-
-				// rotate offset back to "camera-up-vector-is-up" space
-				offset.applyQuaternion(quatInverse);
-
-				position.copy(scope.target).add(offset);
-				object.lookAt(scope.target);
-
-				if (scope.enableDamping === true) {
-					sphericalDelta.theta *= (1 - scope.dampingFactor);
-					sphericalDelta.phi *= (1 - scope.dampingFactor);
-				} else {
-					sphericalDelta.set(0, 0, 0);
-				}
-
-				scale = 1;
-			};
-		}(this);
+			scale = 1;
+		};
 	};
 });
