@@ -13,10 +13,9 @@ define(['three'], function (THREE) {
 		this.maxAzimuthAngle = Infinity;
 
 		var scale = 1;
+		var offset = new THREE.Vector3();
 		var spherical = new THREE.Spherical();
 		var sphericalDelta = new THREE.Spherical();
-
-		var offset = new THREE.Vector3();
 
 		// object.up is the orbit axis
 		var quat = new THREE.Quaternion().setFromUnitVectors(object.up, new THREE.Vector3(0, 1, 0));
