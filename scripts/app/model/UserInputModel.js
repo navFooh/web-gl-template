@@ -51,9 +51,13 @@ define([
 				case 13: this.trigger('enter'); break;
 				case 27: this.trigger('escape'); break;
 				case 32: this.trigger('space'); break;
+				case 65: // A
 				case 37: this.trigger('left'); break;
+				case 87: // W
 				case 38: this.trigger('up'); break;
+				case 68: // D
 				case 39: this.trigger('right'); break;
+				case 83: // S
 				case 40: this.trigger('down'); break;
 				case 16: this.set({ shiftDown: true }); break;
 				case 17: this.set({ ctrlDown: true }); break;
