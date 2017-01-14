@@ -29,12 +29,14 @@ define([
 		},
 
 		onMouseMove: function(event) {
+			var mouseX = this.get('mouseX'),
+				mouseY = this.get('mouseY');
 			this.set({
 				mouseX: event.clientX,
 				mouseY: event.clientY,
 				normalX: event.clientX / (DisplayModel.get('width') * 0.5) - 1,
 				normalY: event.clientY / (DisplayModel.get('height') * 0.5) - 1
-			}).trigger('move');
+			}).trigger('mousemove', this.get('mouseX') - mouseX, this.get('mouseY') - mouseY);
 		},
 
 		onKeyDown: function(event) {
