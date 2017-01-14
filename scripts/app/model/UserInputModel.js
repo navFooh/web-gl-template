@@ -18,10 +18,13 @@ define([
 		initialize: function () {
 			$(document)
 				.on('contextmenu', this.onContextMenu)
-				.on('mousemove', this.onMouseMove.bind(this))
-				.on('mousewheel', this.trigger.bind(this, 'wheel'))
+				.on('keyup', this.onKeyUp.bind(this))
 				.on('keydown', this.onKeyDown.bind(this))
-				.on('keyup', this.onKeyUp.bind(this));
+				.on('mousemove', this.onMouseMove.bind(this))
+				.on('mouseup', this.trigger.bind(this, 'mouseup'))
+				.on('mousedown', this.trigger.bind(this, 'mousedown'))
+				.on('mouseleave', this.trigger.bind(this, 'mouseleave'))
+				.on('mousewheel', this.trigger.bind(this, 'mousewheel'));
 		},
 
 		onContextMenu: function(event) {
