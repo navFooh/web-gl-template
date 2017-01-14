@@ -17,10 +17,15 @@ define([
 
 		initialize: function () {
 			$(document)
+				.on('contextmenu', this.onContextMenu)
 				.on('mousemove', this.onMouseMove.bind(this))
 				.on('mousewheel', this.trigger.bind(this, 'wheel'))
 				.on('keydown', this.onKeyDown.bind(this))
 				.on('keyup', this.onKeyUp.bind(this));
+		},
+
+		onContextMenu: function(event) {
+			event.preventDefault();
 		},
 
 		onMouseMove: function(event) {
