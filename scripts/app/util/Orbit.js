@@ -2,7 +2,7 @@ define(['three'], function (THREE) {
 
 	return function (object, target) {
 
-		this.target = target || new THREE.Vector3();
+		target = target || new THREE.Vector3();
 		this.enableDamping = false;
 		this.dampingFactor = 0.25;
 		this.minDistance = 0;
@@ -46,7 +46,7 @@ define(['three'], function (THREE) {
 		};
 
 		this.update = function () {
-			offset.copy(object.position).sub(this.target);
+			offset.copy(object.position).sub(target);
 			offset.applyQuaternion(quat);
 
 			spherical.setFromVector3(offset);
@@ -61,8 +61,8 @@ define(['three'], function (THREE) {
 			offset.setFromSpherical(spherical);
 			offset.applyQuaternion(quatInverse);
 
-			object.position.copy(this.target).add(offset);
-			object.lookAt(this.target);
+			object.position.copy(target).add(offset);
+			object.lookAt(target);
 
 			if (this.enableDamping === true) {
 				sphericalDelta.theta *= (1 - this.dampingFactor);
