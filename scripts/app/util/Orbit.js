@@ -63,8 +63,8 @@ define(['three'], function (THREE) {
 			object.position.copy(target).add(offset);
 			object.lookAt(target);
 
-			sphericalDelta.set(0, 0, 0);
 			scale = 1;
+			sphericalDelta.set(0, 0, 0);
 		};
 	};
 });
