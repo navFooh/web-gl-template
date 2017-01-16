@@ -30,22 +30,18 @@ define(['three'], function (THREE) {
 
 		this.dollyIn = function (dollyScale) {
 			scale /= dollyScale;
-			this.update();
 		};
 
 		this.dollyOut = function (dollyScale) {
 			scale *= dollyScale;
-			this.update();
 		};
 
 		this.rotateLeft = function (angle) {
 			sphericalDelta.theta -= angle;
-			this.update();
 		};
 
 		this.rotateUp = function (angle) {
 			sphericalDelta.phi -= angle;
-			this.update();
 		};
 
 		this.update = function () {
