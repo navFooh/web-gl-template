@@ -1,5 +1,5 @@
 define([
-	'Backbone',
+	'backbone',
 	'three',
 	'util/Orbit',
 	'model/DisplayModel',
