@@ -33,10 +33,6 @@ define([
 			this.stopListening();
 		};
 
-		this.update = function() {
-			this.orbit.update();
-		};
-
 		this.onMouseDown = function (event) {
 			if (event.button != THREE.MOUSE.LEFT) return;
 			this.listenTo(UserInputModel, 'mousemove', this.onMouseMove);
