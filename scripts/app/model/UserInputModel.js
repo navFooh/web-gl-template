@@ -1,6 +1,7 @@
 define([
 	'backbone',
-	'model/DisplayModel'
+	'model/DisplayModel',
+	'jquery-mousewheel'
 ], function (Backbone, DisplayModel) {
 
 	var UserInputModel = Backbone.Model.extend({
