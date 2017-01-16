@@ -52,7 +52,7 @@ define([
 
 		this.onMouseWheel = function(event) {
 			var zoomScale = Math.pow(0.95, this.zoomSpeed);
-			event.deltaY < 0
+			event.deltaY > 0
 				? this.orbit.dollyOut(zoomScale)
 				: this.orbit.dollyIn(zoomScale);
 			this.orbit.update();
