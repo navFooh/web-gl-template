@@ -3,8 +3,7 @@ define(['three'], function (THREE) {
 	return function (object, target) {
 
 		target = target || new THREE.Vector3();
-		this.enableDamping = false;
-		this.dampingFactor = 0.25;
+
 		this.minDistance = 0;
 		this.maxDistance = Infinity;
 		this.minPolarAngle = 0;
@@ -68,13 +67,7 @@ define(['three'], function (THREE) {
 			object.position.copy(target).add(offset);
 			object.lookAt(target);
 
-			if (this.enableDamping === true) {
-				sphericalDelta.theta *= (1 - this.dampingFactor);
-				sphericalDelta.phi *= (1 - this.dampingFactor);
-			} else {
-				sphericalDelta.set(0, 0, 0);
-			}
-
+			sphericalDelta.set(0, 0, 0);
 			scale = 1;
 		};
 	};
