@@ -31,18 +31,22 @@ define(['three'], function (THREE) {
 
 		this.dollyIn = function (dollyScale) {
 			scale /= dollyScale;
+			this.update();
 		};
 
 		this.dollyOut = function (dollyScale) {
 			scale *= dollyScale;
+			this.update();
 		};
 
 		this.rotateLeft = function (angle) {
 			sphericalDelta.theta -= angle;
+			this.update();
 		};
 
 		this.rotateUp = function (angle) {
 			sphericalDelta.phi -= angle;
+			this.update();
 		};
 
 		this.update = function () {
@@ -54,9 +58,9 @@ define(['three'], function (THREE) {
 			spherical.theta = Math.max(this.minAzimuthAngle, Math.min(this.maxAzimuthAngle, spherical.theta));
 			spherical.phi += sphericalDelta.phi;
 			spherical.phi = Math.max(this.minPolarAngle, Math.min(this.maxPolarAngle, spherical.phi));
-			spherical.makeSafe();
 			spherical.radius *= scale;
 			spherical.radius = Math.max(this.minDistance, Math.min(this.maxDistance, spherical.radius));
+			spherical.makeSafe();
 
 			offset.setFromSpherical(spherical);
 			offset.applyQuaternion(quatInverse);
