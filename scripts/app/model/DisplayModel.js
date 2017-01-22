@@ -16,10 +16,13 @@ define(['backbone'], function (Backbone) {
 			},
 
 			onResize: function () {
+				var width = window.innerWidth,
+					height = window.innerHeight;
 				this.set({
-					width: window.innerWidth,
-					height: window.innerHeight,
-					aspect: window.innerWidth / window.innerHeight
+					width: width,
+					height: height,
+					aspect: width / height,
+					diagonal: Math.sqrt(width * width + height * height)
 				}).trigger('resize');
 			}
 		});
