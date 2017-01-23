@@ -84,19 +84,17 @@ define([
 			this.setPinching(event.touches);
 			this.setPointerPosition(this.getAverageTouch(event.touches));
 			event.touches.length == 1 && this.onPointerDown({ button: 0 });
-			event.preventDefault();
 		},
 
 		onTouchMove: function(event) {
+			event.preventDefault();
 			this.onPointerMove(this.getAverageTouch(event.touches));
 			this.get('pinching') && this.movePinch(event.touches);
-			event.preventDefault();
 		},
 
 		onTouchEnd: function(event) {
 			this.setPinching(event.touches);
 			event.touches.length == 0 && this.onPointerUp({ button: 0 });
-			event.preventDefault();
 		},
 
 		setPinching: function(touches) {
