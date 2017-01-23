@@ -16,6 +16,7 @@ define([
 			ENTER: 'enter',
 			ESCAPE: 'escape',
 			SPACE: 'space',
+			TAB: 'tab',
 			// Pointer
 			POINTER_DOWN: 'pointerdown',
 			POINTER_MOVE: 'pointermove',
@@ -55,7 +56,7 @@ define([
 				.on('mouseup', this.onPointerUp.bind(this))
 				.on('mouseleave', this.onPointerUp.bind(this))
 
-				.on('mousewheel', this.trigger.bind(this, 'mousewheel'));
+				.on('mousewheel', this.trigger.bind(this, this.EVENT.WHEEL));
 		},
 
 		// Prevent Context Menu
@@ -70,7 +71,7 @@ define([
 			switch(event.which) {
 				case 9:
 					event.preventDefault();
-					this.trigger('tab');
+					this.trigger(this.EVENT.TAB);
 					break;
 				case 13: this.trigger(this.EVENT.ENTER); break;
 				case 27: this.trigger(this.EVENT.ESCAPE); break;
