@@ -75,10 +75,10 @@ define([
 				case 13: this.trigger(this.EVENT.ENTER); break;
 				case 27: this.trigger(this.EVENT.ESCAPE); break;
 				case 32: this.trigger(this.EVENT.SPACE); break;
-				case 65: // A
-				case 37: this.trigger(this.EVENT.LEFT); break;
 				case 87: // W
 				case 38: this.trigger(this.EVENT.UP); break;
+				case 65: // A
+				case 37: this.trigger(this.EVENT.LEFT); break;
 				case 68: // D
 				case 39: this.trigger(this.EVENT.RIGHT); break;
 				case 83: // S
