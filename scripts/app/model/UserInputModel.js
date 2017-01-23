@@ -7,6 +7,25 @@ define([
 
 	var UserInputModel = Backbone.Model.extend({
 
+		EVENT: {
+			// Keys
+			UP: 'up',
+			LEFT: 'left',
+			RIGHT: 'right',
+			DOWN: 'down',
+			ENTER: 'enter',
+			ESCAPE: 'escape',
+			SPACE: 'space',
+			// Pointer
+			POINTER_DOWN: 'pointerdown',
+			POINTER_MOVE: 'pointermove',
+			POINTER_UP: 'pointerup',
+			// Touch
+			PINCH: 'pinch',
+			// Mouse
+			WHEEL: 'wheel'
+		},
+
 		defaults: {
 			altDown: false,
 			ctrlDown: false,
@@ -53,17 +72,17 @@ define([
 					event.preventDefault();
 					this.trigger('tab');
 					break;
-				case 13: this.trigger('enter'); break;
-				case 27: this.trigger('escape'); break;
-				case 32: this.trigger('space'); break;
+				case 13: this.trigger(this.EVENT.ENTER); break;
+				case 27: this.trigger(this.EVENT.ESCAPE); break;
+				case 32: this.trigger(this.EVENT.SPACE); break;
 				case 65: // A
-				case 37: this.trigger('left'); break;
+				case 37: this.trigger(this.EVENT.LEFT); break;
 				case 87: // W
-				case 38: this.trigger('up'); break;
+				case 38: this.trigger(this.EVENT.UP); break;
 				case 68: // D
-				case 39: this.trigger('right'); break;
+				case 39: this.trigger(this.EVENT.RIGHT); break;
 				case 83: // S
-				case 40: this.trigger('down'); break;
+				case 40: this.trigger(this.EVENT.DOWN); break;
 				case 16: this.set({ shiftDown: true }); break;
 				case 17: this.set({ ctrlDown: true }); break;
 				case 18: this.set({ altDown: true }); break;
