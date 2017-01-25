@@ -50,6 +50,7 @@ define([
 				.on('touchstart', this.onTouchStart.bind(this))
 				.on('touchmove', this.onTouchMove.bind(this))
 				.on('touchend', this.onTouchEnd.bind(this))
+				.on('touchcancel', this.onTouchEnd.bind(this))
 
 				.on('mousedown', this.onPointerDown.bind(this))
 				.on('mousemove', this.onPointerMove.bind(this))
