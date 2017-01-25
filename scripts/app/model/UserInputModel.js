@@ -41,23 +41,25 @@ define([
 		},
 
 		initialize: function () {
-			$(document)
-				.on('contextmenu', this.onContextMenu)
 
-				.on('keydown', this.onKeyDown.bind(this))
-				.on('keyup', this.onKeyUp.bind(this))
+			this.element = document;
 
-				.on('touchstart', this.onTouchStart.bind(this))
-				.on('touchmove', this.onTouchMove.bind(this))
-				.on('touchend', this.onTouchEnd.bind(this))
-				.on('touchcancel', this.onTouchEnd.bind(this))
+			this.element.addEventListener('contextmenu', this.onContextMenu, true);
 
-				.on('mousedown', this.onPointerDown.bind(this))
-				.on('mousemove', this.onPointerMove.bind(this))
-				.on('mouseup', this.onPointerUp.bind(this))
-				.on('mouseleave', this.onPointerUp.bind(this))
+			this.element.addEventListener('keydown', this.onKeyDown.bind(this), true);
+			this.element.addEventListener('keyup', this.onKeyUp.bind(this), true);
 
-				.on('mousewheel', this.trigger.bind(this, this.EVENT.WHEEL));
+			this.element.addEventListener('touchstart', this.onTouchStart.bind(this), true);
+			this.element.addEventListener('touchmove', this.onTouchMove.bind(this), true);
+			this.element.addEventListener('touchend', this.onTouchEnd.bind(this), true);
+			this.element.addEventListener('touchcancel', this.onTouchEnd.bind(this), true);
+
+			this.element.addEventListener('mousedown', this.onPointerDown.bind(this), true);
+			this.element.addEventListener('mousemove', this.onPointerMove.bind(this), true);
+			this.element.addEventListener('mouseup', this.onPointerUp.bind(this), true);
+			this.element.addEventListener('mouseleave', this.onPointerUp.bind(this), true);
+
+			$(this.element).on('mousewheel', this.trigger.bind(this, this.EVENT.WHEEL));
 		},
 
 		// Prevent Context Menu
