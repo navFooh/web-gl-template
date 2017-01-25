@@ -121,7 +121,6 @@ define([
 			var pinching = touches.length == 2;
 			if (pinching && !this.get('pinching')) this.startPinch(touches);
 			if (!pinching && this.get('pinching')) this.set({ pinching: false });
-
 		},
 
 		startPinch: function(touches) {
