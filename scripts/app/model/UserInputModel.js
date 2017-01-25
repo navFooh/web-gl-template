@@ -104,8 +104,8 @@ define([
 		// Touch Events
 
 		onTouchStart: function(event) {
-			this.setPinching(event.touches);
 			this.setPointerPosition(this.getAverageTouch(event.touches));
+			this.setPinching(event.touches);
 			event.touches.length == 1 && this.onPointerDown({ button: 0 });
 		},
 
