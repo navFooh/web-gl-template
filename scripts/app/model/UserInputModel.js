@@ -112,7 +112,7 @@ define([
 		onTouchMove: function(event) {
 			event.preventDefault();
 			this.onPointerMove(this.getAverageTouch(event.touches));
-			this.get('pinching') && this.movePinch(event.touches);
+			this.get('pinching') && this.onPinchMove(event.touches);
 		},
 
 		onTouchEnd: function(event) {
@@ -122,11 +122,11 @@ define([
 
 		setPinching: function(touches) {
 			var pinching = touches.length == 2;
-			if (pinching && !this.get('pinching')) this.startPinch(touches);
+			if (pinching && !this.get('pinching')) this.onPinchStart(touches);
 			if (!pinching && this.get('pinching')) this.set({ pinching: false });
 		},
 
-		startPinch: function(touches) {
+		onPinchStart: function(touches) {
 			this.set({
 				pinching: true,
 				pinchStart: this.getPinchLength(touches),
@@ -134,7 +134,7 @@ define([
 			})
 		},
 
-		movePinch: function(touches) {
+		onPinchMove: function(touches) {
 			var prev = this.get('pinchScale'),
 				start = this.get('pinchStart'),
 				length = this.getPinchLength(touches);
