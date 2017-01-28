@@ -17,6 +17,7 @@ require.config({
 		'TimelineMax':          'vendor/greensock/src/uncompressed/TimelineMax',
 		'three':                'vendor/threejs/build/three',
 		// plugins
+		'backbone-Util':        'plugin/backbone-Util',
 		'backbone-WebGL':       'plugin/backbone-WebGL',
 		'three-OBJLoader':      'plugin/three-OBJLoader',
 		'three-Projector':      'plugin/three-Projector',
