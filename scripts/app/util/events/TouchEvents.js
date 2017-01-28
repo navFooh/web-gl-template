@@ -11,13 +11,13 @@ define(['backbone-Util'], function (Util) {
 		initialize: function (element) {
 
 			this.element = element || document;
-			this.element.addEventListener('touchstart', this.onDown.bind(this), true);
+			this.element.addEventListener('touchstart', this.onStart.bind(this), true);
 			this.element.addEventListener('touchmove', this.onMove.bind(this), true);
-			this.element.addEventListener('touchend', this.onUp.bind(this), true);
-			this.element.addEventListener('touchcancel', this.onUp.bind(this), true);
+			this.element.addEventListener('touchend', this.onEnd.bind(this), true);
+			this.element.addEventListener('touchcancel', this.onEnd.bind(this), true);
 		},
 
-		onDown: function(event) {
+		onStart: function(event) {
 			this.trigger(this.EVENT.DOWN, event.touches);
 		},
 
@@ -26,7 +26,7 @@ define(['backbone-Util'], function (Util) {
 			this.trigger(this.EVENT.MOVE, event.touches);
 		},
 
-		onUp: function(event) {
+		onEnd: function(event) {
 			this.trigger(this.EVENT.UP, event.touches);
 		}
 	});
