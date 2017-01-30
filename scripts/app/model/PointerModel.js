@@ -20,6 +20,7 @@ define([
 		},
 
 		defaults: {
+			element: document,
 			active: false,
 			pinching: false,
 			pinchStart: 0,
@@ -30,27 +31,27 @@ define([
 			normalY: 0
 		},
 
-		initialize: function (element) {
+		initialize: function () {
 
-			this.element = element || document;
+			var element = this.get('element');
 
-			$(this.element).on('mousewheel', this.trigger.bind(this, this.EVENT.WHEEL));
+			$(element).on('mousewheel', this.trigger.bind(this, this.EVENT.WHEEL));
 
 			if (PointerEvents.isSupported) {
 
-				var pointerEvents = new PointerEvents(this.element);
+				var pointerEvents = new PointerEvents(element);
 				this.listenTo(pointerEvents, PointerEvents.EVENT.DOWN, this.onPointersDown);
 				this.listenTo(pointerEvents, PointerEvents.EVENT.MOVE, this.onPointersMove);
 				this.listenTo(pointerEvents, PointerEvents.EVENT.UP, this.onPointersUp);
 
 			} else {
 
-				var touchEvents = new TouchEvents(this.element);
+				var touchEvents = new TouchEvents(element);
 				this.listenTo(touchEvents, TouchEvents.EVENT.DOWN, this.onPointersDown);
 				this.listenTo(touchEvents, TouchEvents.EVENT.MOVE, this.onPointersMove);
 				this.listenTo(touchEvents, TouchEvents.EVENT.UP, this.onPointersUp);
 
-				var mouseEvents = new MouseEvents(this.element);
+				var mouseEvents = new MouseEvents(element);
 				this.listenTo(mouseEvents, MouseEvents.EVENT.DOWN, this.trigger.bind(this, this.EVENT.POINTER_DOWN));
 				this.listenTo(mouseEvents, MouseEvents.EVENT.MOVE, this.onPointerMove);
 				this.listenTo(mouseEvents, MouseEvents.EVENT.UP, this.trigger.bind(this, this.EVENT.POINTER_UP));
