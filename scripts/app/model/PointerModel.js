@@ -40,21 +40,21 @@ define([
 			if (PointerEvents.isSupported) {
 
 				var pointerEvents = new PointerEvents(element);
-				this.listenTo(pointerEvents, PointerEvents.EVENT.DOWN, this.onPointersDown);
-				this.listenTo(pointerEvents, PointerEvents.EVENT.MOVE, this.onPointersMove);
-				this.listenTo(pointerEvents, PointerEvents.EVENT.UP, this.onPointersUp);
+				this.listenTo(pointerEvents, pointerEvents.EVENT.DOWN, this.onPointersDown);
+				this.listenTo(pointerEvents, pointerEvents.EVENT.MOVE, this.onPointersMove);
+				this.listenTo(pointerEvents, pointerEvents.EVENT.UP, this.onPointersUp);
 
 			} else {
 
 				var touchEvents = new TouchEvents(element);
-				this.listenTo(touchEvents, TouchEvents.EVENT.DOWN, this.onPointersDown);
-				this.listenTo(touchEvents, TouchEvents.EVENT.MOVE, this.onPointersMove);
-				this.listenTo(touchEvents, TouchEvents.EVENT.UP, this.onPointersUp);
+				this.listenTo(touchEvents, touchEvents.EVENT.DOWN, this.onPointersDown);
+				this.listenTo(touchEvents, touchEvents.EVENT.MOVE, this.onPointersMove);
+				this.listenTo(touchEvents, touchEvents.EVENT.UP, this.onPointersUp);
 
 				var mouseEvents = new MouseEvents(element);
-				this.listenTo(mouseEvents, MouseEvents.EVENT.DOWN, this.trigger.bind(this, this.EVENT.POINTER_DOWN));
-				this.listenTo(mouseEvents, MouseEvents.EVENT.MOVE, this.onPointerMove);
-				this.listenTo(mouseEvents, MouseEvents.EVENT.UP, this.trigger.bind(this, this.EVENT.POINTER_UP));
+				this.listenTo(mouseEvents, mouseEvents.EVENT.DOWN, this.trigger.bind(this, this.EVENT.POINTER_DOWN));
+				this.listenTo(mouseEvents, mouseEvents.EVENT.MOVE, this.onPointerMove);
+				this.listenTo(mouseEvents, mouseEvents.EVENT.UP, this.trigger.bind(this, this.EVENT.POINTER_UP));
 			}
 		},
 
