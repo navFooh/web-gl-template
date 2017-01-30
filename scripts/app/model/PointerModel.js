@@ -10,9 +10,9 @@ define([
 	var PointerModel = Backbone.Model.extend({
 
 		EVENT: {
-			POINTER_DOWN: 0,
-			POINTER_MOVE: 1,
-			POINTER_UP: 2,
+			DOWN: 0,
+			MOVE: 1,
+			UP: 2,
 			PINCH_START: 3,
 			PINCH_MOVE: 4,
 			PINCH_END: 5,
@@ -52,9 +52,9 @@ define([
 				this.listenTo(touchEvents, touchEvents.EVENT.UP, this.onPointersUp);
 
 				var mouseEvents = new MouseEvents(element);
-				this.listenTo(mouseEvents, mouseEvents.EVENT.DOWN, this.trigger.bind(this, this.EVENT.POINTER_DOWN));
+				this.listenTo(mouseEvents, mouseEvents.EVENT.DOWN, this.trigger.bind(this, this.EVENT.DOWN));
 				this.listenTo(mouseEvents, mouseEvents.EVENT.MOVE, this.onPointerMove);
-				this.listenTo(mouseEvents, mouseEvents.EVENT.UP, this.trigger.bind(this, this.EVENT.POINTER_UP));
+				this.listenTo(mouseEvents, mouseEvents.EVENT.UP, this.trigger.bind(this, this.EVENT.UP));
 			}
 		},
 
@@ -64,7 +64,7 @@ define([
 
 			if (!this.get('active')) {
 				this.set({ active: true });
-				this.trigger(this.EVENT.POINTER_DOWN, { button: 0 });
+				this.trigger(this.EVENT.DOWN, { button: 0 });
 			}
 
 			this.setPinching(pointers);
@@ -81,7 +81,7 @@ define([
 
 			if (this.get('active') && pointers.length == 0) {
 				this.set({ active: false });
-				this.trigger(this.EVENT.POINTER_UP, { button: 0 });
+				this.trigger(this.EVENT.UP, { button: 0 });
 			}
 		},
 
@@ -133,7 +133,7 @@ define([
 				normalPrevX = this.get('normalX'),
 				normalPrevY = this.get('normalY');
 			this.setPointer(event);
-			this.trigger(this.EVENT.POINTER_MOVE, {
+			this.trigger(this.EVENT.MOVE, {
 				pointerDeltaX: this.get('pointerX') - pointerPrevX,
 				pointerDeltaY: this.get('pointerY') - pointerPrevY,
 				NormalDeltaX: this.get('normalX') - normalPrevX,
