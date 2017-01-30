@@ -19,8 +19,9 @@ define(['backbone'], function (Backbone) {
 			right: false
 		},
 
-		initialize: function () {
-			this.element = document;
+		initialize: function (element) {
+
+			this.element = element || document;
 			this.element.addEventListener('keydown', this.onKeyDown.bind(this), true);
 			this.element.addEventListener('keyup', this.toggle.bind(this, false), true);
 		},
