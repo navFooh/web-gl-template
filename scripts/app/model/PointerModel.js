@@ -1,13 +1,13 @@
 define([
-	'backbone-Util',
+	'backbone',
 	'model/DisplayModel',
 	'util/events/PointerEvents',
 	'util/events/MouseEvents',
 	'util/events/TouchEvents',
 	'jquery-mousewheel'
-], function (Util, DisplayModel, PointerEvents, MouseEvents, TouchEvents) {
+], function (Backbone, DisplayModel, PointerEvents, MouseEvents, TouchEvents) {
 
-	return Util.extend({
+	return Backbone.Model.extend({
 
 		EVENT: {
 			POINTER_DOWN: 0,
