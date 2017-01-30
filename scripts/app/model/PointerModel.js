@@ -7,7 +7,7 @@ define([
 	'jquery-mousewheel'
 ], function (Backbone, DisplayModel, PointerEvents, MouseEvents, TouchEvents) {
 
-	return Backbone.Model.extend({
+	var PointerModel = Backbone.Model.extend({
 
 		EVENT: {
 			POINTER_DOWN: 0,
@@ -153,4 +153,6 @@ define([
 			})
 		}
 	});
+
+	return new PointerModel();
 });
