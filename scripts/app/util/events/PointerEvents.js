@@ -22,11 +22,11 @@ define([
 
 				var MS = PointerEvent === window.MSPointerEvent;
 
-				this.element.addEventListener(MS ? 'MSPointerDown' : 'pointerdown', this.onDown.bind(this), true);
-				this.element.addEventListener(MS ? 'MSPointerMove' : 'pointermove', this.onMove.bind(this), true);
-				this.element.addEventListener(MS ? 'MSPointerUp' : 'pointerup', this.onUp.bind(this), true);
-				this.element.addEventListener(MS ? 'MSPointerLeave' : 'pointerleave', this.onUp.bind(this), true);
-				this.element.addEventListener(MS ? 'MSPointerCancel' : 'pointercancel', this.onUp.bind(this), true);
+				this.element.addEventListener(MS ? 'MSPointerDown' : 'pointerdown', this.onDown.bind(this));
+				this.element.addEventListener(MS ? 'MSPointerMove' : 'pointermove', this.onMove.bind(this));
+				this.element.addEventListener(MS ? 'MSPointerUp' : 'pointerup', this.onUp.bind(this));
+				this.element.addEventListener(MS ? 'MSPointerLeave' : 'pointerleave', this.onUp.bind(this));
+				this.element.addEventListener(MS ? 'MSPointerCancel' : 'pointercancel', this.onUp.bind(this));
 			}
 		},
 

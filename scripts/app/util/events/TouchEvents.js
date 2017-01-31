@@ -11,10 +11,10 @@ define(['backbone-Util'], function (Util) {
 		initialize: function (element) {
 
 			this.element = element || document;
-			this.element.addEventListener('touchstart', this.onStart.bind(this), true);
-			this.element.addEventListener('touchmove', this.onMove.bind(this), true);
-			this.element.addEventListener('touchend', this.onEnd.bind(this), true);
-			this.element.addEventListener('touchcancel', this.onEnd.bind(this), true);
+			this.element.addEventListener('touchstart', this.onStart.bind(this));
+			this.element.addEventListener('touchmove', this.onMove.bind(this));
+			this.element.addEventListener('touchend', this.onEnd.bind(this));
+			this.element.addEventListener('touchcancel', this.onEnd.bind(this));
 		},
 
 		onStart: function(event) {
