@@ -22,6 +22,7 @@ define([
 
 				var MS = PointerEvent === window.MSPointerEvent;
 
+				this.element.addEventListener(MS ? 'MSPointerEnter' : 'pointerenter', this.onEnter.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerDown' : 'pointerdown', this.onDown.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerMove' : 'pointermove', this.onMove.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerUp' : 'pointerup', this.onUp.bind(this));
@@ -30,9 +31,14 @@ define([
 			}
 		},
 
+		onEnter: function(event) {
+			event.preventDefault();
+			this.addPointer(event);
+		},
+
 		onDown: function(event) {
 			event.preventDefault();
-			this.pointers.push(event);
+			this.addPointer(event);
 			this.trigger(this.EVENT.DOWN, this.pointers);
 		},
 
@@ -58,6 +64,11 @@ define([
 			}
 		},
 
+
+		addPointer: function(event) {
+			var index = this.getIndex(event.pointerId);
+			if (index == -1) this.pointers.push(event);
+		},
 		getIndex: function(id) {
 			return _.findIndex(this.pointers, function(pointer) {
 				return pointer.pointerId == id;
