@@ -12,6 +12,7 @@ define([
 		},
 
 		pointers: [],
+		pointerType: null,
 
 		initialize: function (element) {
 
@@ -58,6 +59,10 @@ define([
 		},
 
 		addPointer: function(event) {
+			if (this.pointerType != event.pointerType) {
+				this.pointerType = event.pointerType;
+				this.pointers = [];
+			}
 			var index = this.getIndex(event.pointerId);
 			if (index == -1) this.pointers.push(event);
 		},
