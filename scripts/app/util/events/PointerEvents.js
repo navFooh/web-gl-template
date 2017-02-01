@@ -38,7 +38,6 @@ define([
 
 		onDown: function(event) {
 			event.preventDefault();
-			this.addPointer(event);
 			this.trigger(this.EVENT.DOWN, this.pointers);
 		},
 
