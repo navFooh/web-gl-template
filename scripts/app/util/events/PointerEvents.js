@@ -43,7 +43,7 @@ define([
 
 		onMove: function(event) {
 			event.preventDefault();
-			this.replacePointer();
+			this.replacePointer(event);
 			this.trigger(this.EVENT.MOVE, this.pointers);
 		},
 
