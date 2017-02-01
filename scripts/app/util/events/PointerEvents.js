@@ -43,13 +43,8 @@ define([
 
 		onMove: function(event) {
 			event.preventDefault();
-			var index = this.getIndex(event.pointerId);
-			if (index > -1) {
-				this.pointers.splice(index, 1, event);
-				this.trigger(this.EVENT.MOVE, this.pointers);
-			} else {
-				console.warn('PointerEvents::onMove -> missing pointer in array');
-			}
+			this.replacePointer();
+			this.trigger(this.EVENT.MOVE, this.pointers);
 		},
 
 		onUp: function(event) {
@@ -71,6 +66,12 @@ define([
 			var index = this.getIndex(event.pointerId);
 			if (index > -1) this.pointers.splice(index, 1);
 		},
+
+		replacePointer: function(event) {
+			var index = this.getIndex(event.pointerId);
+			if (index > -1) this.pointers.splice(index, 1, event);
+		},
+
 		getIndex: function(id) {
 			return _.findIndex(this.pointers, function(pointer) {
 				return pointer.pointerId == id;
