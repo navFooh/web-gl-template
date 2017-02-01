@@ -26,8 +26,8 @@ define([
 				this.element.addEventListener(MS ? 'MSPointerDown' : 'pointerdown', this.onDown.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerMove' : 'pointermove', this.onMove.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerUp' : 'pointerup', this.onUp.bind(this));
-				this.element.addEventListener(MS ? 'MSPointerLeave' : 'pointerleave', this.onUp.bind(this));
-				this.element.addEventListener(MS ? 'MSPointerCancel' : 'pointercancel', this.onUp.bind(this));
+				this.element.addEventListener(MS ? 'MSPointerLeave' : 'pointerleave', this.onLeave.bind(this));
+				this.element.addEventListener(MS ? 'MSPointerCancel' : 'pointercancel', this.onLeave.bind(this));
 			}
 		},
 
@@ -54,19 +54,22 @@ define([
 
 		onUp: function(event) {
 			event.preventDefault();
-			var index = this.getIndex(event.pointerId);
-			if (index > -1) {
-				this.pointers.splice(index, 1);
-				this.trigger(this.EVENT.UP, this.pointers);
-			} else {
-				console.warn('PointerEvents::onUp -> missing pointer in array');
-			}
+			this.trigger(this.EVENT.UP, this.pointers);
 		},
 
+		onLeave: function(event) {
+			event.preventDefault();
+			this.removePointer(event);
+		},
 
 		addPointer: function(event) {
 			var index = this.getIndex(event.pointerId);
 			if (index == -1) this.pointers.push(event);
+		},
+
+		removePointer: function(event) {
+			var index = this.getIndex(event.pointerId);
+			if (index > -1) this.pointers.splice(index, 1);
 		},
 		getIndex: function(id) {
 			return _.findIndex(this.pointers, function(pointer) {
