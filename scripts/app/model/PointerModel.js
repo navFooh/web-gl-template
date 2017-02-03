@@ -98,7 +98,7 @@ define([
 
 		onMouseUp: function(event) {
 			this.trigger(this.EVENT.UP, event);
-			this.listenToTouchEvents();
+			event.buttons == 0 && this.listenToTouchEvents();
 		},
 
 		// HANDLE PINCH START, MOVE & END
