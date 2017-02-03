@@ -76,16 +76,20 @@ define([
 
 		// HANDLE TOUCH UP AND DOWN
 
-		onTouchDown: function(event) {
+		onTouchDown: function(event, first) {
 			this.setPointer(event);
-			this.trigger(this.EVENT.DOWN, event);
-			this.stopListening(this.mouseEvents);
+			if (first) {
+				this.trigger(this.EVENT.DOWN, { button: 0 });
+				this.stopListening(this.mouseEvents);
+			}
 		},
 
-		onTouchUp: function(event) {
+		onTouchUp: function(event, last) {
 			this.setPinching(false);
-			this.trigger(this.EVENT.UP, event);
-			this.listenToMouseEvents();
+			if (last) {
+				this.trigger(this.EVENT.UP, { button: 0 });
+				this.listenToMouseEvents();
+			}
 		},
 
 		// HANDLE MOUSE UP AND DOWN

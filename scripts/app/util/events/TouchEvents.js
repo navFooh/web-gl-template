@@ -17,11 +17,9 @@ define(['backbone-Util'], function (Util) {
 			this.element.addEventListener('touchcancel', this.onEnd.bind(this));
 		},
 
-		onStart: function() {
-			if (!this.touching) {
-				this.touching = true;
-				this.trigger(this.EVENT.DOWN, { button: 0 });
-			}
+		onStart: function(event) {
+			this.trigger(this.EVENT.DOWN, event, !this.touching);
+			this.touching = true;
 		},
 
 		onMove: function(event) {
@@ -30,10 +28,8 @@ define(['backbone-Util'], function (Util) {
 		},
 
 		onEnd: function(event) {
-			if (this.touching && event.touches.length == 0) {
-				this.touching = false;
-				this.trigger(this.EVENT.UP, { button: 0 });
-			}
+			this.touching = event.touches.length > 0;
+			this.trigger(this.EVENT.UP, event, !this.touching);
 		}
 	});
 });
