@@ -11,8 +11,13 @@ define([
 			UP: 2
 		},
 
-		pointers: [],
-		pointerType: null,
+		pointers: {
+			mouse: [],
+			touch: [],
+			pen: []
+		},
+
+		activeType: null,
 
 		initialize: function (element) {
 
@@ -59,26 +64,25 @@ define([
 		},
 
 		addPointer: function(event) {
-			if (this.pointerType != event.pointerType) {
-				this.pointerType = event.pointerType;
-				this.pointers = [];
-			}
-			var index = this.getIndex(event.pointerId);
-			if (index == -1) this.pointers.push(event);
+			var pointers = this.pointers[event.pointerType],
+				index = this.getIndex(pointers, event.pointerId);
+			if (index == -1) pointers.push(event);
 		},
 
 		removePointer: function(event) {
-			var index = this.getIndex(event.pointerId);
-			if (index > -1) this.pointers.splice(index, 1);
+			var pointers = this.pointers[event.pointerType],
+				index = this.getIndex(pointers, event.pointerId);
+			if (index > -1) pointers.splice(index, 1);
 		},
 
 		replacePointer: function(event) {
-			var index = this.getIndex(event.pointerId);
-			if (index > -1) this.pointers.splice(index, 1, event);
+			var pointers = this.pointers[event.pointerType],
+				index = this.getIndex(pointers, event.pointerId);
+			if (index > -1) pointers.splice(index, 1, event);
 		},
 
-		getIndex: function(id) {
-			return _.findIndex(this.pointers, function(pointer) {
+		getIndex: function(pointers, id) {
+			return _.findIndex(pointers, function(pointer) {
 				return pointer.pointerId == id;
 			});
 		}
