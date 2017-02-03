@@ -101,6 +101,8 @@ define([
 			this.listenToTouchEvents();
 		},
 
+		// HANDLE PINCH START, MOVE & END
+
 		setPinching: function(pointers) {
 			var pinching = pointers && pointers.length == 2;
 			if (pinching && !this.pinching) this.onPinchStart(pointers);
@@ -122,6 +124,14 @@ define([
 			this.pinching = false;
 			this.trigger(this.EVENT.PINCH_END);
 		},
+
+		getPinchLength: function(pointers) {
+			var dx = pointers[0].clientX - pointers[1].clientX,
+				dy = pointers[0].clientY - pointers[1].clientY;
+			return Math.sqrt(dx * dx + dy * dy);
+		},
+
+		// HANDLE MULTIPLE AND SINGLE POINTER MOVES
 
 		onPointersMove: function(pointers) {
 			this.setPinching(pointers);
@@ -153,12 +163,6 @@ define([
 				normalX: event.clientX / normal - 1,
 				normalY: event.clientY / normal - 1
 			})
-		},
-
-		getPinchLength: function(pointers) {
-			var dx = pointers[0].clientX - pointers[1].clientX,
-				dy = pointers[0].clientY - pointers[1].clientY;
-			return Math.sqrt(dx * dx + dy * dy);
 		},
 
 		getAverage: function() {
