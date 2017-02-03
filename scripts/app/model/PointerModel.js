@@ -21,10 +21,6 @@ define([
 
 		defaults: {
 			element: document,
-			active: false,
-			pinching: false,
-			pinchStart: 0,
-			pinchScale: 1,
 			pointerX: 0,
 			pointerY: 0,
 			normalX: 0,
@@ -38,94 +34,100 @@ define([
 			$(element).on('mousewheel', this.trigger.bind(this, this.EVENT.WHEEL));
 
 			if (PointerEvents.isSupported) {
-
-				var pointerEvents = new PointerEvents(element);
-				this.listenTo(pointerEvents, pointerEvents.EVENT.DOWN, this.onPointersDown);
-				this.listenTo(pointerEvents, pointerEvents.EVENT.MOVE, this.onPointersMove);
-				this.listenTo(pointerEvents, pointerEvents.EVENT.UP, this.onPointersUp);
-
+				this.pointerEvents = new PointerEvents(element);
+				this.listenToPointerEvents();
 			} else {
-
-				var touchEvents = new TouchEvents(element);
-				this.listenTo(touchEvents, touchEvents.EVENT.DOWN, this.onPointersDown);
-				this.listenTo(touchEvents, touchEvents.EVENT.MOVE, this.onPointersMove);
-				this.listenTo(touchEvents, touchEvents.EVENT.UP, this.onPointersUp);
-
-				var mouseEvents = new MouseEvents(element);
-				this.listenTo(mouseEvents, mouseEvents.EVENT.DOWN, this.trigger.bind(this, this.EVENT.DOWN));
-				this.listenTo(mouseEvents, mouseEvents.EVENT.MOVE, this.onPointerMove);
-				this.listenTo(mouseEvents, mouseEvents.EVENT.UP, this.trigger.bind(this, this.EVENT.UP));
+				this.touchEvents = new TouchEvents(element);
+				this.mouseEvents = new MouseEvents(element);
+				this.listenToTouchEvents();
+				this.listenToMouseEvents();
 			}
 		},
 
-		onPointersDown: function(pointers) {
-
-			this.setPointer(this.getAverage(pointers));
-
-			if (!this.get('active')) {
-				this.set({ active: true });
-				this.trigger(this.EVENT.DOWN, { button: 0 });
-			}
-
-			this.setPinching(pointers);
+		listenToPointerEvents: function() {
+			this.listenTo(this.pointerEvents, this.pointerEvents.EVENT.MOVE, this.onPointersMove);
+			this.listenTo(this.pointerEvents, this.pointerEvents.EVENT.DOWN, this.onPointerDown);
+			this.listenTo(this.pointerEvents, this.pointerEvents.EVENT.UP, this.onPointerUp);
 		},
 
-		onPointersMove: function(pointers) {
-			this.onPointerMove(this.getAverage(pointers));
-			this.get('pinching') && this.onPinchMove(pointers);
+		listenToTouchEvents: function() {
+			this.listenTo(this.touchEvents, this.touchEvents.EVENT.MOVE, this.onPointersMove);
+			this.listenTo(this.touchEvents, this.touchEvents.EVENT.DOWN, this.onTouchDown);
+			this.listenTo(this.touchEvents, this.touchEvents.EVENT.UP, this.onTouchUp);
 		},
 
-		onPointersUp: function(pointers) {
+		listenToMouseEvents: function() {
+			this.listenTo(this.mouseEvents, this.mouseEvents.EVENT.MOVE, this.onPointerMove);
+			this.listenTo(this.mouseEvents, this.mouseEvents.EVENT.DOWN, this.onMouseDown);
+			this.listenTo(this.mouseEvents, this.mouseEvents.EVENT.UP, this.onMouseUp);
+		},
 
-			this.setPinching(pointers);
+		// HANDLE POINTER UP AND DOWN
 
-			if (this.get('active') && pointers.length == 0) {
-				this.set({ active: false });
-				this.trigger(this.EVENT.UP, { button: 0 });
-			}
+		onPointerDown: function(event) {
+			this.setPointer(event);
+			this.trigger(this.EVENT.DOWN, event);
+		},
+
+		onPointerUp: function(event) {
+			this.setPinching(false);
+			this.trigger(this.EVENT.UP, event);
+		},
+
+		// HANDLE TOUCH UP AND DOWN
+
+		onTouchDown: function(event) {
+			this.setPointer(event);
+			this.trigger(this.EVENT.DOWN, event);
+			this.stopListening(this.mouseEvents);
+		},
+
+		onTouchUp: function(event) {
+			this.setPinching(false);
+			this.trigger(this.EVENT.UP, event);
+			this.listenToMouseEvents();
+		},
+
+		// HANDLE MOUSE UP AND DOWN
+
+		onMouseDown: function(event) {
+			this.setPointer(event);
+			this.trigger(this.EVENT.DOWN, event);
+			this.stopListening(this.touchEvents);
+		},
+
+		onMouseUp: function(event) {
+			this.trigger(this.EVENT.UP, event);
+			this.listenToTouchEvents();
 		},
 
 		setPinching: function(pointers) {
-			var pinching = pointers.length == 2;
-			if (pinching && !this.get('pinching')) this.onPinchStart(pointers);
-			if (!pinching && this.get('pinching')) this.onPinchEnd();
+			var pinching = pointers && pointers.length == 2;
+			if (pinching && !this.pinching) this.onPinchStart(pointers);
+			if (!pinching && this.pinching) this.onPinchEnd();
 		},
 
 		onPinchStart: function(pointers) {
-			this.set({
-				pinching: true,
-				pinchScale: 1,
-				pinchStart: this.getPinchLength(pointers)
-			}).trigger(this.EVENT.PINCH_START);
+			this.pinching = true;
+			this.pinchStart = this.getPinchLength(pointers);
+			this.trigger(this.EVENT.PINCH_START);
 		},
 
 		onPinchMove: function(pointers) {
-			var prev = this.get('pinchScale'),
-				length = this.getPinchLength(pointers);
-			this.set({ pinchScale: length / this.get('pinchStart') });
-			this.trigger(this.EVENT.PINCH_MOVE, { delta: this.get('pinchScale') - prev });
+			var scale = this.getPinchLength(pointers) / this.pinchStart;
+			this.trigger(this.EVENT.PINCH_MOVE, { scale: scale });
 		},
 
 		onPinchEnd: function() {
-			this.set({ pinching: false });
+			this.pinching = false;
 			this.trigger(this.EVENT.PINCH_END);
 		},
 
-		getPinchLength: function(pointers) {
-			var dx = pointers[0].clientX - pointers[1].clientX,
-				dy = pointers[0].clientY - pointers[1].clientY;
-			return Math.sqrt(dx * dx + dy * dy);
+		onPointersMove: function(pointers) {
+			this.setPinching(pointers);
+			this.onPointerMove(this.getAverage(pointers));
+			this.pinching && this.onPinchMove(pointers);
 		},
-
-		getAverage: function() {
-			var add = function(a, b) { return a + b };
-			return function(pointers) {
-				return {
-					clientX: _.reduce(_.pluck(pointers, 'clientX'), add) / pointers.length,
-					clientY: _.reduce(_.pluck(pointers, 'clientY'), add) / pointers.length
-				}
-			}
-		}(),
 
 		onPointerMove: function(event) {
 			var pointerPrevX = this.get('pointerX'),
@@ -151,7 +153,23 @@ define([
 				normalX: event.clientX / normal - 1,
 				normalY: event.clientY / normal - 1
 			})
-		}
+		},
+
+		getPinchLength: function(pointers) {
+			var dx = pointers[0].clientX - pointers[1].clientX,
+				dy = pointers[0].clientY - pointers[1].clientY;
+			return Math.sqrt(dx * dx + dy * dy);
+		},
+
+		getAverage: function() {
+			var add = function(a, b) { return a + b };
+			return function(pointers) {
+				return {
+					clientX: _.reduce(_.pluck(pointers, 'clientX'), add) / pointers.length,
+					clientY: _.reduce(_.pluck(pointers, 'clientY'), add) / pointers.length
+				}
+			}
+		}()
 	});
 
 	return new PointerModel();
