@@ -9,7 +9,6 @@ define(['backbone-Util'], function (Util) {
 		},
 
 		initialize: function (element) {
-
 			this.element = element || document;
 			this.element.addEventListener('touchstart', this.onStart.bind(this));
 			this.element.addEventListener('touchmove', this.onMove.bind(this));
@@ -18,8 +17,8 @@ define(['backbone-Util'], function (Util) {
 		},
 
 		onStart: function(event) {
-			this.trigger(this.EVENT.DOWN, event, !this.touching);
-			this.touching = true;
+			this.trigger(this.EVENT.DOWN, event, !this.active);
+			this.active = true;
 		},
 
 		onMove: function(event) {
@@ -28,8 +27,9 @@ define(['backbone-Util'], function (Util) {
 		},
 
 		onEnd: function(event) {
-			this.touching = event.touches.length > 0;
-			this.trigger(this.EVENT.UP, event, !this.touching);
+			var last = event.touches.length == 0;
+			this.active && this.trigger(this.EVENT.UP, event, last);
+			if (last) this.active = false;
 		}
 	});
 });
