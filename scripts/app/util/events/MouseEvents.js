@@ -9,6 +9,7 @@ define(['backbone-Util'], function (Util) {
 		},
 
 		initialize: function (element) {
+			this.buttons = [];
 			this.element = element || document;
 			this.element.addEventListener('mousedown', this.onDown.bind(this));
 			this.element.addEventListener('mousemove', this.trigger.bind(this, this.EVENT.MOVE));
@@ -17,13 +18,13 @@ define(['backbone-Util'], function (Util) {
 		},
 
 		onDown: function(event) {
-			!this.active && this.trigger(this.EVENT.DOWN, event);
-			this.active = true;
+			!this.buttons[event.button] && this.trigger(this.EVENT.DOWN, event);
+			this.buttons[event.button] = true;
 		},
 
 		onUp: function(event) {
-			this.active && this.trigger(this.EVENT.UP, event);
-			this.active = false;
+			this.buttons[event.button] && this.trigger(this.EVENT.UP, event);
+			this.buttons[event.button] = false;
 		}
 	});
 });
