@@ -9,9 +9,6 @@ define(['backbone-Util'], function (Util) {
 		},
 
 		initialize: function (element) {
-
-			this.active = false;
-
 			this.element = element || document;
 			this.element.addEventListener('mousedown', this.onDown.bind(this));
 			this.element.addEventListener('mousemove', this.trigger.bind(this, this.EVENT.MOVE));
