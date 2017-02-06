@@ -79,15 +79,15 @@ define([
 
 		// HANDLE TOUCH UP AND DOWN
 
-		onTouchDown: function(event, first) {
-			this.setPointer(event);
+		onTouchDown: function(touches, first) {
+			this.setPointer(this.getAverage(touches));
 			if (first) {
 				this.trigger(this.EVENT.DOWN, { button: 0 });
 				this.stopListening(this.mouseEvents);
 			}
 		},
 
-		onTouchUp: function(event, last) {
+		onTouchUp: function(touches, last) {
 			this.setPinching(false);
 			if (last) {
 				this.trigger(this.EVENT.UP, { button: 0 });

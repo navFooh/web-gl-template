@@ -17,7 +17,7 @@ define(['backbone-Util'], function (Util) {
 		},
 
 		onStart: function(event) {
-			this.trigger(this.EVENT.DOWN, event, !this.active);
+			this.trigger(this.EVENT.DOWN, event.touches, !this.active);
 			this.active = true;
 		},
 
@@ -28,7 +28,7 @@ define(['backbone-Util'], function (Util) {
 
 		onEnd: function(event) {
 			var last = event.touches.length == 0;
-			this.active && this.trigger(this.EVENT.UP, event, last);
+			this.active && this.trigger(this.EVENT.UP, event.touches, last);
 			if (last) this.active = false;
 		}
 	});
