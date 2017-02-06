@@ -9,6 +9,9 @@ define([
 
 	var PointerModel = Backbone.Model.extend({
 
+		// NOTE: DOWN AND UP CAN BE FIRED FOR EACH POINTER BUTTON
+		// CHECK FOR A SPECIFIC BUTTON WHEN INITIATING INTERACTION
+
 		EVENT: {
 			DOWN: 0,
 			MOVE: 1,
