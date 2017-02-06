@@ -172,7 +172,7 @@ define([
 		getAverage: function() {
 			var add = function(a, b) { return a + b };
 			return function(pointers) {
-				return {
+				return pointers.length == 1 ? pointers[0] : {
 					clientX: _.reduce(_.pluck(pointers, 'clientX'), add) / pointers.length,
 					clientY: _.reduce(_.pluck(pointers, 'clientY'), add) / pointers.length
 				}
