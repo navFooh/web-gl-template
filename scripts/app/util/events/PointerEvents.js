@@ -56,7 +56,7 @@ define([
 		addPointer: function(event) {
 			var pointers = this.pointers[event.pointerType],
 				index = this.getIndex(pointers, event.pointerId);
-			if (index == -1) pointers.push(event);
+			if (index == -1) pointers.push(this.copyPointer(event));
 		},
 
 		removePointer: function(event) {
@@ -68,7 +68,17 @@ define([
 		replacePointer: function(event) {
 			var pointers = this.pointers[event.pointerType],
 				index = this.getIndex(pointers, event.pointerId);
-			if (index > -1) pointers.splice(index, 1, event);
+			if (index > -1) pointers.splice(index, 1, this.copyPointer(event));
+		},
+
+		copyPointer: function(pointer) {
+			return {
+				pointerId: pointer.pointerId,
+				clientX: pointer.clientX,
+				clientY: pointer.clientY,
+				button: pointer.button,
+				buttons: pointer.buttons
+			}
 		},
 
 		getIndex: function(pointers, id) {
