@@ -28,18 +28,13 @@ define([
 
 				var MS = PointerEvent === window.MSPointerEvent;
 
-				this.element.addEventListener(MS ? 'MSPointerEnter' : 'pointerenter', this.onEnter.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerDown' : 'pointerdown', this.onDown.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerMove' : 'pointermove', this.onMove.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerUp' : 'pointerup', this.onUp.bind(this));
-				this.element.addEventListener(MS ? 'MSPointerLeave' : 'pointerleave', this.onLeave.bind(this));
-				this.element.addEventListener(MS ? 'MSPointerCancel' : 'pointercancel', this.onLeave.bind(this));
+				this.element.addEventListener(MS ? 'MSPointerEnter' : 'pointerenter', this.addPointer.bind(this));
+				this.element.addEventListener(MS ? 'MSPointerLeave' : 'pointerleave', this.removePointer.bind(this));
+				this.element.addEventListener(MS ? 'MSPointerCancel' : 'pointercancel', this.removePointer.bind(this));
 			}
-		},
-
-		onEnter: function(event) {
-			event.preventDefault();
-			this.addPointer(event);
 		},
 
 		onDown: function(event) {
@@ -56,11 +51,6 @@ define([
 		onUp: function(event) {
 			event.preventDefault();
 			this.trigger(this.EVENT.UP, this.pointers);
-		},
-
-		onLeave: function(event) {
-			event.preventDefault();
-			this.removePointer(event);
 		},
 
 		addPointer: function(event) {
