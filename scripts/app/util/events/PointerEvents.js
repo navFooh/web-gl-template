@@ -45,7 +45,9 @@ define([
 		onMove: function(event) {
 			event.preventDefault();
 			this.replacePointer(event);
-			this.trigger(this.EVENT.MOVE, this.pointers);
+			if (this.activeType == null || this.activeType == event.pointerType) {
+				this.trigger(this.EVENT.MOVE, this.pointers[event.pointerType]);
+			}
 		},
 
 		onUp: function(event) {
