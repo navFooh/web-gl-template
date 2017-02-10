@@ -67,14 +67,14 @@ define([
 
 		// HANDLE POINTER UP AND DOWN
 
-		onPointerDown: function(event) {
-			this.setPointer(event);
-			this.trigger(this.EVENT.DOWN, event);
+		onPointerDown: function(pointers, event, first) {
+			this.setPointer(this.getAverage(pointers));
+			first && this.trigger(this.EVENT.DOWN, event);
 		},
 
-		onPointerUp: function(event) {
+		onPointerUp: function(pointers, event, last) {
 			this.setPinching(false);
-			this.trigger(this.EVENT.UP, event);
+			last && this.trigger(this.EVENT.UP, event);
 		},
 
 		// HANDLE TOUCH UP AND DOWN
