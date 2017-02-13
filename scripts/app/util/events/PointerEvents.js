@@ -11,20 +11,20 @@ define([
 			UP: 2
 		},
 
-		pointers: {
-			mouse: [],
-			touch: [],
-			pen: []
-		},
-
-		activeType: null,
-
 		initialize: function (element) {
 
 			this.element = element || document;
 
 			var PointerEvent = window.PointerEvent || window.MSPointerEvent;
 			if (PointerEvent) {
+
+				this.activeType = null;
+
+				this.pointers = {
+					mouse: [],
+					touch: [],
+					pen: []
+				};
 
 				var MS = PointerEvent === window.MSPointerEvent;
 
