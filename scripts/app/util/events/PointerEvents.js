@@ -31,7 +31,7 @@ define([
 				this.element.addEventListener(MS ? 'MSPointerDown' : 'pointerdown', this.onDown.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerMove' : 'pointermove', this.onMove.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerUp' : 'pointerup', this.onUp.bind(this));
-				this.element.addEventListener(MS ? 'MSPointerEnter' : 'pointerenter', this.addPointer.bind(this));
+				this.element.addEventListener(MS ? 'MSPointerEnter' : 'pointerenter', this.setPointer.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerLeave' : 'pointerleave', this.removePointer.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerCancel' : 'pointercancel', this.removePointer.bind(this));
 			}
@@ -44,7 +44,7 @@ define([
 
 		onMove: function(event) {
 			event.preventDefault();
-			this.replacePointer(event);
+			this.setPointer(event);
 			if (this.activeType == null || this.activeType == event.pointerType) {
 				this.trigger(this.EVENT.MOVE, this.pointers[event.pointerType]);
 			}
@@ -55,22 +55,17 @@ define([
 			this.trigger(this.EVENT.UP, this.pointers);
 		},
 
-		addPointer: function(event) {
+		setPointer: function(event) {
 			var pointers = this.pointers[event.pointerType],
 				index = this.getIndex(pointers, event.pointerId);
 			if (index == -1) pointers.push(this.copyPointer(event));
+			else pointers.splice(index, 1, this.copyPointer(event));
 		},
 
 		removePointer: function(event) {
 			var pointers = this.pointers[event.pointerType],
 				index = this.getIndex(pointers, event.pointerId);
 			if (index > -1) pointers.splice(index, 1);
-		},
-
-		replacePointer: function(event) {
-			var pointers = this.pointers[event.pointerType],
-				index = this.getIndex(pointers, event.pointerId);
-			if (index > -1) pointers.splice(index, 1, this.copyPointer(event));
 		},
 
 		copyPointer: function(pointer) {
