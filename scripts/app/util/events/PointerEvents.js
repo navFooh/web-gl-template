@@ -59,9 +59,16 @@ define([
 
 		setPointer: function(event) {
 			var pointers = this.pointers[event.pointerType],
-				index = this.getIndex(pointers, event.pointerId);
-			if (index == -1) pointers.push(this.copyPointer(event));
-			else pointers.splice(index, 1, this.copyPointer(event));
+				index = this.getIndex(pointers, event.pointerId),
+				pointer = this.copyPointer(event),
+				previous = index > -1 ? pointers[index] : { button: -1, buttons: 0 };
+
+			if (this.activeType == event.pointerType)
+				this.analyzeButtons(previous, pointer);
+
+			index == -1
+				? pointers.push(pointer)
+				: pointers.splice(index, 1, pointer);
 		},
 
 		unsetPointer: function(event) {
@@ -78,6 +85,10 @@ define([
 				button: pointer.button,
 				buttons: pointer.buttons
 			}
+		},
+
+		analyzeButtons: function(previous, next) {
+			if (previous.buttons == next.buttons) return;
 		},
 
 		getIndex: function(pointers, id) {
