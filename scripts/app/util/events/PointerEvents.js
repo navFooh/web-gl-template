@@ -38,21 +38,23 @@ define([
 		},
 
 		onDown: function(event) {
-			event.preventDefault();
-			this.trigger(this.EVENT.DOWN, this.pointers);
+			if (this.activeType == null)
+				this.activeType = event.pointerType;
+
+			this.setPointer(event);
 		},
 
 		onMove: function(event) {
 			event.preventDefault();
 			this.setPointer(event);
+
 			if (this.activeType == null || this.activeType == event.pointerType) {
 				this.trigger(this.EVENT.MOVE, this.pointers[event.pointerType]);
 			}
 		},
 
 		onUp: function(event) {
-			event.preventDefault();
-			this.trigger(this.EVENT.UP, this.pointers);
+			this.setPointer(event);
 		},
 
 		setPointer: function(event) {
