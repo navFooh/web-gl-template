@@ -32,8 +32,8 @@ define([
 				this.element.addEventListener(MS ? 'MSPointerMove' : 'pointermove', this.onMove.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerUp' : 'pointerup', this.onUp.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerEnter' : 'pointerenter', this.setPointer.bind(this));
-				this.element.addEventListener(MS ? 'MSPointerLeave' : 'pointerleave', this.removePointer.bind(this));
-				this.element.addEventListener(MS ? 'MSPointerCancel' : 'pointercancel', this.removePointer.bind(this));
+				this.element.addEventListener(MS ? 'MSPointerLeave' : 'pointerleave', this.unsetPointer.bind(this));
+				this.element.addEventListener(MS ? 'MSPointerCancel' : 'pointercancel', this.unsetPointer.bind(this));
 			}
 		},
 
@@ -64,7 +64,7 @@ define([
 			else pointers.splice(index, 1, this.copyPointer(event));
 		},
 
-		removePointer: function(event) {
+		unsetPointer: function(event) {
 			var pointers = this.pointers[event.pointerType],
 				index = this.getIndex(pointers, event.pointerId);
 			if (index > -1) pointers.splice(index, 1);
