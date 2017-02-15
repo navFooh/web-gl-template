@@ -74,7 +74,10 @@ define([
 		unsetPointer: function(event) {
 			var pointers = this.pointers[event.pointerType],
 				index = this.getIndex(pointers, event.pointerId);
-			if (index > -1) pointers.splice(index, 1);
+			if (index > -1) {
+				var pointer = pointers.splice(index, 1)[0];
+				this.analyzeButtons(pointer, { button: -1, buttons: 0 })
+			}
 		},
 
 		copyPointer: function(pointer) {
