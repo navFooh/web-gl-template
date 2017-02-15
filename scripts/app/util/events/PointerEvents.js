@@ -28,20 +28,13 @@ define([
 
 				var MS = PointerEvent === window.MSPointerEvent;
 
-				this.element.addEventListener(MS ? 'MSPointerDown' : 'pointerdown', this.onDown.bind(this));
+				this.element.addEventListener(MS ? 'MSPointerUp' : 'pointerup', this.setPointer.bind(this));
+				this.element.addEventListener(MS ? 'MSPointerDown' : 'pointerdown', this.setPointer.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerMove' : 'pointermove', this.onMove.bind(this));
-				this.element.addEventListener(MS ? 'MSPointerUp' : 'pointerup', this.onUp.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerEnter' : 'pointerenter', this.setPointer.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerLeave' : 'pointerleave', this.unsetPointer.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerCancel' : 'pointercancel', this.unsetPointer.bind(this));
 			}
-		},
-
-		onDown: function(event) {
-			if (this.activeType == null)
-				this.activeType = event.pointerType;
-
-			this.setPointer(event);
 		},
 
 		onMove: function(event) {
@@ -53,18 +46,13 @@ define([
 			}
 		},
 
-		onUp: function(event) {
-			this.setPointer(event);
-		},
-
 		setPointer: function(event) {
 			var pointers = this.pointers[event.pointerType],
 				index = this.getIndex(pointers, event.pointerId),
 				pointer = this.copyPointer(event),
 				previous = index > -1 ? pointers[index] : { button: -1, buttons: 0 };
 
-			if (this.activeType == event.pointerType)
-				this.analyzeButtons(previous, pointer);
+			this.analyzeButtons(previous, pointer);
 
 			index == -1
 				? pointers.push(pointer)
@@ -90,8 +78,8 @@ define([
 			}
 		},
 
-		analyzeButtons: function(previous, next) {
-			if (previous.buttons == next.buttons) return;
+		analyzeButtons: function(prev, next) {
+			if (prev.buttons == next.buttons) return;
 		},
 
 		getIndex: function(pointers, id) {
