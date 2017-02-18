@@ -19,7 +19,7 @@ define([
 			if (PointerEvent) {
 
 				this.activeType = null;
-
+				this.buttons = [];
 				this.pointers = {
 					mouse: [],
 					touch: [],
@@ -50,13 +50,18 @@ define([
 			var pointers = this.pointers[event.pointerType],
 				index = this.getIndex(pointers, event.pointerId),
 				pointer = this.copyPointer(event),
-				previous = index > -1 ? pointers[index] : { button: -1, buttons: 0 };
+				buttonsChanged = index > -1
+					? pointer.buttons != pointers[index].buttons
+					: pointer.buttons > 0;
 
-			this.analyzeButtons(previous, pointer);
+			index > -1
+				? pointers.splice(index, 1, pointer)
+				: pointers.push(pointer);
 
-			index == -1
-				? pointers.push(pointer)
-				: pointers.splice(index, 1, pointer);
+			if (buttonsChanged && pointer.button > -1)
+				this.isDown(pointer.button, pointer.buttons)
+					? this.captureButton(pointer)
+					: this.releaseButton(pointer);
 		},
 
 		unsetPointer: function(event) {
@@ -64,29 +69,65 @@ define([
 				index = this.getIndex(pointers, event.pointerId);
 			if (index > -1) {
 				var pointer = pointers.splice(index, 1)[0];
-				this.analyzeButtons(pointer, { button: -1, buttons: 0 })
+				if (pointer.buttons > 0) {
+					for (var i = 0, l = this.buttons.length; i < l; i++) {
+						if (typeof this.buttons[i] == 'undefined') continue;
+						if (this.isDown(i, pointer.buttons)) {
+							this.releaseButton(_.extend(pointer, { button: i }));
+						}
+					}
+				}
 			}
 		},
 
-		copyPointer: function(pointer) {
-			return {
-				pointerId: pointer.pointerId,
-				clientX: pointer.clientX,
-				clientY: pointer.clientY,
-				button: pointer.button,
-				buttons: pointer.buttons
-			}
+		captureButton: function(pointer) {
+			// make this the active pointer type if not set
+			if (this.activeType == null)
+				this.activeType = pointer.pointerType;
+			// do nothing if we're not the active pointer type
+			if (this.activeType != pointer.pointerType) return;
+			// create counter for button type if not yet exists
+			if (typeof this.buttons[pointer.button] === 'undefined')
+				this.buttons[pointer.button] = 0;
+			// increment counter for pressed button and trigger DOWN
+			var first = this.buttons[pointer.button]++ == 0;
+			this.trigger(this.EVENT.DOWN, this.pointers[pointer.pointerType], pointer, first);
 		},
 
-		analyzeButtons: function(prev, next) {
-			if (prev.buttons == next.buttons) return;
+		releaseButton: function(pointer) {
+			// do nothing if we're not the active pointer type
+			if (this.activeType != pointer.pointerType) return;
+			// decrement counter for released button and trigger UP
+			var last = --this.buttons[pointer.button] == 0;
+			this.trigger(this.EVENT.UP, this.pointers[pointer.pointerType], pointer, last);
+			// release activeType if no buttons are pressed
+			var inactive = !_.some(this.buttons);
+			if (inactive) this.activeType = null;
 		},
 
 		getIndex: function(pointers, id) {
 			return _.findIndex(pointers, function(pointer) {
 				return pointer.pointerId == id;
 			});
-		}
+		},
+
+		copyPointer: function(pointer) {
+			return {
+				button: pointer.button,
+				buttons: pointer.buttons,
+				clientX: pointer.clientX,
+				clientY: pointer.clientY,
+				pointerId: pointer.pointerId,
+				pointerType: pointer.pointerType
+			}
+		},
+
+		isDown: function() {
+			var BUTTON_BITS = [0,2,1,3,4,5];
+			return function(button, buttons) {
+				return (buttons & (1 << BUTTON_BITS[button])) > 0
+			}
+		}()
 
 	}, {
 		isSupported: !!(window.PointerEvent || window.MSPointerEvent)
