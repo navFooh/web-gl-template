@@ -72,12 +72,13 @@ define([
 			// if we have the pointer, remove it
 			var pointer = pointers.splice(index, 1)[0];
 			if (pointer.buttons == 0) return;
-			// if some buttons are still pressed, release them
+			// if some buttons on this pointer are still pressed, release them
 			for (var i = 0, l = this.buttons.length; i < l; i++) {
-				if (typeof this.buttons[i] == 'undefined') continue;
-				if (this.isDown(i, pointer.buttons)) {
+				// ignore buttons that were never or currently aren't pressed
+				if (typeof this.buttons[i] == 'undefined' || this.buttons[i] == 0) continue;
+				// release the button if it was still pressed down
+				if (this.isDown(i, pointer.buttons))
 					this.releaseButton(_.extend(pointer, { button: i }));
-				}
 			}
 		},
 
