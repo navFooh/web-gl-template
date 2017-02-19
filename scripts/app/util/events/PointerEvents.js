@@ -40,24 +40,25 @@ define([
 		onMove: function(event) {
 			event.preventDefault();
 			this.setPointer(event);
-
+			// trigger MOVE when this pointer type is active or none is active
 			if (this.activeType == null || this.activeType == event.pointerType) {
 				this.trigger(this.EVENT.MOVE, this.pointers[event.pointerType]);
 			}
 		},
 
 		setPointer: function(event) {
+			// check if the pointer is new and the pressed buttons changed
 			var pointers = this.pointers[event.pointerType],
 				index = this.getIndex(pointers, event.pointerId),
 				pointer = this.copyPointer(event),
 				buttonsChanged = index > -1
 					? pointer.buttons != pointers[index].buttons
 					: pointer.buttons > 0;
-
+			// update the pointer in the array or add it
 			index > -1
 				? pointers.splice(index, 1, pointer)
 				: pointers.push(pointer);
-
+			// capture or release the button when its state changed
 			if (buttonsChanged && pointer.button > -1)
 				this.isDown(pointer.button, pointer.buttons)
 					? this.captureButton(pointer)
