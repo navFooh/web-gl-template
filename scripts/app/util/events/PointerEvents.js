@@ -75,7 +75,7 @@ define([
 			// if some buttons on this pointer are still pressed, release them
 			for (var i = 0, l = this.buttons.length; i < l; i++) {
 				// ignore buttons that were never or currently aren't pressed
-				if (typeof this.buttons[i] == 'undefined' || this.buttons[i] == 0) continue;
+				if (typeof this.buttons[i] === 'undefined' || this.buttons[i] == 0) continue;
 				// release the button if it was still pressed down
 				if (this.isDown(i, pointer.buttons))
 					this.releaseButton(_.extend(pointer, { button: i }));
