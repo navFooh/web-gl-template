@@ -65,17 +65,18 @@ define([
 		},
 
 		unsetPointer: function(event) {
+			// find pointer in array of stored pointers
 			var pointers = this.pointers[event.pointerType],
 				index = this.getIndex(pointers, event.pointerId);
-			if (index > -1) {
-				var pointer = pointers.splice(index, 1)[0];
-				if (pointer.buttons > 0) {
-					for (var i = 0, l = this.buttons.length; i < l; i++) {
-						if (typeof this.buttons[i] == 'undefined') continue;
-						if (this.isDown(i, pointer.buttons)) {
-							this.releaseButton(_.extend(pointer, { button: i }));
-						}
-					}
+			if (index == -1) return;
+			// if we have the pointer, remove it
+			var pointer = pointers.splice(index, 1)[0];
+			if (pointer.buttons == 0) return;
+			// if some buttons are still pressed, release them
+			for (var i = 0, l = this.buttons.length; i < l; i++) {
+				if (typeof this.buttons[i] == 'undefined') continue;
+				if (this.isDown(i, pointer.buttons)) {
+					this.releaseButton(_.extend(pointer, { button: i }));
 				}
 			}
 		},
