@@ -97,14 +97,12 @@ define([
 			this.trigger(this.EVENT.DOWN, this.pointers[pointer.pointerType], pointer, first);
 		},
 
-		releaseButton: function(pointer) {
+		releaseButton: function(pointers, pointer, button) {
 			// do nothing if we're not the active pointer type
 			if (this.activeType != pointer.pointerType) return;
-			// prevent decrementing a button that doesn't exist or is already 0
-			if (typeof this.buttons[pointer.button] === 'undefined' || this.buttons[pointer.button] == 0) return;
 			// decrement counter for released button and trigger UP
-			var last = --this.buttons[pointer.button] == 0;
-			this.trigger(this.EVENT.UP, this.pointers[pointer.pointerType], pointer, last);
+			var last = --this.buttons[button] == 0;
+			this.trigger(this.EVENT.UP, pointers, pointer, last);
 			// release activeType if no buttons are pressed
 			var inactive = !_.some(this.buttons);
 			if (inactive) this.activeType = null;
