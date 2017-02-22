@@ -69,12 +69,17 @@ define([
 			var pointer = pointers.splice(index, 1)[0];
 			if (pointer.buttons == 0) return;
 			// if some buttons on this pointer are still pressed, release them
-			for (var i = 0, l = this.buttons.length; i < l; i++) {
-				// ignore buttons that were never or currently aren't pressed
-				if (typeof this.buttons[i] === 'undefined' || this.buttons[i] == 0) continue;
-				// release the button if it was still pressed down
-				if (this.isDown(i, pointer.buttons))
-					this.releaseButton(_.extend(pointer, { button: i }));
+			event.buttons > 0 && console.warn('pointer button not released');
+			this.compareButtons(pointers, event, pointer.buttons);
+		},
+
+		compareButtons: function(pointers, pointer, prevButtons) {
+			if (pointer.buttons == prevButtons) return;
+			for (var button = 0; button <= 5; button++) {
+				var isDown = this.isDown(button, pointer.buttons),
+					wasDown = this.isDown(button, prevButtons);
+				isDown && !wasDown && this.captureButton(pointers, pointer, button);
+				!isDown && wasDown && this.releaseButton(pointers, pointer, button);
 			}
 		},
 
