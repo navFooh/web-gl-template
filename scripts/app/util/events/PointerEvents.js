@@ -83,18 +83,18 @@ define([
 			}
 		},
 
-		captureButton: function(pointer) {
+		captureButton: function(pointers, pointer, button) {
 			// make this the active pointer type if not set
 			if (this.activeType == null)
 				this.activeType = pointer.pointerType;
 			// do nothing if we're not the active pointer type
 			if (this.activeType != pointer.pointerType) return;
 			// create counter for button type if not yet exists
-			if (typeof this.buttons[pointer.button] === 'undefined')
-				this.buttons[pointer.button] = 0;
+			if (typeof this.buttons[button] === 'undefined')
+				this.buttons[button] = 0;
 			// increment counter for pressed button and trigger DOWN
-			var first = this.buttons[pointer.button]++ == 0;
-			this.trigger(this.EVENT.DOWN, this.pointers[pointer.pointerType], pointer, first);
+			var first = this.buttons[button]++ == 0;
+			this.trigger(this.EVENT.DOWN, pointers, pointer, first);
 		},
 
 		releaseButton: function(pointers, pointer, button) {
