@@ -50,19 +50,14 @@ define([
 			// check if the pointer is new and the pressed buttons changed
 			var pointers = this.pointers[event.pointerType],
 				index = this.getIndex(pointers, event.pointerId),
-				pointer = this.copyPointer(event),
-				buttonsChanged = index > -1
-					? pointer.buttons != pointers[index].buttons
-					: pointer.buttons > 0;
+				pointer = this.copyPointer(event);
 			// update the pointer in the array or add it
 			index > -1
 				? pointers.splice(index, 1, pointer)
 				: pointers.push(pointer);
 			// capture or release the button when its state changed
-			if (buttonsChanged && pointer.button > -1)
-				this.isDown(pointer.button, pointer.buttons)
-					? this.captureButton(pointer)
-					: this.releaseButton(pointer);
+			var prevButtons = index > -1 ? pointers[index].buttons : 0;
+			this.compareButtons(pointers, pointer, prevButtons);
 		},
 
 		unsetPointer: function(event) {
