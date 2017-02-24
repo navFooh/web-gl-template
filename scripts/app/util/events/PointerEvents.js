@@ -32,16 +32,15 @@ define([
 
 				this.element.addEventListener(MS ? 'MSPointerUp' : 'pointerup', this.setPointer.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerDown' : 'pointerdown', this.setPointer.bind(this));
-				this.element.addEventListener(MS ? 'MSPointerMove' : 'pointermove', this.onMove.bind(this));
+				this.element.addEventListener(MS ? 'MSPointerMove' : 'pointermove', this.setPointer.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerEnter' : 'pointerenter', this.setPointer.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerLeave' : 'pointerleave', this.unsetPointer.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerCancel' : 'pointercancel', this.unsetPointer.bind(this));
 			}
 		},
 
-		onMove: function(event) {
+		moveHandler: function(event) {
 			event.preventDefault();
-			this.setPointer(event);
 			// trigger MOVE when this pointer type is active or none is active
 			if (this.activeType == null || this.activeType == event.pointerType) {
 				this.trigger(this.EVENT.MOVE, this.pointers[event.pointerType]);
@@ -58,8 +57,10 @@ define([
 			index > -1
 				? pointers.splice(index, 1, pointer)
 				: pointers.push(pointer);
-			// capture or release the button when its state changed
-			this.compareButtons(pointers, pointer, previousButtons);
+			// trigger MOVE, DOWN or UP
+			pointer.buttons == previousButtons
+				? this.moveHandler(event)
+				: this.compareButtons(pointers, pointer, previousButtons);
 		},
 
 		unsetPointer: function(event) {
