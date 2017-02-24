@@ -69,12 +69,12 @@ define([
 
 		onPointerDown: function(pointers, event, first) {
 			this.setPointer(this.getAverage(pointers));
-			first && this.trigger(this.EVENT.DOWN, event);
+			first && this.trigger(this.EVENT.DOWN, { button: event.button });
 		},
 
 		onPointerUp: function(pointers, event, last) {
 			this.setPinching(false);
-			last && this.trigger(this.EVENT.UP, event);
+			last && this.trigger(this.EVENT.UP, { button: event.button });
 		},
 
 		// HANDLE TOUCH UP AND DOWN
@@ -99,12 +99,12 @@ define([
 
 		onMouseDown: function(event) {
 			this.setPointer(event);
-			this.trigger(this.EVENT.DOWN, event);
+			this.trigger(this.EVENT.DOWN, { button: event.button });
 			this.stopListening(this.touchEvents);
 		},
 
 		onMouseUp: function(event) {
-			this.trigger(this.EVENT.UP, event);
+			this.trigger(this.EVENT.UP, { button: event.button });
 			event.buttons == 0 && this.listenToTouchEvents();
 		},
 
