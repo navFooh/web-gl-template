@@ -69,8 +69,8 @@ define([
 			var pointer = pointers.splice(index, 1)[0];
 			if (pointer.buttons == 0) return;
 			// if some buttons on this pointer are still pressed, release them
-			event.buttons > 0 && console.warn('pointer button not released');
-			this.compareButtons(pointers, event, pointer.buttons);
+			var final = this.copyPointer(event); final.buttons = 0;
+			this.compareButtons(pointers, final, pointer.buttons);
 		},
 
 		compareButtons: function(pointers, pointer, prevButtons) {
