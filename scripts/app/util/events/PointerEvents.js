@@ -49,12 +49,12 @@ define([
 		},
 
 		setPointer: function(event) {
-			// check if the pointer is new and the pressed buttons changed
+			// check if the pointer is new, lookup previous buttons
 			var pointers = this.pointers[event.pointerType],
 				index = this.getIndex(pointers, event.pointerId),
 				pointer = this.copyPointer(event),
 				previousButtons = index > -1 ? pointers[index].buttons : 0;
-			// update the pointer in the array or add it
+			// update pointers
 			index > -1
 				? pointers.splice(index, 1, pointer)
 				: pointers.push(pointer);
