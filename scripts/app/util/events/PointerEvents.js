@@ -3,6 +3,8 @@ define([
 	'underscore'
 ], function (Util, _) {
 
+	var BIT_TO_BUTTON = [0,2,1,3,4,5];
+
 	return Util.extend({
 
 		EVENT: {
@@ -73,13 +75,22 @@ define([
 			this.compareButtons(pointers, final, pointer.buttons);
 		},
 
-		compareButtons: function(pointers, pointer, prevButtons) {
-			if (pointer.buttons == prevButtons) return;
-			for (var button = 0; button <= 5; button++) {
-				var isDown = this.isDown(button, pointer.buttons),
-					wasDown = this.isDown(button, prevButtons);
+		compareButtons: function(pointers, pointer, previous) {
+			// if buttons didn't change, do noting
+			if (pointer.buttons == previous) return;
+			// copy buttons so original doesn't alter
+			var buttons = pointer.buttons, bit = 0;
+			while (buttons || previous) {
+				// get buttons states
+				var isDown = buttons & 1,
+					wasDown = previous & 1,
+					button = BIT_TO_BUTTON[bit++];
+				// capture and release buttons according to states
 				isDown && !wasDown && this.captureButton(pointers, pointer, button);
 				!isDown && wasDown && this.releaseButton(pointers, pointer, button);
+				// shift the bits
+				buttons >>= 1;
+				previous >>= 1;
 			}
 		},
 
@@ -123,14 +134,7 @@ define([
 				pointerId: pointer.pointerId,
 				pointerType: pointer.pointerType
 			}
-		},
-
-		isDown: function() {
-			var BUTTON_BITS = [0,2,1,3,4,5];
-			return function(button, buttons) {
-				return (buttons & (1 << BUTTON_BITS[button])) > 0
-			}
-		}()
+		}
 
 	}, {
 		isSupported: !!(window.PointerEvent || window.MSPointerEvent)
