@@ -70,14 +70,12 @@ define([
 			// if we have the pointer, remove it
 			var pointer = pointers.splice(index, 1)[0];
 			if (pointer.buttons == 0) return;
-			// if some buttons on this pointer are still pressed, release them
+			// release the buttons that are still pressed
 			var final = this.copyPointer(event); final.buttons = 0;
 			this.compareButtons(pointers, final, pointer.buttons);
 		},
 
 		compareButtons: function(pointers, pointer, previous) {
-			// if buttons didn't change, do noting
-			if (pointer.buttons == previous) return;
 			// copy buttons so original doesn't alter
 			var buttons = pointer.buttons, bit = 0;
 			while (buttons || previous) {
