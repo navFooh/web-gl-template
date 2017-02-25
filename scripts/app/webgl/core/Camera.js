@@ -10,7 +10,7 @@ define([
 		initialize: function () {
 			var aspect = DisplayModel.get('aspect');
 
-			this.camera = new THREE.PerspectiveCamera(35, aspect, 1, 1000);
+			this.camera = new THREE.PerspectiveCamera(35, aspect, 1, 5000);
 			this.camera.position.set(0, 0, 500);
 			this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
