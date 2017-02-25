@@ -39,14 +39,6 @@ define([
 			}
 		},
 
-		moveHandler: function(event) {
-			event.preventDefault();
-			// trigger MOVE when this pointer type is active or none is active
-			if (this.activeType == null || this.activeType == event.pointerType) {
-				this.trigger(this.EVENT.MOVE, this.pointers[event.pointerType]);
-			}
-		},
-
 		setPointer: function(event) {
 			// check if the pointer is new, lookup previous buttons
 			var pointers = this.pointers[event.pointerType],
@@ -74,6 +66,13 @@ define([
 			// release the buttons that are still pressed
 			var final = this.copyPointer(event); final.buttons = 0;
 			this.compareButtons(pointers, final, pointer.buttons);
+		},
+
+		moveHandler: function(event) {
+			event.preventDefault();
+			// trigger MOVE when this is the active pointer type or none is
+			if (this.activeType == null || this.activeType == event.pointerType)
+				this.trigger(this.EVENT.MOVE, this.pointers[event.pointerType]);
 		},
 
 		compareButtons: function(pointers, pointer, previous) {
