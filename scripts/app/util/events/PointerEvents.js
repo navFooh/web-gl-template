@@ -36,7 +36,8 @@ define([
 				this.element.addEventListener(MS ? 'MSPointerEnter' : 'pointerenter', this.setPointer.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerLeave' : 'pointerleave', this.unsetPointer.bind(this));
 				this.element.addEventListener(MS ? 'MSPointerCancel' : 'pointercancel', this.unsetPointer.bind(this));
-			}
+
+			} else console.error('PointerEvents are not supported, check the isSupported property of this model');
 		},
 
 		setPointer: function(event) {
