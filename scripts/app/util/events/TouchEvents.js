@@ -27,9 +27,10 @@ define(['backbone-Util'], function (Util) {
 		},
 
 		onEnd: function(event) {
+			if (!this.active) return;
 			var last = event.touches.length == 0;
-			this.active && this.trigger(this.EVENT.UP, event.touches, last);
 			if (last) this.active = false;
+			this.trigger(this.EVENT.UP, event.touches, last);
 		}
 	});
 });
