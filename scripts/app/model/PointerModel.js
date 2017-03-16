@@ -155,8 +155,8 @@ define([
 			this.trigger(this.EVENT.MOVE, {
 				pointerDeltaX: this.get('pointerX') - pointerPrevX,
 				pointerDeltaY: this.get('pointerY') - pointerPrevY,
-				NormalDeltaX: this.get('normalX') - normalPrevX,
-				NormalDeltaY: this.get('normalY') - normalPrevY
+				normalDeltaX: this.get('normalX') - normalPrevX,
+				normalDeltaY: this.get('normalY') - normalPrevY
 			});
 		},
 
