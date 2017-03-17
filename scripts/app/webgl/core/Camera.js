@@ -15,7 +15,6 @@ define([
 			this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 			this.control = new OrbitControl(this.camera);
-			this.control.start();
 
 			this.listenTo(DisplayModel, 'resize', this.onResize);
 		},
