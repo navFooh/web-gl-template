@@ -23,7 +23,7 @@ define([
 		},
 
 		defaults: {
-			element: document,
+			element: null,
 			pointerX: 0,
 			pointerY: 0,
 			normalX: 0,
@@ -31,10 +31,29 @@ define([
 		},
 
 		initialize: function () {
+			this.on('change:element', this.onChangeElement);
+		},
+
+		onChangeElement: function() {
+
+			if (this.previous('element')) {
+				this.stopListening();
+				this.$element && this.$element.off('mousewheel');
+				this.pointerEvents && this.pointerEvents.remove();
+				this.touchEvents && this.touchEvents.remove();
+				this.mouseEvents && this.mouseEvents.remove();
+				delete this.$element;
+				delete this.pointerEvents;
+				delete this.touchEvents;
+				delete this.mouseEvents;
+			}
 
 			var element = this.get('element');
+			if (element == document) throw 'PointerEvents on document do not fire pointerleave';
+			if (!element) return;
 
-			$(element).on('mousewheel', this.trigger.bind(this, this.EVENT.WHEEL));
+			this.$element = $(element);
+			this.$element.on('mousewheel', this.trigger.bind(this, this.EVENT.WHEEL));
 
 			if (PointerEvents.isSupported) {
 				this.pointerEvents = new PointerEvents(element);
