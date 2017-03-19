@@ -18,26 +18,24 @@ define([
 			this.element = element || document;
 
 			var PointerEvent = window.PointerEvent || window.MSPointerEvent;
-			if (PointerEvent) {
+			if (!PointerEvent) return console.error('PointerEvents are not supported, check PointerEvents.isSupported');
 
-				this.activeType = null;
-				this.buttons = [];
-				this.pointers = {
-					mouse: [],
-					touch: [],
-					pen: []
-				};
+			this.activeType = null;
+			this.buttons = [];
+			this.pointers = {
+				mouse: [],
+				touch: [],
+				pen: []
+			};
 
-				var MS = PointerEvent === window.MSPointerEvent;
+			var MS = PointerEvent === window.MSPointerEvent;
 
-				this.element.addEventListener(MS ? 'MSPointerUp' : 'pointerup', this.setPointer.bind(this));
-				this.element.addEventListener(MS ? 'MSPointerDown' : 'pointerdown', this.setPointer.bind(this));
-				this.element.addEventListener(MS ? 'MSPointerMove' : 'pointermove', this.setPointer.bind(this));
-				this.element.addEventListener(MS ? 'MSPointerEnter' : 'pointerenter', this.setPointer.bind(this));
-				this.element.addEventListener(MS ? 'MSPointerLeave' : 'pointerleave', this.unsetPointer.bind(this));
-				this.element.addEventListener(MS ? 'MSPointerCancel' : 'pointercancel', this.unsetPointer.bind(this));
-
-			} else console.error('PointerEvents are not supported, check the isSupported property of this model');
+			this.element.addEventListener(MS ? 'MSPointerUp' : 'pointerup', this.setPointer.bind(this));
+			this.element.addEventListener(MS ? 'MSPointerDown' : 'pointerdown', this.setPointer.bind(this));
+			this.element.addEventListener(MS ? 'MSPointerMove' : 'pointermove', this.setPointer.bind(this));
+			this.element.addEventListener(MS ? 'MSPointerEnter' : 'pointerenter', this.setPointer.bind(this));
+			this.element.addEventListener(MS ? 'MSPointerLeave' : 'pointerleave', this.unsetPointer.bind(this));
+			this.element.addEventListener(MS ? 'MSPointerCancel' : 'pointercancel', this.unsetPointer.bind(this));
 		},
 
 		setPointer: function(event) {
