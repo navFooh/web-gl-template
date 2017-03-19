@@ -9,8 +9,10 @@ define(['backbone-Util'], function (Util) {
 		},
 
 		initialize: function (element) {
+			if (!element) throw 'Supply a target element for MouseEvents';
+			this.element = element;
+
 			this.buttons = [];
-			this.element = element || document;
 			this.element.addEventListener('mousedown', this.onDown.bind(this));
 			this.element.addEventListener('mousemove', this.trigger.bind(this, this.EVENT.MOVE));
 			this.element.addEventListener('mouseup', this.onUp.bind(this));

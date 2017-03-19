@@ -14,8 +14,8 @@ define([
 		},
 
 		initialize: function (element) {
-
-			this.element = element || document;
+			if (!element) throw 'Supply a target element for PointerEvents';
+			this.element = element;
 
 			var PointerEvent = window.PointerEvent || window.MSPointerEvent;
 			if (!PointerEvent) throw 'PointerEvents are not supported, check PointerEvents.isSupported';

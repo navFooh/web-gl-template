@@ -9,7 +9,9 @@ define(['backbone-Util'], function (Util) {
 		},
 
 		initialize: function (element) {
-			this.element = element || document;
+			if (!element) throw 'Supply a target element for TouchEvents';
+			this.element = element;
+
 			this.element.addEventListener('touchstart', this.onStart.bind(this));
 			this.element.addEventListener('touchmove', this.onMove.bind(this));
 			this.element.addEventListener('touchend', this.onEnd.bind(this));
