@@ -13,15 +13,32 @@ define(['backbone-Util'], function (Util) {
 			this.element = element;
 
 			this.buttons = [];
-			this.element.addEventListener('mousedown', this.onDown.bind(this));
-			this.element.addEventListener('mousemove', this.trigger.bind(this, this.EVENT.MOVE));
-			this.element.addEventListener('mouseup', this.onUp.bind(this));
-			this.element.addEventListener('mouseleave', this.onUp.bind(this));
+
+			this.onDown = this.onDown.bind(this);
+			this.onMove = this.onMove.bind(this);
+			this.onUp = this.onUp.bind(this);
+
+			this.element.addEventListener('mousedown', this.onDown);
+			this.element.addEventListener('mousemove', this.onMove);
+			this.element.addEventListener('mouseup', this.onUp);
+			this.element.addEventListener('mouseleave', this.onUp);
+		},
+
+		remove: function() {
+			this.element.removeEventListener('mousedown', this.onDown);
+			this.element.removeEventListener('mousemove', this.onMove);
+			this.element.removeEventListener('mouseup', this.onUp);
+			this.element.removeEventListener('mouseleave', this.onUp);
+			Util.prototype.remove.apply(this);
 		},
 
 		onDown: function(event) {
 			!this.buttons[event.button] && this.trigger(this.EVENT.DOWN, event);
 			this.buttons[event.button] = true;
+		},
+
+		onMove: function(event) {
+			this.trigger(this.EVENT.MOVE, event);
 		},
 
 		onUp: function(event) {

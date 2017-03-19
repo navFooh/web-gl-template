@@ -28,14 +28,27 @@ define([
 				pen: []
 			};
 
-			var MS = PointerEvent === window.MSPointerEvent;
+			this.setPointer = this.setPointer.bind(this);
+			this.unsetPointer = this.unsetPointer.bind(this);
 
-			this.element.addEventListener(MS ? 'MSPointerUp' : 'pointerup', this.setPointer.bind(this));
-			this.element.addEventListener(MS ? 'MSPointerDown' : 'pointerdown', this.setPointer.bind(this));
-			this.element.addEventListener(MS ? 'MSPointerMove' : 'pointermove', this.setPointer.bind(this));
-			this.element.addEventListener(MS ? 'MSPointerEnter' : 'pointerenter', this.setPointer.bind(this));
-			this.element.addEventListener(MS ? 'MSPointerLeave' : 'pointerleave', this.unsetPointer.bind(this));
-			this.element.addEventListener(MS ? 'MSPointerCancel' : 'pointercancel', this.unsetPointer.bind(this));
+			this.MS = PointerEvent === window.MSPointerEvent;
+
+			this.element.addEventListener(this.MS ? 'MSPointerUp' : 'pointerup', this.setPointer);
+			this.element.addEventListener(this.MS ? 'MSPointerDown' : 'pointerdown', this.setPointer);
+			this.element.addEventListener(this.MS ? 'MSPointerMove' : 'pointermove', this.setPointer);
+			this.element.addEventListener(this.MS ? 'MSPointerEnter' : 'pointerenter', this.setPointer);
+			this.element.addEventListener(this.MS ? 'MSPointerLeave' : 'pointerleave', this.unsetPointer);
+			this.element.addEventListener(this.MS ? 'MSPointerCancel' : 'pointercancel', this.unsetPointer);
+		},
+
+		remove: function() {
+			this.element.removeEventListener(this.MS ? 'MSPointerUp' : 'pointerup', this.setPointer);
+			this.element.removeEventListener(this.MS ? 'MSPointerDown' : 'pointerdown', this.setPointer);
+			this.element.removeEventListener(this.MS ? 'MSPointerMove' : 'pointermove', this.setPointer);
+			this.element.removeEventListener(this.MS ? 'MSPointerEnter' : 'pointerenter', this.setPointer);
+			this.element.removeEventListener(this.MS ? 'MSPointerLeave' : 'pointerleave', this.unsetPointer);
+			this.element.removeEventListener(this.MS ? 'MSPointerCancel' : 'pointercancel', this.unsetPointer);
+			Util.prototype.remove.apply(this);
 		},
 
 		setPointer: function(event) {

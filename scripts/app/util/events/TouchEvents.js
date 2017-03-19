@@ -12,10 +12,22 @@ define(['backbone-Util'], function (Util) {
 			if (!element) throw 'Supply a target element for TouchEvents';
 			this.element = element;
 
-			this.element.addEventListener('touchstart', this.onStart.bind(this));
-			this.element.addEventListener('touchmove', this.onMove.bind(this));
-			this.element.addEventListener('touchend', this.onEnd.bind(this));
-			this.element.addEventListener('touchcancel', this.onEnd.bind(this));
+			this.onStart = this.onStart.bind(this);
+			this.onMove = this.onMove.bind(this);
+			this.onEnd = this.onEnd.bind(this);
+
+			this.element.addEventListener('touchstart', this.onStart);
+			this.element.addEventListener('touchmove', this.onMove);
+			this.element.addEventListener('touchend', this.onEnd);
+			this.element.addEventListener('touchcancel', this.onEnd);
+		},
+
+		remove: function() {
+			this.element.removeEventListener('touchstart', this.onStart);
+			this.element.removeEventListener('touchmove', this.onMove);
+			this.element.removeEventListener('touchend', this.onEnd);
+			this.element.removeEventListener('touchcancel', this.onEnd);
+			Util.prototype.remove.apply(this);
 		},
 
 		onStart: function(event) {
