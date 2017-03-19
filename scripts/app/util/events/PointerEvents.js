@@ -18,7 +18,7 @@ define([
 			this.element = element || document;
 
 			var PointerEvent = window.PointerEvent || window.MSPointerEvent;
-			if (!PointerEvent) return console.error('PointerEvents are not supported, check PointerEvents.isSupported');
+			if (!PointerEvent) throw 'PointerEvents are not supported, check PointerEvents.isSupported';
 
 			this.activeType = null;
 			this.buttons = [];
