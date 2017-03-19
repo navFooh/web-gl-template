@@ -10,7 +10,6 @@ define(['backbone'], function (Backbone) {
 		},
 
 		defaults: {
-			element: document,
 			shift: false,
 			ctrl: false,
 			alt: false,
@@ -21,10 +20,8 @@ define(['backbone'], function (Backbone) {
 		},
 
 		initialize: function () {
-
-			var element = this.get('element');
-			element.addEventListener('keydown', this.onKeyDown.bind(this), true);
-			element.addEventListener('keyup', this.toggle.bind(this, false), true);
+			document.addEventListener('keydown', this.onKeyDown.bind(this), true);
+			document.addEventListener('keyup', this.toggle.bind(this, false), true);
 		},
 
 		onKeyDown: function(event) {
