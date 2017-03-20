@@ -49,7 +49,7 @@ define([
 			}
 
 			var element = this.get('element');
-			if (element == document) throw 'PointerEvents on document do not fire pointerleave';
+			if (element == document) throw 'PointerEvents on document do not fire pointerleave in IE / Edge';
 			if (!element) return;
 
 			this.$element = $(element);
