@@ -13,12 +13,14 @@ define([
 			return this;
 		},
 
-		fadeOut: function() {
+		fadeOut: function(callback) {
 			TweenMax.to(this.el, 1.2, {
 				autoAlpha: 0,
 				ease: Power2.easeInOut,
-				onComplete: this.remove,
-				onCompleteScope: this
+				onComplete: function() {
+					this.remove();
+					callback();
+				}.bind(this)
 			})
 		}
 	});

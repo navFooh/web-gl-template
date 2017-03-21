@@ -26,7 +26,9 @@ define([
 
 		run: function() {
 			WebGLModel.start();
-			this.preloader.fadeOut();
+			this.preloader.fadeOut(function() {
+				delete this.preloader;
+			}.bind(this));
 		}
 	});
 });
