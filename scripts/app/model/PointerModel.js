@@ -92,12 +92,12 @@ define([
 			this.setPinching(false);
 		},
 
-		onPointerDown: function(event, first) {
-			first && this.trigger(this.EVENT.DOWN, { button: event.button });
+		onPointerDown: function(pointer, first) {
+			first && this.trigger(this.EVENT.DOWN, { button: pointer.button });
 		},
 
-		onPointerUp: function(event, last) {
-			last && this.trigger(this.EVENT.UP, { button: event.button });
+		onPointerUp: function(pointer, last) {
+			last && this.trigger(this.EVENT.UP, { button: pointer.button });
 		},
 
 		// HANDLE TOUCH UP AND DOWN
