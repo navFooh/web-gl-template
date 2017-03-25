@@ -111,6 +111,7 @@ define([
 		},
 
 		onTouchUp: function(touches, last) {
+			this.setPointer(this.getAverage(touches));
 			this.setPinching(false);
 			if (last) {
 				this.trigger(this.EVENT.UP, { button: 0 });
@@ -170,6 +171,7 @@ define([
 		},
 
 		onPointerMove: function(event) {
+			if (!event) return;
 			var pointerPrevX = this.get('pointerX'),
 				pointerPrevY = this.get('pointerY'),
 				normalPrevX = this.get('normalX'),
@@ -184,6 +186,7 @@ define([
 		},
 
 		setPointer: function(event) {
+			if (!event) return;
 			var width = DisplayModel.get('width'),
 				height = DisplayModel.get('height'),
 				normal = Math.max(width, height) * 0.5;
@@ -198,6 +201,7 @@ define([
 		getAverage: function() {
 			var add = function(a, b) { return a + b };
 			return function(pointers) {
+				if (!pointers || !pointers.length) return;
 				return pointers.length == 1 ? pointers[0] : {
 					clientX: _.reduce(_.pluck(pointers, 'clientX'), add) / pointers.length,
 					clientY: _.reduce(_.pluck(pointers, 'clientY'), add) / pointers.length
