@@ -67,6 +67,7 @@ define([
 		},
 
 		listenToPointerEvents: function() {
+			this.listenTo(this.pointerEvents, this.pointerEvents.EVENT.CHANGE, this.onPointersChange);
 			this.listenTo(this.pointerEvents, this.pointerEvents.EVENT.MOVE, this.onPointersMove);
 			this.listenTo(this.pointerEvents, this.pointerEvents.EVENT.DOWN, this.onPointerDown);
 			this.listenTo(this.pointerEvents, this.pointerEvents.EVENT.UP, this.onPointerUp);
@@ -86,13 +87,16 @@ define([
 
 		// HANDLE POINTER UP AND DOWN
 
-		onPointerDown: function(pointers, event, first) {
+		onPointersChange: function(pointers) {
 			this.setPointer(this.getAverage(pointers));
+			this.setPinching(false);
+		},
+
+		onPointerDown: function(event, first) {
 			first && this.trigger(this.EVENT.DOWN, { button: event.button });
 		},
 
-		onPointerUp: function(pointers, event, last) {
-			this.setPinching(false);
+		onPointerUp: function(event, last) {
 			last && this.trigger(this.EVENT.UP, { button: event.button });
 		},
 

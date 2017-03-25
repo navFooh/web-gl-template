@@ -8,9 +8,10 @@ define([
 	return Util.extend({
 
 		EVENT: {
-			DOWN: 0,
-			MOVE: 1,
-			UP: 2
+			CHANGE: 0,
+			DOWN: 1,
+			MOVE: 2,
+			UP: 3
 		},
 
 		initialize: function (element) {
@@ -58,13 +59,16 @@ define([
 				pointer = this.copyPointer(event),
 				previousButtons = index > -1 ? pointers[index].buttons : 0;
 			// update pointers
-			index > -1
-				? pointers.splice(index, 1, pointer)
-				: pointers.push(pointer);
+			if (index > -1) {
+				pointers.splice(index, 1, pointer);
+			} else {
+				pointers.push(pointer);
+				this.trigger(this.EVENT.CHANGE, pointers);
+			}
 			// trigger MOVE, DOWN or UP
 			pointer.buttons == previousButtons
 				? this.moveHandler(event)
-				: this.compareButtons(pointers, pointer, previousButtons);
+				: this.compareButtons(pointer, previousButtons);
 		},
 
 		unsetPointer: function(event) {
@@ -74,10 +78,11 @@ define([
 			if (index == -1) return;
 			// if we have the pointer, remove it
 			var pointer = pointers.splice(index, 1)[0];
+			this.trigger(this.EVENT.CHANGE, pointers);
 			if (pointer.buttons == 0) return;
 			// release the buttons that are still pressed
 			var final = this.copyPointer(event); final.buttons = 0;
-			this.compareButtons(pointers, final, pointer.buttons);
+			this.compareButtons(final, pointer.buttons);
 		},
 
 		moveHandler: function(event) {
@@ -87,7 +92,7 @@ define([
 				this.trigger(this.EVENT.MOVE, this.pointers[event.pointerType]);
 		},
 
-		compareButtons: function(pointers, pointer, previous) {
+		compareButtons: function(pointer, previous) {
 			// copy buttons so original doesn't alter
 			var buttons = pointer.buttons, bit = 0;
 			while (buttons || previous) {
@@ -96,15 +101,15 @@ define([
 					wasDown = previous & 1,
 					button = BIT_TO_BUTTON[bit++];
 				// capture and release buttons according to states
-				isDown && !wasDown && this.captureButton(pointers, pointer, button);
-				!isDown && wasDown && this.releaseButton(pointers, pointer, button);
+				isDown && !wasDown && this.captureButton(pointer, button);
+				!isDown && wasDown && this.releaseButton(pointer, button);
 				// shift the bits
 				buttons >>= 1;
 				previous >>= 1;
 			}
 		},
 
-		captureButton: function(pointers, pointer, button) {
+		captureButton: function(pointer, button) {
 			// make this the active pointer type if not set
 			if (this.activeType == null)
 				this.activeType = pointer.pointerType;
@@ -115,15 +120,15 @@ define([
 				this.buttons[button] = 0;
 			// increment counter for pressed button and trigger DOWN
 			var first = this.buttons[button]++ == 0;
-			this.trigger(this.EVENT.DOWN, pointers, pointer, first);
+			this.trigger(this.EVENT.DOWN, pointer, first);
 		},
 
-		releaseButton: function(pointers, pointer, button) {
+		releaseButton: function(pointer, button) {
 			// do nothing if we're not the active pointer type
 			if (this.activeType != pointer.pointerType) return;
 			// decrement counter for released button and trigger UP
 			var last = --this.buttons[button] == 0;
-			this.trigger(this.EVENT.UP, pointers, pointer, last);
+			this.trigger(this.EVENT.UP, pointer, last);
 			// release activeType if no buttons are pressed
 			var inactive = !_.some(this.buttons);
 			if (inactive) this.activeType = null;
