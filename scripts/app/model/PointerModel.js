@@ -9,8 +9,22 @@ define([
 
 	var PointerModel = Backbone.Model.extend({
 
-		// NOTE: DOWN AND UP CAN BE FIRED FOR EACH POINTER BUTTON
-		// CHECK FOR A SPECIFIC BUTTON WHEN INITIATING INTERACTION
+		/* About pointers, events and buttons:
+
+		DOWN and UP is triggered for each button of the active pointer type.
+		Check event.button in the callback to prevent unexpected behaviour.
+
+		When there are multiple pointers, DOWN fires for the first press of a button
+		on any of the pointers and UP fires for the last release of that button.
+
+		This is a contrary to how MOVE and the pointer position works, which is
+		independent buttons being pressed or not. When there are multiple pointers,
+		the pointer position and delta are always averaged between all active pointers.
+
+		This becomes inconvenient when multiple pointers can also support hover or various
+		buttons. E.g. pinch can then be triggered by a hovering and a touching pointer.
+
+		*/
 
 		EVENT: {
 			DOWN: 0,
