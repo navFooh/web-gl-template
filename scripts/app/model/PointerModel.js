@@ -89,7 +89,7 @@ define([
 
 		onPointersChange: function(pointers) {
 			this.setPointer(this.getAverage(pointers));
-			this.setPinching(false);
+			this.setPinching(pointers);
 		},
 
 		onPointerDown: function(pointer, first) {
@@ -104,6 +104,7 @@ define([
 
 		onTouchDown: function(touches, first) {
 			this.setPointer(this.getAverage(touches));
+			this.setPinching(touches);
 			if (first) {
 				this.trigger(this.EVENT.DOWN, { button: 0 });
 				this.stopListening(this.mouseEvents);
@@ -112,7 +113,7 @@ define([
 
 		onTouchUp: function(touches, last) {
 			this.setPointer(this.getAverage(touches));
-			this.setPinching(false);
+			this.setPinching(touches);
 			if (last) {
 				this.trigger(this.EVENT.UP, { button: 0 });
 				this.listenToMouseEvents();
@@ -165,7 +166,6 @@ define([
 		// HANDLE MULTIPLE AND SINGLE POINTER MOVES
 
 		onPointersMove: function(pointers) {
-			this.setPinching(pointers);
 			this.onPointerMove(this.getAverage(pointers));
 			this.pinching && this.onPinchMove(pointers);
 		},
