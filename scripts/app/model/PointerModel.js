@@ -130,7 +130,6 @@ define([
 		// HANDLE MOUSE UP AND DOWN
 
 		onMouseDown: function(event) {
-			this.setPointer(event);
 			this.trigger(this.EVENT.DOWN, { button: event.button });
 			this.stopListening(this.touchEvents);
 		},
