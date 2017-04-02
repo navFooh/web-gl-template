@@ -89,7 +89,9 @@ define([
 
 		listenToTouchEvents: function() {
 			this.listenTo(this.touchEvents, this.touchEvents.EVENT.MOVE, this.onPointersMove);
+			this.listenTo(this.touchEvents, this.touchEvents.EVENT.DOWN, this.onPointersChange);
 			this.listenTo(this.touchEvents, this.touchEvents.EVENT.DOWN, this.onTouchDown);
+			this.listenTo(this.touchEvents, this.touchEvents.EVENT.UP, this.onPointersChange);
 			this.listenTo(this.touchEvents, this.touchEvents.EVENT.UP, this.onTouchUp);
 		},
 
@@ -100,11 +102,6 @@ define([
 		},
 
 		// HANDLE POINTER UP AND DOWN
-
-		onPointersChange: function(pointers) {
-			this.setPointer(this.getAverage(pointers));
-			this.setPinching(pointers);
-		},
 
 		onPointerDown: function(pointer, first) {
 			first && this.trigger(this.EVENT.DOWN, { button: pointer.button });
@@ -117,8 +114,6 @@ define([
 		// HANDLE TOUCH UP AND DOWN
 
 		onTouchDown: function(touches, first) {
-			this.setPointer(this.getAverage(touches));
-			this.setPinching(touches);
 			if (first) {
 				this.trigger(this.EVENT.DOWN, { button: 0 });
 				this.stopListening(this.mouseEvents);
@@ -126,8 +121,6 @@ define([
 		},
 
 		onTouchUp: function(touches, last) {
-			this.setPointer(this.getAverage(touches));
-			this.setPinching(touches);
 			if (last) {
 				this.trigger(this.EVENT.UP, { button: 0 });
 				this.listenToMouseEvents();
@@ -178,6 +171,11 @@ define([
 		},
 
 		// HANDLE MULTIPLE AND SINGLE POINTER MOVES
+
+		onPointersChange: function(pointers) {
+			this.setPointer(this.getAverage(pointers));
+			this.setPinching(pointers);
+		},
 
 		onPointersMove: function(pointers) {
 			this.onPointerMove(this.getAverage(pointers));
