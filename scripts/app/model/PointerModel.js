@@ -154,6 +154,7 @@ define([
 		},
 
 		onPinchMove: function(pointers) {
+			if (!this.pinching || !pointers || !pointers.length == 2) return;
 			var scale = this.getPinchLength(pointers) / this.pinchStart;
 			this.trigger(this.EVENT.PINCH_MOVE, { scale: scale });
 		},
@@ -178,7 +179,7 @@ define([
 
 		onPointersMove: function(pointers) {
 			this.onPointerMove(this.getAverage(pointers));
-			this.pinching && this.onPinchMove(pointers);
+			this.onPinchMove(pointers);
 		},
 
 		onPointerMove: function(event) {
