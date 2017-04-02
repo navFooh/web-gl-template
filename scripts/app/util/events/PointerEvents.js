@@ -37,7 +37,6 @@ define([
 			this.element.addEventListener(this.MS ? 'MSPointerUp' : 'pointerup', this.setPointer);
 			this.element.addEventListener(this.MS ? 'MSPointerDown' : 'pointerdown', this.setPointer);
 			this.element.addEventListener(this.MS ? 'MSPointerMove' : 'pointermove', this.setPointer);
-			this.element.addEventListener(this.MS ? 'MSPointerEnter' : 'pointerenter', this.setPointer);
 			this.element.addEventListener(this.MS ? 'MSPointerLeave' : 'pointerleave', this.unsetPointer);
 			this.element.addEventListener(this.MS ? 'MSPointerCancel' : 'pointercancel', this.unsetPointer);
 		},
@@ -46,7 +45,6 @@ define([
 			this.element.removeEventListener(this.MS ? 'MSPointerUp' : 'pointerup', this.setPointer);
 			this.element.removeEventListener(this.MS ? 'MSPointerDown' : 'pointerdown', this.setPointer);
 			this.element.removeEventListener(this.MS ? 'MSPointerMove' : 'pointermove', this.setPointer);
-			this.element.removeEventListener(this.MS ? 'MSPointerEnter' : 'pointerenter', this.setPointer);
 			this.element.removeEventListener(this.MS ? 'MSPointerLeave' : 'pointerleave', this.unsetPointer);
 			this.element.removeEventListener(this.MS ? 'MSPointerCancel' : 'pointercancel', this.unsetPointer);
 			Util.prototype.remove.apply(this);
