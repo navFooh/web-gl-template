@@ -84,7 +84,6 @@ define([
 		},
 
 		moveHandler: function(event) {
-			event.preventDefault();
 			// trigger MOVE when this is the active pointer type or none is
 			if (this.activeType == null || this.activeType == event.pointerType)
 				this.trigger(this.EVENT.MOVE, this.pointers[event.pointerType]);
