@@ -154,7 +154,7 @@ define([
 		},
 
 		onPinchMove: function(pointers) {
-			if (!this.pinching || !pointers || !pointers.length == 2) return;
+			if (!this.pinching || !pointers || pointers.length != 2) return;
 			var scale = this.getPinchLength(pointers) / this.pinchStart;
 			this.trigger(this.EVENT.PINCH_MOVE, { scale: scale });
 		},
