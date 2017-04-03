@@ -21,9 +21,9 @@ define([
 			var PointerEvent = window.PointerEvent || window.MSPointerEvent;
 			if (!PointerEvent) throw 'PointerEvents are not supported, check PointerEvents.isSupported';
 
-			this.activeType = null;
-			this.buttons = [];
-			this.pointers = {
+			this.activeType = null; // active pointer type: 'mouse', 'pen', 'touch' or null
+			this.buttons = [];      // counts pressed buttons for the active pointer type
+			this.pointers = {       // stores all pointers found on the element per type
 				mouse: [],
 				touch: [],
 				pen: []
