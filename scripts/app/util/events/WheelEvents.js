@@ -11,7 +11,7 @@ define([
 		},
 
 		initialize: function (element) {
-			if (!element) throw 'Supply a target element for MouseEvents';
+			if (!element) throw 'Supply a target element for WheelEvents';
 			this.element = element;
 
 			this.lowestDelta = null;
@@ -75,18 +75,23 @@ define([
 
 			// Store lowest absolute delta to normalize the delta values
 			var absDelta = Math.max(Math.abs(deltaY), Math.abs(deltaX));
+			// If this is an older event and the delta is divisable by 120,
+			// then we are assuming that the browser is treating this as an
+			// older mouse wheel event and that we should divide the deltas
+			// by 40 to try and get a more usable deltaFactor.
+			// Side note, this actually impacts the reported scroll distance
+			// in older browsers and can cause scrolling to be slower than native.
+			var shouldAdjust = event.type === 'mousewheel' && absDelta % 120 === 0;
 
 			if (!this.lowestDelta || absDelta < this.lowestDelta) {
 				this.lowestDelta = absDelta;
 
 				// Adjust older deltas if necessary
-				if (this.shouldAdjustOldDeltas(event, absDelta)) {
-					this.lowestDelta /= 40;
-				}
+				if (shouldAdjust) this.lowestDelta /= 40;
 			}
 
 			// Adjust older deltas if necessary
-			if (this.shouldAdjustOldDeltas(event, absDelta)) {
+			if (shouldAdjust) {
 				deltaX /= 40;
 				deltaY /= 40;
 			}
@@ -107,16 +112,6 @@ define([
 				deltaY: deltaY,
 				deltaFactor: this.lowestDelta
 			}));
-		},
-
-		shouldAdjustOldDeltas: function(event, absDelta) {
-			// If this is an older event and the delta is divisable by 120,
-			// then we are assuming that the browser is treating this as an
-			// older mouse wheel event and that we should divide the deltas
-			// by 40 to try and get a more usable deltaFactor.
-			// Side note, this actually impacts the reported scroll distance
-			// in older browsers and can cause scrolling to be slower than native.
-			return event.type === 'mousewheel' && absDelta % 120 === 0;
 		},
 
 		nullLowestDelta: function() {
