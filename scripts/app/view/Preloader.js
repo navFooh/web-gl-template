@@ -7,9 +7,9 @@ define([
 
 	return Backbone.View.extend({
 
-		render: function($parent) {
+		render: function(parent) {
 			this.setElement(template(AppModel.toJSON()));
-			this.$el.appendTo($parent);
+			parent.appendChild(this.el);
 			return this;
 		},
 

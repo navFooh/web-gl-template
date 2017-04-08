@@ -10,8 +10,8 @@ define([
 	return AppBase.extend({
 
 		createViews: function() {
-			this.canvas = new Canvas().render('body');
-			this.preloader = new Preloader().render('body');
+			this.canvas = new Canvas().render(document.body);
+			this.preloader = new Preloader().render(document.body);
 		},
 
 		createWebGL: function() {

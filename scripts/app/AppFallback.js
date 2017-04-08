@@ -6,7 +6,7 @@ define([
 	return AppBase.extend({
 
 		createViews: function() {
-			new Fallback().render('body');
+			new Fallback().render(document.body);
 		}
 	});
 });

@@ -11,8 +11,8 @@ define([
 			PointerModel.set({ element: this.el });
 		},
 
-		render: function($parent) {
-			this.$el.appendTo($parent);
+		render: function(parent) {
+			parent.appendChild(this.el);
 			return this;
 		}
 	});
