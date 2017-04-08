@@ -31,10 +31,15 @@ define([
 
 			loop: function() {
 				requestId = requestAnimationFrame(this.loop);
+				// trigger update event
 				var delta = clock.getDelta(),
 					elapsed = clock.elapsedTime;
 				this.trigger('update', delta, elapsed);
-				this.trigger('render');
+				// trigger render event
+				var scene = this.get('scene'),
+					camera = this.get('camera');
+				if (!scene || !camera) return;
+				this.trigger('render', scene.scene, camera.camera);
 			}
 		});
 

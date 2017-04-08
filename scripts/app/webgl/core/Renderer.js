@@ -1,8 +1,9 @@
 define([
 	'backbone-WebGL',
 	'model/DisplayModel',
+	'model/WebGLModel',
 	'three'
-], function(WebGL, DisplayModel, THREE) {
+], function(WebGL, DisplayModel, WebGLModel, THREE) {
 
 	return WebGL.extend({
 
@@ -21,6 +22,7 @@ define([
 
 			this.onResize();
 			this.listenTo(DisplayModel, 'resize', this.onResize);
+			this.listenTo(WebGLModel, 'render', this.render);
 		},
 
 		onResize: function() {
@@ -29,8 +31,8 @@ define([
 			this.renderer.setSize(width, height);
 		},
 
-		getRenderer: function() {
-			return this.renderer;
+		render: function(scene, camera) {
+			this.renderer.render(scene, camera);
 		}
 	});
 });
