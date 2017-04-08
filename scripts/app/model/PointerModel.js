@@ -4,8 +4,8 @@ define([
 	'util/events/PointerEvents',
 	'util/events/MouseEvents',
 	'util/events/TouchEvents',
-	'jquery-mousewheel'
-], function (Backbone, DisplayModel, PointerEvents, MouseEvents, TouchEvents) {
+	'util/events/WheelEvents'
+], function (Backbone, DisplayModel, PointerEvents, MouseEvents, TouchEvents, WheelEvents) {
 
 	var PointerModel = Backbone.Model.extend({
 
@@ -52,22 +52,19 @@ define([
 
 			if (this.previous('element')) {
 				this.stopListening();
-				this.$element && this.$element.off('mousewheel');
 				this.pointerEvents && this.pointerEvents.remove();
 				this.touchEvents && this.touchEvents.remove();
 				this.mouseEvents && this.mouseEvents.remove();
-				delete this.$element;
+				this.wheelEvents && this.wheelEvents.remove();
 				delete this.pointerEvents;
 				delete this.touchEvents;
 				delete this.mouseEvents;
+				delete this.wheelEvents;
 			}
 
 			var element = this.get('element');
 			if (element == document) throw 'PointerEvents do not fire pointerleave on document in IE / Edge';
 			if (!element) return;
-
-			this.$element = $(element);
-			this.$element.on('mousewheel', this.trigger.bind(this, this.EVENT.WHEEL));
 
 			if (PointerEvents.isSupported) {
 				this.pointerEvents = new PointerEvents(element);
@@ -78,6 +75,9 @@ define([
 				this.listenToTouchEvents();
 				this.listenToMouseEvents();
 			}
+
+			this.wheelEvents = new WheelEvents(element);
+			this.listenTo(this.wheelEvents, this.wheelEvents.EVENT.WHEEL, this.trigger.bind(this, this.EVENT.WHEEL));
 		},
 
 		listenToPointerEvents: function() {
