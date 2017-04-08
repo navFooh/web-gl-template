@@ -22,10 +22,6 @@ define([
 		onResize: function() {
 			this.camera.aspect = DisplayModel.get('aspect');
 			this.camera.updateProjectionMatrix();
-		},
-
-		getCamera: function() {
-			return this.camera;
 		}
 	});
 });

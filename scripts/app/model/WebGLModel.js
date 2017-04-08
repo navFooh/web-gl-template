@@ -9,18 +9,17 @@ define([
 
 			defaults: {
 				scene: null,
-				camera: null,
-				renderer: null
+				camera: null
 			},
 
 			initialize: function() {
-				_.bindAll(this, 'update');
+				this.loop = this.loop.bind(this);
 			},
 
 			start: function() {
 				if (requestId) return;
 				clock.start();
-				this.update();
+				this.loop();
 			},
 
 			stop: function() {
@@ -30,19 +29,12 @@ define([
 				clock.stop();
 			},
 
-			update: function() {
-				requestId = requestAnimationFrame(this.update);
+			loop: function() {
+				requestId = requestAnimationFrame(this.loop);
 				var delta = clock.getDelta(),
 					elapsed = clock.elapsedTime;
 				this.trigger('update', delta, elapsed);
-				this.render();
-			},
-
-			render: function() {
-				var scene = this.get('scene').getScene(),
-					camera = this.get('camera').getCamera(),
-					renderer = this.get('renderer').getRenderer();
-				renderer.render(scene, camera);
+				this.trigger('render');
 			}
 		});
 

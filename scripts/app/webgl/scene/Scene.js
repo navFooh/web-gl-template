@@ -15,10 +15,6 @@ define([
 			new Ambient({ parent: this.scene });
 			new Directional({ parent: this.scene });
 			new Thing({ parent: this.scene });
-		},
-
-		getScene: function() {
-			return this.scene;
 		}
 	});
 });
