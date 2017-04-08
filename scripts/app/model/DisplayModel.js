@@ -6,12 +6,13 @@ define(['backbone'], function (Backbone) {
 			width: 0,
 			height: 0,
 			aspect: 1,
-			fontSize: 16
+			fontSize: 16,
+			lineHeight: 24
 		},
 
 		initialize: function () {
 			this.onResize();
-			this.setFontSize();
+			this.setStyles();
 
 			window.addEventListener('resize', this.onResize.bind(this));
 
@@ -19,10 +20,14 @@ define(['backbone'], function (Backbone) {
 			this.on('resize', _.debounce(_.partial(this.trigger, 'resizeEnd'), 250));
 		},
 
-		setFontSize: function() {
+		setStyles: function() {
 			var style = window.getComputedStyle(document.body, null),
-				fontSize = style.getPropertyValue('font-size');
-			this.set({ fontSize: parseFloat(fontSize) || 16 });
+				fontSize = style.getPropertyValue('font-size'),
+				lineHeight = style.getPropertyValue('line-height');
+			this.set({
+				fontSize: parseFloat(fontSize) || 16,
+				lineHeight: parseFloat(lineHeight) || 24
+			});
 		},
 
 		onResize: function () {
