@@ -1,11 +1,12 @@
 define([
 	'backbone',
+	'underscore',
 	'model/DisplayModel',
 	'util/events/PointerEvents',
 	'util/events/MouseEvents',
 	'util/events/TouchEvents',
 	'util/events/WheelEvents'
-], function (Backbone, DisplayModel, PointerEvents, MouseEvents, TouchEvents, WheelEvents) {
+], function (Backbone, _, DisplayModel, PointerEvents, MouseEvents, TouchEvents, WheelEvents) {
 
 	var PointerModel = Backbone.Model.extend({
 

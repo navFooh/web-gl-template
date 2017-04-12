@@ -1,7 +1,7 @@
 define([
-	'backbone-Util',
-	'underscore'
-], function (Util, _) {
+	'underscore',
+	'backbone-Util'
+], function (_, Util) {
 
 	var BIT_TO_BUTTON = [0,2,1,3,4,5];
 
