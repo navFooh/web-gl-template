@@ -1,7 +1,7 @@
 define([
-	'underscore',
-	'three'
-], function (_, THREE) {
+	'three',
+	'underscore'
+], function (THREE, _) {
 
 	var Orbit = function (object, target) {
 		this.object = object;
