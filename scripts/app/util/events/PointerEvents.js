@@ -41,7 +41,7 @@ define([
 			this.element.addEventListener(this.MS ? 'MSPointerCancel' : 'pointercancel', this.unsetPointer);
 		},
 
-		remove: function() {
+		remove: function () {
 			this.element.removeEventListener(this.MS ? 'MSPointerUp' : 'pointerup', this.setPointer);
 			this.element.removeEventListener(this.MS ? 'MSPointerDown' : 'pointerdown', this.setPointer);
 			this.element.removeEventListener(this.MS ? 'MSPointerMove' : 'pointermove', this.setPointer);
@@ -50,7 +50,7 @@ define([
 			Util.prototype.remove.apply(this);
 		},
 
-		setPointer: function(event) {
+		setPointer: function (event) {
 			// check if the pointer is new, lookup previous buttons
 			var pointers = this.pointers[event.pointerType],
 				index = this.getIndex(pointers, event.pointerId),
@@ -69,7 +69,7 @@ define([
 				: this.compareButtons(pointer, previousButtons);
 		},
 
-		unsetPointer: function(event) {
+		unsetPointer: function (event) {
 			// find pointer in array of stored pointers
 			var pointers = this.pointers[event.pointerType],
 				index = this.getIndex(pointers, event.pointerId);
@@ -83,13 +83,13 @@ define([
 			this.compareButtons(final, pointer.buttons);
 		},
 
-		moveHandler: function(event) {
+		moveHandler: function (event) {
 			// trigger MOVE when this is the active pointer type or none is
 			if (this.activeType == null || this.activeType == event.pointerType)
 				this.trigger(this.EVENT.MOVE, this.pointers[event.pointerType]);
 		},
 
-		compareButtons: function(pointer, previous) {
+		compareButtons: function (pointer, previous) {
 			// copy buttons so original doesn't alter
 			var buttons = pointer.buttons, bit = 0;
 			while (buttons || previous) {
@@ -106,7 +106,7 @@ define([
 			}
 		},
 
-		captureButton: function(pointer, button) {
+		captureButton: function (pointer, button) {
 			// make this the active pointer type if not set
 			if (this.activeType == null)
 				this.activeType = pointer.pointerType;
@@ -120,7 +120,7 @@ define([
 			this.trigger(this.EVENT.DOWN, pointer, first);
 		},
 
-		releaseButton: function(pointer, button) {
+		releaseButton: function (pointer, button) {
 			// do nothing if we're not the active pointer type
 			if (this.activeType != pointer.pointerType) return;
 			// decrement counter for released button and trigger UP
@@ -131,13 +131,13 @@ define([
 			if (inactive) this.activeType = null;
 		},
 
-		getIndex: function(pointers, id) {
-			return _.findIndex(pointers, function(pointer) {
+		getIndex: function (pointers, id) {
+			return _.findIndex(pointers, function (pointer) {
 				return pointer.pointerId == id;
 			});
 		},
 
-		copyPointer: function(pointer) {
+		copyPointer: function (pointer) {
 			return {
 				button: pointer.button,
 				buttons: pointer.buttons,

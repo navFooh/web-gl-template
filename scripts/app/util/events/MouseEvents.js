@@ -24,7 +24,7 @@ define(['backbone-Util'], function (Util) {
 			this.element.addEventListener('mouseleave', this.onUp);
 		},
 
-		remove: function() {
+		remove: function () {
 			this.element.removeEventListener('mousedown', this.onDown);
 			this.element.removeEventListener('mousemove', this.onMove);
 			this.element.removeEventListener('mouseup', this.onUp);
@@ -32,16 +32,16 @@ define(['backbone-Util'], function (Util) {
 			Util.prototype.remove.apply(this);
 		},
 
-		onDown: function(event) {
+		onDown: function (event) {
 			!this.buttons[event.button] && this.trigger(this.EVENT.DOWN, event);
 			this.buttons[event.button] = true;
 		},
 
-		onMove: function(event) {
+		onMove: function (event) {
 			this.trigger(this.EVENT.MOVE, event);
 		},
 
-		onUp: function(event) {
+		onUp: function (event) {
 			this.buttons[event.button] && this.trigger(this.EVENT.UP, event);
 			this.buttons[event.button] = false;
 		}

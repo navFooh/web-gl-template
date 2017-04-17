@@ -23,7 +23,7 @@ define([
 			this.on('resize', _.debounce(_.partial(this.trigger, 'resizeEnd'), 250));
 		},
 
-		setStyles: function() {
+		setStyles: function () {
 			var style = window.getComputedStyle(document.body, null),
 				fontSize = style.getPropertyValue('font-size'),
 				lineHeight = style.getPropertyValue('line-height');

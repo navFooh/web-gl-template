@@ -3,7 +3,7 @@ define([
 	'three',
 	'model/DisplayModel',
 	'util/OrbitControl'
-], function(WebGL, THREE, DisplayModel, OrbitControl) {
+], function (WebGL, THREE, DisplayModel, OrbitControl) {
 
 	return WebGL.extend({
 
@@ -19,7 +19,7 @@ define([
 			this.listenTo(DisplayModel, 'resize', this.onResize);
 		},
 
-		onResize: function() {
+		onResize: function () {
 			this.camera.aspect = DisplayModel.get('aspect');
 			this.camera.updateProjectionMatrix();
 		}

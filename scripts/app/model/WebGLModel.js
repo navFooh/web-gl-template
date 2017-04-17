@@ -12,24 +12,24 @@ define([
 				camera: null
 			},
 
-			initialize: function() {
+			initialize: function () {
 				this.loop = this.loop.bind(this);
 			},
 
-			start: function() {
+			start: function () {
 				if (requestId) return;
 				clock.start();
 				this.loop();
 			},
 
-			stop: function() {
+			stop: function () {
 				if (!requestId) return;
 				cancelAnimationFrame(requestId);
 				requestId = null;
 				clock.stop();
 			},
 
-			loop: function() {
+			loop: function () {
 				requestId = requestAnimationFrame(this.loop);
 				// trigger update event
 				var delta = clock.getDelta(),

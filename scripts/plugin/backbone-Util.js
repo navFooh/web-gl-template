@@ -3,16 +3,16 @@ define([
 	'underscore'
 ], function (Backbone, _) {
 
-	var Util = Backbone.Util = function() {
+	var Util = Backbone.Util = function () {
 		this.cid = _.uniqueId('util');
 		this.initialize.apply(this, arguments);
 	};
 
 	_.extend(Util.prototype, Backbone.Events, {
 
-		initialize: function() {},
+		initialize: function () {},
 
-		remove: function() {
+		remove: function () {
 			this.stopListening();
 			return this;
 		}

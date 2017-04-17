@@ -33,7 +33,7 @@ require([
 	'model/AppModel',
 	'app/AppFallback',
 	'app/AppMain'
-], function(AppModel, AppFallback, AppMain) {
+], function (AppModel, AppFallback, AppMain) {
 
 	AppModel.isSupported()
 		? new AppMain()

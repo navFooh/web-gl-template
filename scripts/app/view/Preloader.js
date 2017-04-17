@@ -3,21 +3,21 @@ define([
 	'TweenMax',
 	'model/AppModel',
 	'templates/preloader'
-], function(Backbone, TweenMax, AppModel, template) {
+], function (Backbone, TweenMax, AppModel, template) {
 
 	return Backbone.View.extend({
 
-		render: function(parent) {
+		render: function (parent) {
 			this.setElement(template(AppModel.toJSON()));
 			parent.appendChild(this.el);
 			return this;
 		},
 
-		fadeOut: function(callback) {
+		fadeOut: function (callback) {
 			TweenMax.to(this.el, 1.2, {
 				autoAlpha: 0,
 				ease: Power2.easeInOut,
-				onComplete: function() {
+				onComplete: function () {
 					this.remove();
 					callback();
 				}.bind(this)

@@ -49,7 +49,7 @@ define([
 			this.on('change:element', this.onChangeElement);
 		},
 
-		onChangeElement: function() {
+		onChangeElement: function () {
 
 			if (this.previous('element')) {
 				this.stopListening();
@@ -81,14 +81,14 @@ define([
 			this.listenTo(this.wheelEvents, this.wheelEvents.EVENT.WHEEL, this.trigger.bind(this, this.EVENT.WHEEL));
 		},
 
-		listenToPointerEvents: function() {
+		listenToPointerEvents: function () {
 			this.listenTo(this.pointerEvents, this.pointerEvents.EVENT.CHANGE, this.onPointersChange);
 			this.listenTo(this.pointerEvents, this.pointerEvents.EVENT.MOVE, this.onPointersMove);
 			this.listenTo(this.pointerEvents, this.pointerEvents.EVENT.DOWN, this.onPointerDown);
 			this.listenTo(this.pointerEvents, this.pointerEvents.EVENT.UP, this.onPointerUp);
 		},
 
-		listenToTouchEvents: function() {
+		listenToTouchEvents: function () {
 			this.listenTo(this.touchEvents, this.touchEvents.EVENT.MOVE, this.onPointersMove);
 			this.listenTo(this.touchEvents, this.touchEvents.EVENT.DOWN, this.onPointersChange);
 			this.listenTo(this.touchEvents, this.touchEvents.EVENT.DOWN, this.onTouchDown);
@@ -96,7 +96,7 @@ define([
 			this.listenTo(this.touchEvents, this.touchEvents.EVENT.UP, this.onTouchUp);
 		},
 
-		listenToMouseEvents: function() {
+		listenToMouseEvents: function () {
 			this.listenTo(this.mouseEvents, this.mouseEvents.EVENT.MOVE, this.onPointerMove);
 			this.listenTo(this.mouseEvents, this.mouseEvents.EVENT.DOWN, this.onMouseDown);
 			this.listenTo(this.mouseEvents, this.mouseEvents.EVENT.UP, this.onMouseUp);
@@ -104,24 +104,24 @@ define([
 
 		// HANDLE POINTER UP AND DOWN
 
-		onPointerDown: function(pointer, first) {
+		onPointerDown: function (pointer, first) {
 			first && this.trigger(this.EVENT.DOWN, { button: pointer.button });
 		},
 
-		onPointerUp: function(pointer, last) {
+		onPointerUp: function (pointer, last) {
 			last && this.trigger(this.EVENT.UP, { button: pointer.button });
 		},
 
 		// HANDLE TOUCH UP AND DOWN
 
-		onTouchDown: function(touches, first) {
+		onTouchDown: function (touches, first) {
 			if (first) {
 				this.trigger(this.EVENT.DOWN, { button: 0 });
 				this.stopListening(this.mouseEvents);
 			}
 		},
 
-		onTouchUp: function(touches, last) {
+		onTouchUp: function (touches, last) {
 			if (last) {
 				this.trigger(this.EVENT.UP, { button: 0 });
 				this.listenToMouseEvents();
@@ -130,42 +130,42 @@ define([
 
 		// HANDLE MOUSE UP AND DOWN
 
-		onMouseDown: function(event) {
+		onMouseDown: function (event) {
 			this.trigger(this.EVENT.DOWN, { button: event.button });
 			this.stopListening(this.touchEvents);
 		},
 
-		onMouseUp: function(event) {
+		onMouseUp: function (event) {
 			this.trigger(this.EVENT.UP, { button: event.button });
 			event.buttons == 0 && this.listenToTouchEvents();
 		},
 
 		// HANDLE PINCH START, MOVE & END
 
-		setPinching: function(pointers) {
+		setPinching: function (pointers) {
 			var pinching = pointers && pointers.length == 2;
 			if (pinching && !this.pinching) this.onPinchStart(pointers);
 			if (!pinching && this.pinching) this.onPinchEnd();
 		},
 
-		onPinchStart: function(pointers) {
+		onPinchStart: function (pointers) {
 			this.pinching = true;
 			this.pinchStart = this.getPinchLength(pointers);
 			this.trigger(this.EVENT.PINCH_START);
 		},
 
-		onPinchMove: function(pointers) {
+		onPinchMove: function (pointers) {
 			if (!this.pinching || !pointers || pointers.length != 2) return;
 			var scale = this.getPinchLength(pointers) / this.pinchStart;
 			this.trigger(this.EVENT.PINCH_MOVE, { scale: scale });
 		},
 
-		onPinchEnd: function() {
+		onPinchEnd: function () {
 			this.pinching = false;
 			this.trigger(this.EVENT.PINCH_END);
 		},
 
-		getPinchLength: function(pointers) {
+		getPinchLength: function (pointers) {
 			var dx = pointers[0].clientX - pointers[1].clientX,
 				dy = pointers[0].clientY - pointers[1].clientY;
 			return Math.sqrt(dx * dx + dy * dy);
@@ -173,17 +173,17 @@ define([
 
 		// HANDLE MULTIPLE AND SINGLE POINTER MOVES
 
-		onPointersChange: function(pointers) {
+		onPointersChange: function (pointers) {
 			this.setPointer(this.getAverage(pointers));
 			this.setPinching(pointers);
 		},
 
-		onPointersMove: function(pointers) {
+		onPointersMove: function (pointers) {
 			this.onPointerMove(this.getAverage(pointers));
 			this.onPinchMove(pointers);
 		},
 
-		onPointerMove: function(event) {
+		onPointerMove: function (event) {
 			if (!event) return;
 			var pointerPrevX = this.get('pointerX'),
 				pointerPrevY = this.get('pointerY'),
@@ -198,7 +198,7 @@ define([
 			});
 		},
 
-		setPointer: function(event) {
+		setPointer: function (event) {
 			if (!event) return;
 			var width = DisplayModel.get('width'),
 				height = DisplayModel.get('height'),
@@ -211,9 +211,9 @@ define([
 			})
 		},
 
-		getAverage: function() {
-			var add = function(a, b) { return a + b };
-			return function(pointers) {
+		getAverage: function () {
+			var add = function (a, b) { return a + b };
+			return function (pointers) {
 				if (!pointers || !pointers.length) return;
 				return pointers.length == 1 ? pointers[0] : {
 					clientX: _.reduce(_.pluck(pointers, 'clientX'), add) / pointers.length,

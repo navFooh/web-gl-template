@@ -1,7 +1,7 @@
 define([
 	'backbone-WebGL',
 	'three'
-], function(WebGL, THREE) {
+], function (WebGL, THREE) {
 
 	return WebGL.extend({
 

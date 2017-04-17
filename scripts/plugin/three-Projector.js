@@ -1,4 +1,4 @@
-define(['three'], function(THREE) {
+define(['three'], function (THREE) {
 
 	/**
 	 * @author mrdoob / http://mrdoob.com/

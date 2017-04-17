@@ -22,21 +22,21 @@ define([
 			this.onWheel = this.onWheel.bind(this);
 			this.nullLowestDelta = this.nullLowestDelta.bind(this);
 
-			_.each(this.events, function(event) {
+			_.each(this.events, function (event) {
 				this.element.addEventListener(event, this.onWheel);
 			}, this);
 		},
 
-		remove: function() {
+		remove: function () {
 
-			_.each(this.events, function(event) {
+			_.each(this.events, function (event) {
 				this.element.removeEventListener(event, this.onWheel);
 			}, this);
 
 			Util.prototype.remove.apply(this);
 		},
 
-		onWheel: function(event) {
+		onWheel: function (event) {
 			var deltaX = 0,
 				deltaY = 0;
 
@@ -114,7 +114,7 @@ define([
 			}));
 		},
 
-		nullLowestDelta: function() {
+		nullLowestDelta: function () {
 			this.lowestDelta = null;
 		}
 	});

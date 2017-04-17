@@ -3,7 +3,7 @@ define([
 	'underscore'
 ], function (Backbone, _) {
 
-	var WebGL = Backbone.WebGL = function(options) {
+	var WebGL = Backbone.WebGL = function (options) {
 		this.cid = _.uniqueId('webgl');
 		options || (options = {});
 		_.extend(this, _.pick(options, ['parent', 'model', 'collection']));
@@ -12,13 +12,13 @@ define([
 
 	_.extend(WebGL.prototype, Backbone.Events, {
 
-		initialize: function() {},
+		initialize: function () {},
 
-		render: function() {
+		render: function () {
 			return this;
 		},
 
-		remove: function() {
+		remove: function () {
 			this.stopListening();
 			return this;
 		}

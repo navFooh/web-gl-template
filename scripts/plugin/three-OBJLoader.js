@@ -1,4 +1,4 @@
-define(['three'], function(THREE) {
+define(['three'], function (THREE) {
 
 	/**
 	 * @author mrdoob / http://mrdoob.com/
@@ -111,7 +111,7 @@ define(['three'], function(THREE) {
 						materials : [],
 						smooth : true,
 
-						startMaterial : function( name, libraries ) {
+						startMaterial : function ( name, libraries ) {
 
 							var previous = this._finalize( false );
 
@@ -133,7 +133,7 @@ define(['three'], function(THREE) {
 								groupCount : -1,
 								inherited  : false,
 
-								clone : function( index ) {
+								clone : function ( index ) {
 									var cloned = {
 										index      : ( typeof index === 'number' ? index : this.index ),
 										name       : this.name,
@@ -155,7 +155,7 @@ define(['three'], function(THREE) {
 
 						},
 
-						currentMaterial : function() {
+						currentMaterial : function () {
 
 							if ( this.materials.length > 0 ) {
 								return this.materials[ this.materials.length - 1 ];
@@ -165,7 +165,7 @@ define(['three'], function(THREE) {
 
 						},
 
-						_finalize : function( end ) {
+						_finalize : function ( end ) {
 
 							var lastMultiMaterial = this.currentMaterial();
 							if ( lastMultiMaterial && lastMultiMaterial.groupEnd === -1 ) {
@@ -220,7 +220,7 @@ define(['three'], function(THREE) {
 
 				},
 
-				finalize : function() {
+				finalize : function () {
 
 					if ( this.object && typeof this.object._finalize === 'function' ) {
 

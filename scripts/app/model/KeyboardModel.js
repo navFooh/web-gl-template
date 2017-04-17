@@ -24,7 +24,7 @@ define(['backbone'], function (Backbone) {
 			document.addEventListener('keyup', this.toggle.bind(this, false), true);
 		},
 
-		onKeyDown: function(event) {
+		onKeyDown: function (event) {
 
 			this.toggle(true, event);
 
@@ -39,7 +39,7 @@ define(['backbone'], function (Backbone) {
 			}
 		},
 
-		toggle: function(on, event) {
+		toggle: function (on, event) {
 
 			switch(event.which) {
 				case 16: this.set({ shift: on }); break;

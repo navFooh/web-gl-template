@@ -1,9 +1,9 @@
 define([
 	'backbone',
 	'underscore'
-], function(Backbone, _) {
+], function (Backbone, _) {
 
-	var App = function(options) {
+	var App = function (options) {
 		this.createViews.apply(this, arguments);
 		this.createWebGL.apply(this, arguments);
 		this.createModels.apply(this, arguments);
@@ -13,12 +13,12 @@ define([
 	};
 
 	_.extend(App.prototype, Backbone.Events, {
-		createViews: function() {},
-		createWebGL: function() {},
-		createModels: function() {},
-		createRouters: function() {},
-		addListeners: function() {},
-		start: function() {}
+		createViews: function () {},
+		createWebGL: function () {},
+		createModels: function () {},
+		createRouters: function () {},
+		addListeners: function () {},
+		start: function () {}
 	});
 
 	App.extend = Backbone.Model.extend;

@@ -13,10 +13,10 @@ define([
 
 	_.extend(Orbit.prototype, {
 
-		setAxis: function() {
+		setAxis: function () {
 			var up = new THREE.Vector3(0, 1, 0);
 
-			return function(axis) {
+			return function (axis) {
 				if (axis instanceof THREE.Vector3 && !axis.equals(up)) {
 					axis = axis.clone().normalize();
 					this.quat = new THREE.Quaternion().setFromUnitVectors(axis, up);
@@ -28,10 +28,10 @@ define([
 			}
 		}(),
 
-		setSpherical: function() {
+		setSpherical: function () {
 			var offset = new THREE.Vector3();
 
-			return function() {
+			return function () {
 				offset.copy(this.object.position).sub(this.target);
 				this.spherical.setFromVector3(offset);
 			};
@@ -40,7 +40,7 @@ define([
 		update: function () {
 			var offset = new THREE.Vector3();
 
-			return function() {
+			return function () {
 				offset.setFromSpherical(this.spherical);
 				this.rotated && offset.applyQuaternion(this.quatInverse);
 				this.object.position.copy(this.target).add(offset);

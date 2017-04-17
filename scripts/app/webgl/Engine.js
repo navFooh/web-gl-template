@@ -4,11 +4,11 @@ define([
 	'webgl/core/Camera',
 	'webgl/core/Renderer',
 	'webgl/scene/Scene'
-], function(WebGL, WebGLModel, Camera, Renderer, Scene) {
+], function (WebGL, WebGLModel, Camera, Renderer, Scene) {
 
 	return WebGL.extend({
 
-		initialize: function(options) {
+		initialize: function (options) {
 
 			this.renderer = new Renderer({ canvas: options.canvas });
 

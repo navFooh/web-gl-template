@@ -3,7 +3,7 @@ define([
 	'three',
 	'model/DisplayModel',
 	'model/WebGLModel'
-], function(WebGL, THREE, DisplayModel, WebGLModel) {
+], function (WebGL, THREE, DisplayModel, WebGLModel) {
 
 	return WebGL.extend({
 
@@ -25,13 +25,13 @@ define([
 			this.listenTo(WebGLModel, 'render', this.render);
 		},
 
-		onResize: function() {
+		onResize: function () {
 			var width = DisplayModel.get('width'),
 				height = DisplayModel.get('height');
 			this.renderer.setSize(width, height);
 		},
 
-		render: function(scene, camera) {
+		render: function (scene, camera) {
 			this.renderer.render(scene, camera);
 		}
 	});

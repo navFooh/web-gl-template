@@ -9,24 +9,24 @@ define([
 
 	return AppBase.extend({
 
-		createViews: function() {
+		createViews: function () {
 			this.canvas = new Canvas().render(document.body);
 			this.preloader = new Preloader().render(document.body);
 		},
 
-		createWebGL: function() {
+		createWebGL: function () {
 			new Engine({ canvas: this.canvas.el });
 		},
 
-		start: function() {
+		start: function () {
 			AssetModel.get('loading')
 				? this.listenToOnce(AssetModel, 'change:loading', this.run)
 				: this.run();
 		},
 
-		run: function() {
+		run: function () {
 			WebGLModel.start();
-			this.preloader.fadeOut(function() {
+			this.preloader.fadeOut(function () {
 				delete this.preloader;
 			}.bind(this));
 		}

@@ -22,7 +22,7 @@ define(['backbone-Util'], function (Util) {
 			this.element.addEventListener('touchcancel', this.onEnd);
 		},
 
-		remove: function() {
+		remove: function () {
 			this.element.removeEventListener('touchstart', this.onStart);
 			this.element.removeEventListener('touchmove', this.onMove);
 			this.element.removeEventListener('touchend', this.onEnd);
@@ -30,16 +30,16 @@ define(['backbone-Util'], function (Util) {
 			Util.prototype.remove.apply(this);
 		},
 
-		onStart: function(event) {
+		onStart: function (event) {
 			this.trigger(this.EVENT.DOWN, event.touches, !this.active);
 			this.active = true;
 		},
 
-		onMove: function(event) {
+		onMove: function (event) {
 			this.trigger(this.EVENT.MOVE, event.touches);
 		},
 
-		onEnd: function(event) {
+		onEnd: function (event) {
 			if (!this.active) return;
 			var last = event.touches.length == 0;
 			if (last) this.active = false;

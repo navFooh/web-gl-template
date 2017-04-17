@@ -4,7 +4,7 @@ define([
 	'webgl/light/Ambient',
 	'webgl/light/Directional',
 	'webgl/object/Thing'
-], function(WebGL, THREE, Ambient, Directional, Thing) {
+], function (WebGL, THREE, Ambient, Directional, Thing) {
 
 	return WebGL.extend({
 

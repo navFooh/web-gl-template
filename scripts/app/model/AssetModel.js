@@ -4,28 +4,28 @@ define([
 	'three-OBJLoader'
 ], function (Backbone, THREE) {
 
-	var onLoad = function() {
+	var onLoad = function () {
 			this.apply(this, arguments);
 			decrease();
 		},
 
-		onProgress = function(xhr) {
+		onProgress = function (xhr) {
 			// console.log(xhr.loaded, xhr.total)
 		},
 
-		onError = function(xhr) {
+		onError = function (xhr) {
 			console.error(xhr);
 			decrease();
 		},
 
-		increase = function() {
+		increase = function () {
 			assetModel.set({
 				loading: true,
 				total: assetModel.get('total') + 1
 			});
 		},
 
-		decrease = function() {
+		decrease = function () {
 			var total = assetModel.get('total'),
 				loaded = assetModel.get('loaded') + 1,
 				loading = loaded < total;
@@ -53,7 +53,7 @@ define([
 				total: 0
 			},
 
-			load: function(loader, url, callback) {
+			load: function (loader, url, callback) {
 				if (!loader.instance)
 					loader.instance = new loader.CLASS();
 				loader.instance.load(url, onLoad.bind(callback), onProgress, onError);

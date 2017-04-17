@@ -11,7 +11,7 @@ define([
 			dev: document.body.hasAttribute('data-dev')
 		},
 
-		isSupported: function() {
+		isSupported: function () {
 			return Detector.webgl;
 		}
 	});
