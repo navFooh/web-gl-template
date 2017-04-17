@@ -3,11 +3,11 @@ define(['underscore'], function(_) {
 	return {
 
 		getCssMatrix: function(n) {
-			return 'matrix(' + n.join() + ")";
+			return 'matrix(' + n.join() + ')';
 		},
 
 		getCssMatrix3d: function(n) {
-			return 'matrix3d(' + n.join() + ")";
+			return 'matrix3d(' + n.join() + ')';
 		},
 
 		getCssTransformObj: function(transform) {
