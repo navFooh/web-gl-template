@@ -1,8 +1,8 @@
 define([
 	'backbone-WebGL',
-	'model/AssetModel',
-	'three'
-], function(WebGL, AssetModel, THREE) {
+	'three',
+	'model/AssetModel'
+], function(WebGL, THREE, AssetModel) {
 
 	return WebGL.extend({
 

@@ -1,8 +1,8 @@
 define([
-	'underscore',
 	'backbone-Util',
+	'underscore',
 	'model/DisplayModel'
-], function (_, Util, DisplayModel) {
+], function (Util, _, DisplayModel) {
 
 	return Util.extend({
 

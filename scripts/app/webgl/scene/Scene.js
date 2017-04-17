@@ -1,10 +1,10 @@
 define([
 	'backbone-WebGL',
+	'three',
 	'webgl/light/Ambient',
 	'webgl/light/Directional',
-	'webgl/object/Thing',
-	'three'
-], function(WebGL, Ambient, Directional, Thing, THREE) {
+	'webgl/object/Thing'
+], function(WebGL, THREE, Ambient, Directional, Thing) {
 
 	return WebGL.extend({
 
