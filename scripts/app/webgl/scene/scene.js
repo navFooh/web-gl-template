@@ -3,8 +3,8 @@ define([
 	'three',
 	'webgl/light/Ambient',
 	'webgl/light/Directional',
-	'webgl/object/Thing'
-], function (WebGL, THREE, Ambient, Directional, Thing) {
+	'webgl/object/cube'
+], function (WebGL, THREE, Ambient, Directional, Cube) {
 
 	return WebGL.extend({
 
