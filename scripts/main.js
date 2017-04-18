@@ -7,7 +7,6 @@ require.config({
 		'json':                 'vendor/requirejs-plugins/src/json',
 		// vendor
 		'jquery':               'vendor/jquery/dist/jquery',
-		'jquery-mousewheel':    'vendor/jquery-mousewheel/jquery.mousewheel',
 		'underscore':           'vendor/underscore/underscore',
 		'backbone':             'vendor/backbone/backbone',
 		'handlebars':           'vendor/handlebars/handlebars.runtime',
@@ -17,10 +16,10 @@ require.config({
 		'TimelineMax':          'vendor/greensock/src/uncompressed/TimelineMax',
 		'three':                'vendor/threejs/build/three',
 		// plugins
-		'backbone-Util':        'plugin/backbone-Util',
-		'backbone-WebGL':       'plugin/backbone-WebGL',
-		'three-OBJLoader':      'plugin/three-OBJLoader',
-		'three-Projector':      'plugin/three-Projector',
+		'backbone-util':        'plugin/backbone-util',
+		'backbone-webgl':       'plugin/backbone-webgl',
+		'three-obj-loader':     'plugin/three-obj-loader',
+		'three-projector':      'plugin/three-projector',
 		// directories
 		'model':                'app/model',
 		'util':                 'app/util',

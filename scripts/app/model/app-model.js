@@ -1,6 +1,6 @@
 define([
 	'backbone',
-	'util/Detector',
+	'util/detector',
 	'json!../../../metadata.json'
 ], function (Backbone, Detector, metadata) {
 

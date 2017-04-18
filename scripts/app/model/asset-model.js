@@ -1,7 +1,7 @@
 define([
 	'backbone',
 	'three',
-	'three-OBJLoader'
+	'three-obj-loader'
 ], function (Backbone, THREE) {
 
 	var onLoad = function () {
