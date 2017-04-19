@@ -1,7 +1,7 @@
 define([
-	'backbone-Util',
+	'backbone-util',
 	'underscore',
-	'model/DisplayModel'
+	'model/display-model'
 ], function (Util, _, DisplayModel) {
 
 	return Util.extend({

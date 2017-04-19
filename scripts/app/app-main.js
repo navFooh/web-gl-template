@@ -1,10 +1,10 @@
 define([
-	'app/AppBase',
-	'model/AssetModel',
-	'model/WebGLModel',
-	'view/Canvas',
-	'view/Preloader',
-	'webgl/Engine'
+	'app/app-base',
+	'model/asset-model',
+	'model/webgl-model',
+	'view/canvas',
+	'view/preloader',
+	'webgl/engine'
 ], function (AppBase, AssetModel, WebGLModel, Canvas, Preloader, Engine) {
 
 	return AppBase.extend({

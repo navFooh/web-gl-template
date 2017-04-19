@@ -1,5 +1,5 @@
 define([
-	'backbone-Util',
+	'backbone-util',
 	'underscore'
 ], function (Util, _) {
 

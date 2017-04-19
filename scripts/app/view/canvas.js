@@ -1,6 +1,6 @@
 define([
 	'backbone',
-	'model/PointerModel'
+	'model/pointer-model'
 ], function (Backbone, PointerModel) {
 
 	return Backbone.View.extend({

@@ -1,8 +1,8 @@
 define([
-	'backbone-WebGL',
+	'backbone-webgl',
 	'three',
-	'model/DisplayModel',
-	'util/OrbitControl'
+	'model/display-model',
+	'util/orbit-control'
 ], function (WebGL, THREE, DisplayModel, OrbitControl) {
 
 	return WebGL.extend({

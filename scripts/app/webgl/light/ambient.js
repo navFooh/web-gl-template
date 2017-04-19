@@ -1,5 +1,5 @@
 define([
-	'backbone-WebGL',
+	'backbone-webgl',
 	'three'
 ], function (WebGL, THREE) {
 

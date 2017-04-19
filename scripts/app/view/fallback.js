@@ -1,6 +1,6 @@
 define([
 	'backbone',
-	'model/AppModel',
+	'model/app-model',
 	'templates/fallback'
 ], function (Backbone, AppModel, template) {
 

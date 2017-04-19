@@ -29,9 +29,9 @@ require.config({
 });
 
 require([
-	'model/AppModel',
-	'app/AppFallback',
-	'app/AppMain'
+	'model/app-model',
+	'app/app-fallback',
+	'app/app-main'
 ], function (AppModel, AppFallback, AppMain) {
 
 	AppModel.isSupported()

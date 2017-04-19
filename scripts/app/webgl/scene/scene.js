@@ -1,8 +1,8 @@
 define([
-	'backbone-WebGL',
+	'backbone-webgl',
 	'three',
-	'webgl/light/Ambient',
-	'webgl/light/Directional',
+	'webgl/light/ambient',
+	'webgl/light/directional',
 	'webgl/object/cube'
 ], function (WebGL, THREE, Ambient, Directional, Cube) {
 
@@ -14,7 +14,7 @@ define([
 
 			new Ambient({ parent: this.scene });
 			new Directional({ parent: this.scene });
-			new Thing({ parent: this.scene });
+			new Cube({ parent: this.scene });
 		}
 	});
 });

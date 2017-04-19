@@ -1,4 +1,4 @@
-define(['backbone-Util'], function (Util) {
+define(['backbone-util'], function (Util) {
 
 	return Util.extend({
 

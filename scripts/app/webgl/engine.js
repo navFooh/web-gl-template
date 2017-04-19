@@ -1,9 +1,9 @@
 define([
-	'backbone-WebGL',
-	'model/WebGLModel',
-	'webgl/core/Camera',
-	'webgl/core/Renderer',
-	'webgl/scene/Scene'
+	'backbone-webgl',
+	'model/webgl-model',
+	'webgl/core/camera',
+	'webgl/core/renderer',
+	'webgl/scene/scene'
 ], function (WebGL, WebGLModel, Camera, Renderer, Scene) {
 
 	return WebGL.extend({

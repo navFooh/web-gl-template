@@ -1,8 +1,8 @@
 define([
-	'backbone-WebGL',
+	'backbone-webgl',
 	'three',
-	'model/DisplayModel',
-	'model/WebGLModel'
+	'model/display-model',
+	'model/webgl-model'
 ], function (WebGL, THREE, DisplayModel, WebGLModel) {
 
 	return WebGL.extend({

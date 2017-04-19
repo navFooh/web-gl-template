@@ -1,9 +1,9 @@
 define([
 	'backbone',
 	'underscore',
-	'model/DisplayModel',
-	'model/PointerModel',
-	'util/Orbit'
+	'model/display-model',
+	'model/pointer-model',
+	'util/orbit'
 ], function (Backbone, _, DisplayModel, PointerModel, Orbit) {
 
 	var OrbitControl = function (object, target, options) {

@@ -1,7 +1,7 @@
 define([
 	'backbone',
 	'TweenMax',
-	'model/AppModel',
+	'model/app-model',
 	'templates/preloader'
 ], function (Backbone, TweenMax, AppModel, template) {
 
