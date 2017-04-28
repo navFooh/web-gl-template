@@ -22,7 +22,7 @@ a {
 	}
 
 	&::after {
-		bottom: 2px;
+		top: calc(50% + 0.5rem);
 		transform: scaleX(1);
 		transition: transform 300ms $easeOutQuad 100ms;
 	}
