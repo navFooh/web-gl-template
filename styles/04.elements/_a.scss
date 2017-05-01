@@ -14,7 +14,7 @@ a {
 	}
 
 	&::before {
-		top: 50%;
+		top: calc(50% + 0.0625rem);
 		left: -0.25rem;
 		width: calc(100% + 0.5rem);
 		transform: scaleX(0);
@@ -22,7 +22,7 @@ a {
 	}
 
 	&::after {
-		top: calc(50% + 0.5rem);
+		top: calc(50% + 0.625rem);
 		left: 0;
 		width: 100%;
 		transform: scaleX(1);
