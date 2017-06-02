@@ -14,10 +14,6 @@ define([
 
 		initialize: function () {},
 
-		render: function () {
-			return this;
-		},
-
 		remove: function () {
 			this.stopListening();
 			return this;
