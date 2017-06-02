@@ -6,11 +6,12 @@ define([
 	var DisplayModel = Backbone.Model.extend({
 
 		defaults: {
-			width: 0,
-			height: 0,
-			aspect: 1,
-			fontSize: 16,
-			lineHeight: 24
+			width: null,
+			height: null,
+			aspect: null,
+			diagonal: null,
+			fontSize: null,
+			lineHeight: null
 		},
 
 		initialize: function () {
@@ -23,16 +24,6 @@ define([
 			this.on('resize', _.debounce(_.partial(this.trigger, 'resizeEnd'), 250));
 		},
 
-		setStyles: function () {
-			var style = window.getComputedStyle(document.body, null),
-				fontSize = style.getPropertyValue('font-size'),
-				lineHeight = style.getPropertyValue('line-height');
-			this.set({
-				fontSize: parseFloat(fontSize) || 16,
-				lineHeight: parseFloat(lineHeight) || 24
-			});
-		},
-
 		onResize: function () {
 			var width = window.innerWidth,
 				height = window.innerHeight;
@@ -42,6 +33,16 @@ define([
 				aspect: width / height,
 				diagonal: Math.sqrt(width * width + height * height)
 			}).trigger('resize');
+		},
+
+		setStyles: function () {
+			var style = window.getComputedStyle(document.body, null),
+				fontSize = style.getPropertyValue('font-size'),
+				lineHeight = style.getPropertyValue('line-height');
+			this.set({
+				fontSize: parseFloat(fontSize) || 16,
+				lineHeight: parseFloat(lineHeight) || 24
+			});
 		}
 	});
 
