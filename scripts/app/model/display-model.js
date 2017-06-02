@@ -20,8 +20,9 @@ define([
 
 			window.addEventListener('resize', this.onResize.bind(this));
 
-			this.on('resize', _.debounce(_.partial(this.trigger, 'resizeStart'), 250, true));
-			this.on('resize', _.debounce(_.partial(this.trigger, 'resizeEnd'), 250));
+			var debounce = 250;
+			this.on('resize', _.debounce(_.partial(this.trigger, 'resizeStart'), debounce, true));
+			this.on('resize', _.debounce(_.partial(this.trigger, 'resizeEnd'), debounce));
 		},
 
 		onResize: function () {
