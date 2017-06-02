@@ -14,18 +14,35 @@ require.config({
 		'TweenMax':             'vendor/greensock/src/uncompressed/TweenMax',
 		'TimelineLite':         'vendor/greensock/src/uncompressed/TimelineLite',
 		'TimelineMax':          'vendor/greensock/src/uncompressed/TimelineMax',
-		'three':                'vendor/threejs/build/three',
+		'three-lib':            'vendor/threejs/build/three',
+		'three-obj-loader':     'vendor/threejs/examples/js/loaders/OBJLoader',
+		'three-projector':      'vendor/threejs/examples/js/renderers/Projector',
 		// plugins
 		'backbone-util':        'plugin/backbone-util',
 		'backbone-webgl':       'plugin/backbone-webgl',
-		'three-obj-loader':     'plugin/three-obj-loader',
-		'three-projector':      'plugin/three-projector',
 		// directories
 		'model':                'app/model',
 		'util':                 'app/util',
 		'view':                 'app/view',
 		'webgl':                'app/webgl'
+	},
+
+	shim: {
+		'three-obj-loader': {
+			deps: ['three'],
+			exports: 'THREE.OBJLoader'
+		},
+		'three-projector': {
+			deps: ['three'],
+			exports: 'THREE.Projector'
+		}
 	}
+});
+
+// Force THREE on the global scope so we can shim the three.js examples code
+define('three', ['three-lib'], function (THREE) {
+	window.THREE = THREE;
+	return THREE;
 });
 
 require([
