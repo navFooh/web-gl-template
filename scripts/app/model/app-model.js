@@ -14,10 +14,6 @@ define([
 			testSuccess: null
 		},
 
-		initialize: function() {
-			this.runFeatureTests();
-		},
-
 		runFeatureTests: function() {
 			var results = {};
 
