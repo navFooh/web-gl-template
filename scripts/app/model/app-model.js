@@ -20,7 +20,7 @@ define([
 			_.each(this.get('testFeatures'), function(feature) {
 				// prevent attempts to test unknown features
 				if (!Detector.hasOwnProperty(feature))
-					throw 'cannot test unknown feature:' + feature;
+					throw 'cannot test unknown feature: ' + feature;
 				results[feature] = Detector[feature];
 			});
 
