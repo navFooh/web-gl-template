@@ -14,10 +14,10 @@ define([
 			testSuccess: null
 		},
 
-		runFeatureTests: function() {
+		runFeatureTests: function () {
 			var results = {};
 
-			_.each(this.get('testFeatures'), function(feature) {
+			_.each(this.get('testFeatures'), function (feature) {
 				// prevent attempts to test unknown features
 				if (!Detector.hasOwnProperty(feature))
 					throw 'cannot test unknown feature: ' + feature;
