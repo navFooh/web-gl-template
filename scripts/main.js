@@ -51,7 +51,8 @@ require([
 	'app/app-main'
 ], function (AppModel, AppFallback, AppMain) {
 
-	AppModel.isSupported()
+	AppModel.runFeatureTests();
+	AppModel.get('testSuccess')
 		? new AppMain()
 		: new AppFallback();
 });
