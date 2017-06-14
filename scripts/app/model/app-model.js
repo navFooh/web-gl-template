@@ -8,11 +8,30 @@ define([
 
 		defaults: {
 			metadata: metadata,
-			dev: document.body.hasAttribute('data-dev')
+			dev: document.body.hasAttribute('data-dev'),
+			testFeatures: ['webgl'],
+			testResults: null,
+			testSuccess: null
 		},
 
-		isSupported: function () {
-			return Detector.webgl;
+		initialize: function() {
+			this.runFeatureTests();
+		},
+
+		runFeatureTests: function() {
+			var results = {};
+
+			_.each(this.get('testFeatures'), function(feature) {
+				// prevent attempts to test unknown features
+				if (!Detector.hasOwnProperty(feature))
+					throw 'cannot test unknown feature:' + feature;
+				results[feature] = Detector[feature];
+			});
+
+			this.set({
+				testResults: results,
+				testSuccess: _.every(results)
+			});
 		}
 	});
 
