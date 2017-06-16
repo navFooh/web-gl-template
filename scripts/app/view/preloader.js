@@ -17,10 +17,7 @@ define([
 			TweenMax.to(this.el, 1.2, {
 				autoAlpha: 0,
 				ease: Power2.easeInOut,
-				onComplete: function () {
-					this.remove();
-					callback();
-				}.bind(this)
+				onComplete: callback
 			})
 		}
 	});
