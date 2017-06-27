@@ -4,7 +4,12 @@
 
 	<p>
 		Unfortunately, your browser does not<br />
-		support all of the required features
+		support all of the required features:<br />
+		<br />
+		{{#each testResults}}
+			{{@key}}: {{#if this}}yes{{else}}no{{/if}}
+			{{#unless @last}}<br />{{/unless}}
+		{{/each}}
 	</p>
 
 </div>
