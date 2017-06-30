@@ -6,7 +6,7 @@ define([
 
 	return Backbone.View.extend({
 
-		initialize: function() {
+		initialize: function () {
 			window.addEventListener('message', this.onMessage.bind(this));
 		},
 
@@ -16,7 +16,7 @@ define([
 			return this;
 		},
 
-		onMessage: function(event) {
+		onMessage: function (event) {
 			if (event.data == 'get-content') {
 				event.source.postMessage({
 					type: 'fallback',
