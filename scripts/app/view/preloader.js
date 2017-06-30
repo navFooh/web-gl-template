@@ -18,7 +18,7 @@ define([
 			return this;
 		},
 
-		remove: function() {
+		remove: function () {
 			this.dots.remove();
 			delete this.dots;
 			Backbone.View.prototype.remove.apply(this);
