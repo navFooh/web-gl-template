@@ -27,10 +27,10 @@ define([
 
 		onInfoOpen: function () {
 			var open = AppModel.get('infoOpen');
-			TweenMax.to(this.el, 0.6, {
+			TweenMax.to(this.el, 0.4, {
 				delay: open ? 0 : 0.6,
 				autoAlpha: open ? 0 : 1,
-				ease: Quint.easeOut
+				ease: Power4.easeOut
 			});
 		}
 	});
