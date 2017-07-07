@@ -3,10 +3,11 @@ define([
 	'model/asset-model',
 	'model/webgl-model',
 	'view/canvas',
+	'view/info',
 	'view/main-menu',
 	'view/preloader',
 	'webgl/engine'
-], function (AppBase, AssetModel, WebGLModel, Canvas, MainMenu, Preloader, Engine) {
+], function (AppBase, AssetModel, WebGLModel, Canvas, Info, MainMenu, Preloader, Engine) {
 
 	return AppBase.extend({
 
@@ -14,6 +15,7 @@ define([
 			this.canvas = new Canvas().render(document.body);
 			this.preloader = new Preloader().render(document.body);
 			this.mainMenu = new MainMenu().render(document.body);
+			this.info = new Info().render(document.body);
 		},
 
 		createWebGL: function () {

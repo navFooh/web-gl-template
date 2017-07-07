@@ -26,4 +26,9 @@
 			vertical-align: text-bottom !important;
 		}
 	}
+
+	.fade-out {
+		@include fill(fixed);
+		background: $black;
+	}
 }
