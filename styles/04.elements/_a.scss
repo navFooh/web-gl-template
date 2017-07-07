@@ -1,4 +1,4 @@
-a {
+a:not(.logo) {
 	display: inline-block;
 	position: relative;
 	color: $green;
