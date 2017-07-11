@@ -69,18 +69,9 @@ define([
 				onCompleteScope: this.logo
 			});
 
-			open && TweenMax.fromTo(this.slideUp, 0.9, { y: this.slideOffset }, {
-				y: 0,
-				ease: Power3.easeOut,
-				onStartScope: this,
-				onStart: function () {
-					this.textOuter.style.overflowY = 'visible';
-				},
-				onCompleteScope: this,
-				onComplete: function () {
-					this.textOuter.style.overflowY = 'auto';
-				}
-			});
+			open && TweenMax.fromTo(this.slideUp, 0.9,
+				{ y: this.slideOffset },
+				{ y: 0, ease: Power3.easeOut });
 		},
 
 		initPlusOne: function () {
