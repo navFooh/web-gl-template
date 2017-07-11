@@ -62,17 +62,16 @@ define([
 		onInfoOpen: function () {
 			var open = AppModel.get('infoOpen');
 
-			TweenMax.to(this.el, 0.8, {
-				delay: open ? 0.4 : 0,
+			TweenMax.to(this.el, 0.7, {
 				autoAlpha: open ? 1 : 0,
-				ease: open ? Power2.easeInOut : Power4.easeOut,
+				ease: open ? Power3.easeInOut : Power4.easeOut,
 				onComplete: open ? this.logo.show : this.logo.hide,
 				onCompleteScope: this.logo
 			});
 
-			open && TweenMax.fromTo(this.slideUp, 1.2, { y: this.slideOffset }, {
+			open && TweenMax.fromTo(this.slideUp, 0.9, { y: this.slideOffset }, {
 				y: 0,
-				ease: Power3.easeInOut,
+				ease: Power3.easeOut,
 				onStartScope: this,
 				onStart: function () {
 					this.textOuter.style.overflowY = 'visible';
