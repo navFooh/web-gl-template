@@ -49,6 +49,7 @@ define([
 
 		onClickLogo: function (url) {
 			this.stopListening();
+			this.undelegateEvents();
 			TweenMax.to(this.fadeOut, 0.3, {
 				autoAlpha: 1,
 				ease: Power2.easeOut,
