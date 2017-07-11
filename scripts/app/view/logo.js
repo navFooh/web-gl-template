@@ -54,9 +54,9 @@ define([
 
 			// SHOW TIMELINE
 			this.timeline.add('showing');
-			this.timeline.set(this.maskOut, { x: 0 });
-			this.timeline.to(this.maskIn, 0.5, { y: 0, ease: Power3.easeOut });
-			this.timeline.to(this.maskIn, 0.3, { y: 6, ease: Power3.easeIn });
+			this.timeline.set(this.maskOut, { x: 0 }, 0.5);
+			this.timeline.to(this.maskIn, 0.3, { y: 0, ease: Power3.easeOut });
+			this.timeline.to(this.maskIn, 0.15, { y: 6, ease: Power3.easeIn });
 			this.timeline.set(this.el, { skewX: '15deg' });
 			this.timeline.set(this.maskIn, { y: 7 });
 			this.timeline.set(this.maskOut1, { x: 3 });
