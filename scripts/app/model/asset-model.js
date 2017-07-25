@@ -1,7 +1,10 @@
 define([
 	'backbone',
-	'three',
-	'three-obj-loader'
+	'three'
+	// only require loaders that are used, to save file size
+	// 'three-gltf-loader'
+	// 'three-gltf2-loader'
+	// 'three-obj-loader'
 ], function (Backbone, THREE) {
 
 	var onLoad = function () {
@@ -42,7 +45,9 @@ define([
 			AUDIO: { instance: null, CLASS: THREE.AudioLoader },
 			IMAGE: { instance: null, CLASS: THREE.ImageLoader },
 			JSON: { instance: null, CLASS: THREE.JSONLoader },
-			OBJ: { instance: null, CLASS: THREE.OBJLoader },
+			// GLTF: { instance: null, CLASS: THREE.GLTFLoader },
+			// GLTF2: { instance: null, CLASS: THREE.GLTF2Loader },
+			// OBJ: { instance: null, CLASS: THREE.OBJLoader },
 			OBJECT: { instance: null, CLASS: THREE.ObjectLoader },
 			TEXTURE: { instance: null, CLASS: THREE.TextureLoader },
 			CUBE: { instance: null, CLASS: THREE.CubeTextureLoader },

@@ -15,6 +15,8 @@ require.config({
 		'TimelineLite':         'vendor/greensock/src/uncompressed/TimelineLite',
 		'TimelineMax':          'vendor/greensock/src/uncompressed/TimelineMax',
 		'three-lib':            'vendor/threejs/build/three',
+		'three-gltf-loader':    'vendor/threejs/examples/js/loaders/GLTFLoader',
+		'three-gltf2-loader':   'vendor/threejs/examples/js/loaders/GLTF2Loader',
 		'three-obj-loader':     'vendor/threejs/examples/js/loaders/OBJLoader',
 		'three-projector':      'vendor/threejs/examples/js/renderers/Projector',
 		'promise-polyfill':     'vendor/promise-polyfill/promise',
@@ -29,6 +31,14 @@ require.config({
 	},
 
 	shim: {
+		'three-gltf-loader': {
+			deps: ['three', 'promise-polyfill'],
+			exports: 'THREE.GLTFLoader'
+		},
+		'three-gltf2-loader': {
+			deps: ['three', 'promise-polyfill'],
+			exports: 'THREE.GLTF2Loader'
+		},
 		'three-obj-loader': {
 			deps: ['three'],
 			exports: 'THREE.OBJLoader'
