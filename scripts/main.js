@@ -17,6 +17,7 @@ require.config({
 		'three-lib':            'vendor/threejs/build/three',
 		'three-obj-loader':     'vendor/threejs/examples/js/loaders/OBJLoader',
 		'three-projector':      'vendor/threejs/examples/js/renderers/Projector',
+		'promise-polyfill':     'vendor/promise-polyfill/promise',
 		// plugins
 		'backbone-util':        'plugin/backbone-util',
 		'backbone-webgl':       'plugin/backbone-webgl',
