@@ -2,22 +2,22 @@
   "name": "web-gl-template",
   "version": "0.2.0",
   "dependencies": {
-    "browser-sync": "^2.18.8",
-    "del": "^2.2.2",
+    "browser-sync": "^2.18.13",
+    "del": "^3.0.0",
     "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^3.1.1",
+    "gulp-autoprefixer": "^4.0.0",
     "gulp-compile-handlebars": "^0.6.1",
     "gulp-define-module": "^0.1.5",
     "gulp-handlebars": "^4.0.0",
     "gulp-plumber": "^1.1.0",
     "gulp-rename": "^1.2.2",
-    "gulp-require-tasks": "^1.0.5",
+    "gulp-require-tasks": "^1.2.1",
     "gulp-requirejs-optimize": "^1.2.0",
     "gulp-sass": "^3.1.0",
     "gulp-watch": "^4.3.11",
-    "handlebars": "^4.0.6",
-    "run-sequence": "^1.2.2",
+    "handlebars": "^4.0.10",
+    "run-sequence": "^2.1.0",
     "underscore": "^1.8.3",
-    "yargs": "^7.0.2"
+    "yargs": "^8.0.2"
   }
 }
