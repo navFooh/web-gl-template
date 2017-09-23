@@ -22,7 +22,6 @@ define([
 
 			this.slideOffset = 64;
 			this.slideUp = this.el.getElementsByClassName('slide-up')[0];
-			this.textOuter = this.el.getElementsByClassName('text-outer')[0];
 
 			this.logo = new Logo().render(this.el);
 			this.listenTo(this.logo, 'click', this.onClickLogo);
