@@ -19,6 +19,7 @@ require.config({
 		'three-projector':      'vendor/threejs/examples/js/renderers/Projector',
 		'promise-polyfill':     'vendor/promise-polyfill/promise',
 		// plugins
+		'backbone-audio':       'plugin/backbone-audio',
 		'backbone-util':        'plugin/backbone-util',
 		'backbone-webgl':       'plugin/backbone-webgl',
 		// directories
