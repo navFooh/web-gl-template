@@ -17,7 +17,7 @@ require.config({
 		'three-lib':            'vendor/threejs/build/three',
 		'three-gltf-loader':    'vendor/threejs/examples/js/loaders/GLTFLoader',
 		'three-projector':      'vendor/threejs/examples/js/renderers/Projector',
-		'promise-polyfill':     'vendor/promise-polyfill/promise',
+		'promise-polyfill':     'vendor/promise-polyfill/dist/polyfill',
 		// plugins
 		'backbone-audio':       'plugin/backbone-audio',
 		'backbone-util':        'plugin/backbone-util',
