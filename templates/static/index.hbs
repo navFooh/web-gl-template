@@ -58,10 +58,15 @@
 
 	</head>
 
-	<body{{#if dev}} data-dev{{/if}}
+	<body
+		{{#if dev}}
+		data-dev
+		{{else}}
 		oncontextmenu="return false;"
+		{{/if}}
 		onpointermove="return false;"
-		ontouchmove="return false;">
+		ontouchmove="return false;"
+	>
 
 	</body>
 
