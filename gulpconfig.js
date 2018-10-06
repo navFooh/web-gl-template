@@ -23,16 +23,14 @@ module.exports = {
 	requirejs: {
 		src: __dirname + '/scripts/main.js',
 		dest: __dirname + '/public/js',
-		name: 'main.min.js',
 		options: {
-			name: 'main',
 			mainConfigFile: 'scripts/main.js',
+			out: 'main.min.js',
+			name: 'main',
 			include: ['require-lib'],
-			stubModules : ['json', 'text'],
-			preserveLicenseComments: false,
-			findNestedDependencies: false,
-			generateSourceMaps: false,
-			optimize: 'uglify2'
+			stubModules: ['json', 'text'],
+			optimize: 'uglify',
+			wrapShim: true
 		}
 	},
 
