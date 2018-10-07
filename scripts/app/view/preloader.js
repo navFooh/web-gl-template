@@ -29,7 +29,7 @@ define([
 				autoAlpha: 0,
 				ease: Power2.easeInOut,
 				onComplete: callback
-			})
+			});
 		}
 	});
 });
