@@ -34,7 +34,9 @@ define([
 			PINCH_START: 3,
 			PINCH_MOVE: 4,
 			PINCH_END: 5,
-			WHEEL: 6
+			WHEEL: 6,
+			CLICK: 7,
+			DOUBLE_CLICK: 8
 		},
 
 		defaults: {
@@ -46,12 +48,16 @@ define([
 		},
 
 		initialize: function () {
+			this.onClick = this.trigger.bind(this, this.EVENT.CLICK);
+			this.onDoubleClick = this.trigger.bind(this, this.EVENT.DOUBLE_CLICK);
 			this.on('change:element', this.onChangeElement);
 		},
 
 		onChangeElement: function () {
 
 			if (this.previous('element')) {
+				this.previous('element').removeEventListener('click', this.onClick);
+				this.previous('element').removeEventListener('dblclick', this.onDoubleClick);
 				this.stopListening();
 				this.pointerEvents && this.pointerEvents.remove();
 				this.touchEvents && this.touchEvents.remove();
@@ -66,6 +72,9 @@ define([
 			var element = this.get('element');
 			if (element == document) throw 'PointerEvents do not fire pointerleave on document in IE / Edge';
 			if (!element) return;
+
+			element.addEventListener('click', this.onClick);
+			element.addEventListener('dblclick', this.onDoubleClick);
 
 			if (PointerEvents.isSupported) {
 				this.pointerEvents = new PointerEvents(element);
