@@ -41,8 +41,7 @@ define([
 			this.drop1 = this.el.getElementsByClassName('drop1');
 			this.drop3 = this.el.getElementsByClassName('drop3');
 
-			TweenMax.set([this.maskOut, this.drop1, this.drop3], { force3D: true });
-			TweenMax.set(this.maskIn, { y: -7, force3D: true });
+			TweenMax.set(this.maskIn, { y: -7 });
 		},
 
 		createTimeline: function () {

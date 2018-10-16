@@ -32,7 +32,6 @@ define([
 
 			TweenMax.set(this.el, { autoAlpha: 0 });
 			TweenMax.set(this.fadeOut, { autoAlpha: 0 });
-			TweenMax.set(this.slideUp, { force3D: true });
 
 			this.initPlusOne();
 			this.initFacebook();
