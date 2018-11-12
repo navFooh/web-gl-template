@@ -3,7 +3,7 @@ define([
 	'underscore'
 ], function (Backbone, _) {
 
-	var App = function (options) {
+	var App = function () {
 		this.createViews.apply(this, arguments);
 		this.createWebGL.apply(this, arguments);
 		this.createAudio.apply(this, arguments);
