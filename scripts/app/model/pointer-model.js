@@ -114,25 +114,25 @@ define([
 		// HANDLE POINTER UP AND DOWN
 
 		onPointerDown: function (pointer, first) {
-			first && this.trigger(this.EVENT.DOWN, { button: pointer.button });
+			first && this.trigger(this.EVENT.DOWN, { button: pointer.button, target: pointer.target });
 		},
 
 		onPointerUp: function (pointer, last) {
-			last && this.trigger(this.EVENT.UP, { button: pointer.button });
+			last && this.trigger(this.EVENT.UP, { button: pointer.button, target: pointer.target });
 		},
 
 		// HANDLE TOUCH UP AND DOWN
 
-		onTouchDown: function (touches, first) {
+		onTouchDown: function (touches, changedTouches, first) {
 			if (first) {
-				this.trigger(this.EVENT.DOWN, { button: 0 });
+				this.trigger(this.EVENT.DOWN, { button: 0, target: changedTouches[0].target });
 				this.stopListening(this.mouseEvents);
 			}
 		},
 
-		onTouchUp: function (touches, last) {
+		onTouchUp: function (touches, changedTouches, last) {
 			if (last) {
-				this.trigger(this.EVENT.UP, { button: 0 });
+				this.trigger(this.EVENT.UP, { button: 0, target: changedTouches[0].target });
 				this.listenToMouseEvents();
 			}
 		},
@@ -140,12 +140,12 @@ define([
 		// HANDLE MOUSE UP AND DOWN
 
 		onMouseDown: function (event) {
-			this.trigger(this.EVENT.DOWN, { button: event.button });
+			this.trigger(this.EVENT.DOWN, { button: event.button, target: event.target });
 			this.stopListening(this.touchEvents);
 		},
 
 		onMouseUp: function (event) {
-			this.trigger(this.EVENT.UP, { button: event.button });
+			this.trigger(this.EVENT.UP, { button: event.button, target: event.target });
 			event.buttons == 0 && this.listenToTouchEvents();
 		},
 
