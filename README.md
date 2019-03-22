@@ -4,7 +4,6 @@ This is a variation on [Web Project Template](https://github.com/navFooh/web-pro
 ## Installation
 ```
 npm install
-bower install
 ```
 
 ## Gulp tasks
