@@ -44,15 +44,9 @@ sftp-config.json
 # Web Development Files
 # =========================
 
-# Sass
-.sass-cache
-compass_app_log.txt
-
 # Vendors
-npm-debug.log
+.sass-cache
 /node_modules
-/bower_components
-/scripts/vendor
 
 # Build results
 /public/css
