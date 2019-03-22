@@ -33,7 +33,6 @@ define([
 			TweenMax.set(this.el, { autoAlpha: 0 });
 			TweenMax.set(this.fadeOut, { autoAlpha: 0 });
 
-			this.initPlusOne();
 			this.initFacebook();
 			this.initTwitter();
 
@@ -70,15 +69,6 @@ define([
 			open && TweenMax.fromTo(this.slideUp, 0.9,
 				{ y: this.slideOffset },
 				{ y: 0, ease: Power3.easeOut });
-		},
-
-		initPlusOne: function () {
-			window.___gcfg = { lang: 'en-GB' };
-			(function () {
-				var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-				po.src = 'https://apis.google.com/js/platform.js';
-				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-			})();
 		},
 
 		initFacebook: function () {
