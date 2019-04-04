@@ -109,11 +109,12 @@ define([
 
 		hitTest: function (pointer) {
 			var element = this.get('element');
-			return !!element
-				&& pointer.clientX >= element.clientLeft
-				&& pointer.clientX <= element.clientLeft + element.clientWidth
-				&& pointer.clientY >= element.clientTop
-				&& pointer.clientY <= element.clientTop + element.clientHeight;
+			var rect = element && element.getBoundingClientRect();
+			return !!rect
+				&& pointer.clientX >= rect.left
+				&& pointer.clientX <= rect.left + rect.width
+				&& pointer.clientY >= rect.top
+				&& pointer.clientY <= rect.top + rect.height;
 		},
 
 		// HANDLE POINTER UP AND DOWN
