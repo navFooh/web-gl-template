@@ -136,17 +136,17 @@ define([
 
 		// HANDLE TOUCH UP AND DOWN
 
-		onTouchDown: function (touches, changedTouches, first) {
+		onTouchDown: function (event, first) {
 			if (first) {
-				this.trigger(this.EVENT.DOWN, { button: 0, target: changedTouches[0].target });
+				this.trigger(this.EVENT.DOWN, { button: 0, target: event.changedTouches[0].target });
 				this.stopListening(this.mouseEvents);
 				this.stopMouseEventsTimeout();
 			}
 		},
 
-		onTouchUp: function (touches, changedTouches, last) {
+		onTouchUp: function (event, last) {
 			if (last) {
-				this.trigger(this.EVENT.UP, { button: 0, target: changedTouches[0].target });
+				this.trigger(this.EVENT.UP, { button: 0, target: event.changedTouches[0].target });
 				this.startMouseEventsTimeout();
 			}
 		},
