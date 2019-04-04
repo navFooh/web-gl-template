@@ -47,8 +47,6 @@ define([
 		},
 
 		initialize: function () {
-			this.mouseEventsTimeoutId = null;
-			this.mouseEventsTimeoutFn = this.listenToMouseEvents.bind(this);
 			this.onClick = this.trigger.bind(this, this.EVENT.CLICK);
 			this.on('change:element', this.onChangeElement);
 		},
@@ -58,7 +56,6 @@ define([
 			if (this.previous('element')) {
 				this.previous('element').removeEventListener('click', this.onClick);
 				this.stopListening();
-				this.stopMouseEventsTimeout();
 				this.pointerEvents && this.pointerEvents.remove();
 				this.touchEvents && this.touchEvents.remove();
 				this.mouseEvents && this.mouseEvents.remove();
@@ -110,14 +107,13 @@ define([
 			this.listenTo(this.mouseEvents, this.mouseEvents.EVENT.UP, this.onMouseUp);
 		},
 
-		startMouseEventsTimeout: function () {
-			this.mouseEventsTimeoutId = setTimeout(this.mouseEventsTimeoutFn, 500);
-		},
-
-		stopMouseEventsTimeout: function () {
-			if (!this.mouseEventsTimeoutId) return;
-			clearTimeout(this.mouseEventsTimeoutId);
-			this.mouseEventsTimeoutId = null;
+		hitTest: function (pointer) {
+			var element = this.get('element');
+			return !!element
+				&& pointer.clientX >= element.clientLeft
+				&& pointer.clientX <= element.clientLeft + element.clientWidth
+				&& pointer.clientY >= element.clientTop
+				&& pointer.clientY <= element.clientTop + element.clientHeight;
 		},
 
 		// HANDLE POINTER UP AND DOWN
@@ -133,17 +129,17 @@ define([
 		// HANDLE TOUCH UP AND DOWN
 
 		onTouchDown: function (event, first) {
-			if (first) {
-				this.trigger(this.EVENT.DOWN, { button: 0, target: event.changedTouches[0].target });
-				this.stopListening(this.mouseEvents);
-				this.stopMouseEventsTimeout();
-			}
+			event.preventDefault();
+			first && this.trigger(this.EVENT.DOWN, { button: 0, target: event.changedTouches[0].target });
 		},
 
 		onTouchUp: function (event, last) {
+			event.preventDefault();
 			if (last) {
 				this.trigger(this.EVENT.UP, { button: 0, target: event.changedTouches[0].target });
-				this.startMouseEventsTimeout();
+				if (this.hitTest(event.changedTouches[0])) {
+					this.trigger(this.EVENT.CLICK, event.changedTouches[0]);
+				}
 			}
 		},
 
