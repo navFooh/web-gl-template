@@ -35,8 +35,7 @@ define([
 			PINCH_MOVE: 4,
 			PINCH_END: 5,
 			WHEEL: 6,
-			CLICK: 7,
-			DOUBLE_CLICK: 8
+			CLICK: 7
 		},
 
 		defaults: {
@@ -51,7 +50,6 @@ define([
 			this.mouseEventsTimeoutId = null;
 			this.mouseEventsTimeoutFn = this.listenToMouseEvents.bind(this);
 			this.onClick = this.trigger.bind(this, this.EVENT.CLICK);
-			this.onDoubleClick = this.trigger.bind(this, this.EVENT.DOUBLE_CLICK);
 			this.on('change:element', this.onChangeElement);
 		},
 
@@ -59,7 +57,6 @@ define([
 
 			if (this.previous('element')) {
 				this.previous('element').removeEventListener('click', this.onClick);
-				this.previous('element').removeEventListener('dblclick', this.onDoubleClick);
 				this.stopListening();
 				this.stopMouseEventsTimeout();
 				this.pointerEvents && this.pointerEvents.remove();
@@ -77,7 +74,6 @@ define([
 			if (!element) return;
 
 			element.addEventListener('click', this.onClick);
-			element.addEventListener('dblclick', this.onDoubleClick);
 
 			if (PointerEvents.isSupported) {
 				this.pointerEvents = new PointerEvents(element);
