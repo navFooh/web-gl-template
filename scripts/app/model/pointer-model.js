@@ -94,10 +94,8 @@ define([
 		},
 
 		listenToTouchEvents: function () {
-			this.listenTo(this.touchEvents, this.touchEvents.EVENT.MOVE, this.onPointersMove);
-			this.listenTo(this.touchEvents, this.touchEvents.EVENT.DOWN, this.onPointersChange);
+			this.listenTo(this.touchEvents, this.touchEvents.EVENT.MOVE, this.onTouchMove);
 			this.listenTo(this.touchEvents, this.touchEvents.EVENT.DOWN, this.onTouchDown);
-			this.listenTo(this.touchEvents, this.touchEvents.EVENT.UP, this.onPointersChange);
 			this.listenTo(this.touchEvents, this.touchEvents.EVENT.UP, this.onTouchUp);
 		},
 
@@ -129,13 +127,20 @@ define([
 
 		// HANDLE TOUCH UP AND DOWN
 
+		onTouchMove: function (event) {
+			event.preventDefault();
+			this.onPointersMove(event.touches);
+		},
+
 		onTouchDown: function (event, first) {
 			event.preventDefault();
+			this.onPointersChange(event.touches);
 			first && this.trigger(this.EVENT.DOWN, { button: 0, target: event.changedTouches[0].target });
 		},
 
 		onTouchUp: function (event, last) {
 			event.preventDefault();
+			this.onPointersChange(event.touches);
 			if (last) {
 				this.trigger(this.EVENT.UP, { button: 0, target: event.changedTouches[0].target });
 				if (this.hitTest(event.changedTouches[0])) {

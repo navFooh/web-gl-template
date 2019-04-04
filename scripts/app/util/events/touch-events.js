@@ -36,7 +36,7 @@ define(['backbone-util'], function (Util) {
 		},
 
 		onMove: function (event) {
-			this.trigger(this.EVENT.MOVE, event.touches);
+			this.trigger(this.EVENT.MOVE, event);
 		},
 
 		onEnd: function (event) {
