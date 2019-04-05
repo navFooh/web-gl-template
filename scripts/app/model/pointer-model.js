@@ -28,14 +28,15 @@ define([
 		*/
 
 		EVENT: {
-			DOWN: 0,
-			MOVE: 1,
-			UP: 2,
-			PINCH_START: 3,
-			PINCH_MOVE: 4,
-			PINCH_END: 5,
-			WHEEL: 6,
-			CLICK: 7
+			CHANGE: 0,
+			DOWN: 1,
+			MOVE: 2,
+			UP: 3,
+			PINCH_START: 4,
+			PINCH_MOVE: 5,
+			PINCH_END: 6,
+			WHEEL: 7,
+			CLICK: 8
 		},
 
 		defaults: {
@@ -207,6 +208,7 @@ define([
 		onPointersChange: function (pointers) {
 			this.setPointer(this.getAverage(pointers));
 			this.setPinching(pointers);
+			this.trigger(this.EVENT.CHANGE);
 		},
 
 		onPointersMove: function (pointers) {
