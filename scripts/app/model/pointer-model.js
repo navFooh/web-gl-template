@@ -117,7 +117,7 @@ define([
 				&& pointer.clientY <= rect.top + rect.height;
 		},
 
-		// HANDLE POINTER UP AND DOWN
+		// HANDLE POINTER EVENTS
 
 		onPointerDown: function (pointer, first) {
 			first && this.trigger(this.EVENT.DOWN, { button: pointer.button, target: pointer.target });
@@ -127,7 +127,7 @@ define([
 			last && this.trigger(this.EVENT.UP, { button: pointer.button, target: pointer.target });
 		},
 
-		// HANDLE TOUCH UP AND DOWN
+		// HANDLE TOUCH EVENTS
 
 		onTouchMove: function (event) {
 			event.preventDefault();
@@ -151,7 +151,7 @@ define([
 			}
 		},
 
-		// HANDLE MOUSE UP AND DOWN
+		// HANDLE MOUSE EVENTS
 
 		onMouseEnter: function (event) {
 			this.onPointersChange([event]);
