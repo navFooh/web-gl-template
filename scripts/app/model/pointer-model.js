@@ -103,7 +103,7 @@ define([
 		listenToMouseEvents: function () {
 			this.listenTo(this.mouseEvents, this.mouseEvents.EVENT.ENTER, this.onMouseEnter);
 			this.listenTo(this.mouseEvents, this.mouseEvents.EVENT.LEAVE, this.onMouseLeave);
-			this.listenTo(this.mouseEvents, this.mouseEvents.EVENT.MOVE, this.onPointerMove);
+			this.listenTo(this.mouseEvents, this.mouseEvents.EVENT.MOVE, this.onMouseMove);
 			this.listenTo(this.mouseEvents, this.mouseEvents.EVENT.DOWN, this.onMouseDown);
 			this.listenTo(this.mouseEvents, this.mouseEvents.EVENT.UP, this.onMouseUp);
 		},
@@ -160,6 +160,10 @@ define([
 
 		onMouseLeave: function () {
 			this.onPointersChange([]);
+		},
+
+		onMouseMove: function (event) {
+			this.onPointerMove(event);
 		},
 
 		onMouseDown: function (event) {
