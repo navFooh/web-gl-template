@@ -77,6 +77,9 @@ define([
 				this.pointerEvents = new PointerEvents(element);
 				this.listenToPointerEvents();
 			} else {
+				this.touchDown = false;
+				this.mouseDown = false;
+				this.mouseEventCache = null;
 				this.touchEvents = new TouchEvents(element);
 				this.mouseEvents = new MouseEvents(element);
 				this.listenToTouchEvents();
@@ -154,26 +157,44 @@ define([
 
 		// HANDLE MOUSE EVENTS
 
+		cacheMouseEvent: function (event) {
+			this.mouseEventCache = event ? {
+				clientX: event.clientX,
+				clientY: event.clientY
+			} : null;
+		},
+
 		onMouseEnter: function (event) {
-			this.onPointersChange([event]);
+			this.touchDown
+				? this.cacheMouseEvent(event)
+				: this.onPointersChange([event]);
 		},
 
 		onMouseLeave: function () {
-			this.onPointersChange([]);
+			this.touchDown
+				? this.cacheMouseEvent(null)
+				: this.onPointersChange([]);
+
 		},
 
 		onMouseMove: function (event) {
-			this.onPointerMove(event);
+			this.touchDown
+				? this.cacheMouseEvent(event)
+				: this.onPointerMove(event);
 		},
 
 		onMouseDown: function (event) {
-			this.trigger(this.EVENT.DOWN, { button: event.button, target: event.target });
-			this.stopListening(this.touchEvents);
+			if (!this.touchDown) {
+				this.mouseDown = true;
+				this.trigger(this.EVENT.DOWN, { button: event.button, target: event.target });
+			}
 		},
 
 		onMouseUp: function (event) {
-			this.trigger(this.EVENT.UP, { button: event.button, target: event.target });
-			event.buttons == 0 && this.listenToTouchEvents();
+			if (this.mouseDown) {
+				this.mouseDown = false;
+				this.trigger(this.EVENT.UP, { button: event.button, target: event.target });
+			}
 		},
 
 		// HANDLE PINCH START, MOVE & END
