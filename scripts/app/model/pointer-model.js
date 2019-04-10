@@ -135,7 +135,7 @@ define([
 
 		onTouchMove: function (event) {
 			event.preventDefault();
-			this.onPointersMove(event.touches);
+			this.touchDown && this.onPointersMove(event.touches);
 		},
 
 		onTouchDown: function (event, first) {
