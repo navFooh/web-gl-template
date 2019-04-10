@@ -164,6 +164,10 @@ define([
 			} : null;
 		},
 
+		recoverMouse: function () {
+			this.mouseEventCache && this.onPointersChange([this.mouseEventCache]);
+		},
+
 		onMouseEnter: function (event) {
 			this.touchDown
 				? this.cacheMouseEvent(event)
