@@ -146,11 +146,13 @@ define([
 
 		onTouchUp: function (event, last) {
 			event.preventDefault();
-			this.onPointersChange(event.touches);
-			if (last) {
-				this.trigger(this.EVENT.UP, { button: 0, target: event.changedTouches[0].target });
-				if (this.hitTest(event.changedTouches[0])) {
-					this.trigger(this.EVENT.CLICK, event.changedTouches[0]);
+			if (this.touchDown) {
+				this.onPointersChange(event.touches);
+				if (last) {
+					this.touchDown = false;
+					this.trigger(this.EVENT.UP, { button: 0, target: event.changedTouches[0].target });
+					this.hitTest(event.changedTouches[0]) && this.trigger(this.EVENT.CLICK, event.changedTouches[0]);
+					this.recoverMouse();
 				}
 			}
 		},
