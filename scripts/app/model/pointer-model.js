@@ -140,8 +140,13 @@ define([
 
 		onTouchDown: function (event, first) {
 			event.preventDefault();
-			this.onPointersChange(event.touches);
-			first && this.trigger(this.EVENT.DOWN, { button: 0, target: event.changedTouches[0].target });
+			if (!this.mouseDown && first) {
+				this.touchDown = true;
+			}
+			if (this.touchDown) {
+				this.onPointersChange(event.touches);
+				first && this.trigger(this.EVENT.DOWN, { button: 0, target: event.changedTouches[0].target });
+			}
 		},
 
 		onTouchUp: function (event, last) {
