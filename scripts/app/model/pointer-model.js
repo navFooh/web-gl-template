@@ -157,7 +157,7 @@ define([
 					this.touchDown = false;
 					this.trigger(this.EVENT.UP, { button: 0, target: event.changedTouches[0].target });
 					this.hitTest(event.changedTouches[0]) && this.trigger(this.EVENT.CLICK, event.changedTouches[0]);
-					this.recoverMouse();
+					this.recoverMouseEvent();
 				}
 			}
 		},
@@ -171,27 +171,24 @@ define([
 			} : null;
 		},
 
-		recoverMouse: function () {
+		recoverMouseEvent: function () {
 			this.mouseEventCache && this.onPointersChange([this.mouseEventCache]);
 		},
 
 		onMouseEnter: function (event) {
-			this.touchDown
-				? this.cacheMouseEvent(event)
-				: this.onPointersChange([event]);
+			this.cacheMouseEvent(event);
+			!this.touchDown && this.onPointersChange([event]);
 		},
 
 		onMouseLeave: function () {
-			this.touchDown
-				? this.cacheMouseEvent(null)
-				: this.onPointersChange([]);
+			this.cacheMouseEvent(null);
+			!this.touchDown && this.onPointersChange([]);
 
 		},
 
 		onMouseMove: function (event) {
-			this.touchDown
-				? this.cacheMouseEvent(event)
-				: this.onPointerMove(event);
+			this.cacheMouseEvent(event);
+			!this.touchDown && this.onPointerMove(event);
 		},
 
 		onMouseDown: function (event) {
