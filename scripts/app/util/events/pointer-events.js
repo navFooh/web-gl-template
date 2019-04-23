@@ -91,20 +91,20 @@ define([
 				this.trigger(this.EVENT.MOVE, this.pointers[pointer.pointerType]);
 		},
 
-		compareButtons: function (pointer, previous) {
+		compareButtons: function (pointer, previousButtons) {
 			// copy buttons so original doesn't alter
 			var buttons = pointer.buttons, bit = 0;
-			while (buttons || previous) {
+			while (buttons || previousButtons) {
 				// get buttons states
 				var isDown = buttons & 1,
-					wasDown = previous & 1,
+					wasDown = previousButtons & 1,
 					button = BIT_TO_BUTTON[bit++];
 				// capture and release buttons according to states
 				isDown && !wasDown && this.captureButton(pointer, button);
 				!isDown && wasDown && this.releaseButton(pointer, button);
 				// shift the bits
 				buttons >>= 1;
-				previous >>= 1;
+				previousButtons >>= 1;
 			}
 		},
 
