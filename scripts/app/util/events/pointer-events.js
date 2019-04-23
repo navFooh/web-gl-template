@@ -67,7 +67,7 @@ define([
 			}
 			// trigger MOVE, DOWN or UP
 			pointer.buttons == previousButtons
-				? this.moveHandler(event)
+				? this.moveHandler(pointer)
 				: this.compareButtons(pointer, previousButtons);
 		},
 
@@ -85,10 +85,10 @@ define([
 			this.compareButtons(final, pointer.buttons);
 		},
 
-		moveHandler: function (event) {
+		moveHandler: function (pointer) {
 			// trigger MOVE when this is the active pointer type or none is
-			if (this.activeType == null || this.activeType == event.pointerType)
-				this.trigger(this.EVENT.MOVE, this.pointers[event.pointerType]);
+			if (this.activeType == null || this.activeType == pointer.pointerType)
+				this.trigger(this.EVENT.MOVE, this.pointers[pointer.pointerType]);
 		},
 
 		compareButtons: function (pointer, previous) {
