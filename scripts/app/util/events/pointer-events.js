@@ -53,22 +53,28 @@ define([
 		},
 
 		setPointer: function (event) {
-			// check if the pointer is new, lookup previous buttons
-			var pointers = this.pointers[event.pointerType],
-				index = this.getIndex(pointers, event.pointerId),
-				pointer = this.copyPointer(event),
-				previousButtons = index > -1 ? pointers[index].buttons : 0;
+			// check pointer properties
+			var pointer = this.copyPointer(event);
+			var pointers = this.pointers[pointer.pointerType];
+			var pointerIndex = this.getIndex(pointers, pointer.pointerId);
+			var pointerIsNew = pointerIndex === -1;
+			var previousButtons = pointerIsNew ? 0 : pointers[pointerIndex].buttons;
+
 			// update pointers
-			if (index > -1) {
-				pointers.splice(index, 1, pointer);
-			} else {
+			if (pointerIsNew) {
 				pointers.push(pointer);
 				this.trigger(this.EVENT.CHANGE, pointers);
+			} else {
+				pointers.splice(pointerIndex, 1, pointer);
 			}
-			// trigger MOVE, DOWN or UP
-			pointer.buttons == previousButtons
-				? this.moveHandler(pointer)
-				: this.compareButtons(pointer, previousButtons);
+
+			// trigger DOWN or UP when the pointer buttons changed
+			if (pointer.buttons !== previousButtons)
+				this.compareButtons(pointer, previousButtons);
+
+			// trigger MOVE if the pointer position changed
+			if (!pointerIsNew && this.pointerMoved(pointer, pointers[pointerIndex]))
+				this.moveHandler(pointer)
 		},
 
 		unsetPointer: function (event) {
@@ -149,6 +155,10 @@ define([
 				pointerType: pointer.pointerType,
 				target: pointer.target
 			}
+		},
+
+		pointerMoved: function (pointer, previousPointer) {
+			return pointer.clientX !== previousPointer.clientX || pointer.clientY !== previousPointer.clientY;
 		}
 
 	}, {
