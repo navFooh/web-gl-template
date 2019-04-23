@@ -133,9 +133,9 @@ define([
 			if (inactive) this.activeType = null;
 		},
 
-		getIndex: function (pointers, id) {
+		getIndex: function (pointers, pointerId) {
 			return _.findIndex(pointers, function (pointer) {
-				return pointer.pointerId == id;
+				return pointer.pointerId == pointerId;
 			});
 		},
 
