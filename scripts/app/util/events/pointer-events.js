@@ -53,7 +53,7 @@ define([
 		},
 
 		setPointer: function (event) {
-			// check pointer properties
+			// find pointer in array of stored pointers
 			var pointer = this.copyPointer(event);
 			var pointers = this.pointers[pointer.pointerType];
 			var pointerIndex = this.getIndex(pointers, pointer.pointerId);
@@ -100,14 +100,19 @@ define([
 		compareButtons: function (pointer, previousButtons) {
 			// copy buttons so original doesn't alter
 			var buttons = pointer.buttons, bit = 0;
+
+			// iterate over the buttons bitmask
 			while (buttons || previousButtons) {
+
 				// get buttons states
 				var isDown = buttons & 1,
 					wasDown = previousButtons & 1,
 					button = BIT_TO_BUTTON[bit++];
+
 				// capture and release buttons according to states
 				isDown && !wasDown && this.captureButton(pointer, button);
 				!isDown && wasDown && this.releaseButton(pointer, button);
+
 				// shift the bits
 				buttons >>= 1;
 				previousButtons >>= 1;
