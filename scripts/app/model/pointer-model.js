@@ -123,12 +123,12 @@ define([
 
 		// HANDLE POINTER EVENTS
 
-		onPointerDown: function (pointer, first) {
-			first && this.trigger(this.EVENT.DOWN, { button: pointer.button, target: pointer.target });
+		onPointerDown: function (button, target, first) {
+			first && this.trigger(this.EVENT.DOWN, { button: button, target: target });
 		},
 
-		onPointerUp: function (pointer, last) {
-			last && this.trigger(this.EVENT.UP, { button: pointer.button, target: pointer.target });
+		onPointerUp: function (button, target, last) {
+			last && this.trigger(this.EVENT.UP, { button: button, target: target });
 		},
 
 		// HANDLE TOUCH EVENTS
