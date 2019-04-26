@@ -192,17 +192,19 @@ define([
 		},
 
 		onMouseDown: function (button, target) {
-			if (!this.touchDown) {
+			if (button == 0) {
+				if (this.touchDown) return;
 				this.mouseDown = true;
-				this.trigger(this.EVENT.DOWN, { button: button, target: target });
 			}
+			this.trigger(this.EVENT.DOWN, { button: button, target: target });
 		},
 
 		onMouseUp: function (button, target) {
-			if (this.mouseDown) {
+			if (button == 0) {
+				if (!this.mouseDown) return;
 				this.mouseDown = false;
-				this.trigger(this.EVENT.UP, { button: button, target: target });
 			}
+			this.trigger(this.EVENT.UP, { button: button, target: target });
 		},
 
 		// HANDLE PINCH START, MOVE & END
