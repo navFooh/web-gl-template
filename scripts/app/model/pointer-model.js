@@ -191,17 +191,17 @@ define([
 			!this.touchDown && this.onPointerMove(event);
 		},
 
-		onMouseDown: function (event) {
+		onMouseDown: function (button, target) {
 			if (!this.touchDown) {
 				this.mouseDown = true;
-				this.trigger(this.EVENT.DOWN, { button: event.button, target: event.target });
+				this.trigger(this.EVENT.DOWN, { button: button, target: target });
 			}
 		},
 
-		onMouseUp: function (event) {
+		onMouseUp: function (button, target) {
 			if (this.mouseDown) {
 				this.mouseDown = false;
-				this.trigger(this.EVENT.UP, { button: event.button, target: event.target });
+				this.trigger(this.EVENT.UP, { button: button, target: target });
 			}
 		},
 

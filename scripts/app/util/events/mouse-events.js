@@ -46,7 +46,7 @@ define(['backbone-util'], function (Util) {
 		},
 
 		onDown: function (event) {
-			!this.buttons[event.button] && this.trigger(this.EVENT.DOWN, event);
+			!this.buttons[event.button] && this.trigger(this.EVENT.DOWN, event.button, event.target);
 			this.buttons[event.button] = true;
 		},
 
@@ -55,7 +55,7 @@ define(['backbone-util'], function (Util) {
 		},
 
 		onUp: function (event) {
-			this.buttons[event.button] && this.trigger(this.EVENT.UP, event);
+			this.buttons[event.button] && this.trigger(this.EVENT.UP, event.button, event.target);
 			this.buttons[event.button] = false;
 		}
 	});
