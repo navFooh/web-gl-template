@@ -23,7 +23,7 @@ define([
 
 			this.activeType = null;			// active pointer type: 'mouse', 'pen', 'touch' or null
 			this.activeTypeLocked = false;	// when a pointer button is pressed, it locks the active type
-			this.buttons = [];      		// counts pressed buttons for the active pointer type
+			this.activeButtonCount = [];    // counts pressed buttons for the active pointer type
 			this.pointers = {       		// stores all pointers found on the element per type
 				mouse: [],
 				touch: [],
@@ -144,21 +144,21 @@ define([
 			this.activeTypeLocked = true;
 
 			// create counter for button type if not yet exists
-			if (typeof this.buttons[button] === 'undefined')
-				this.buttons[button] = 0;
+			if (typeof this.activeButtonCount[button] === 'undefined')
+				this.activeButtonCount[button] = 0;
 
 			// increment counter for pressed button and trigger DOWN
-			var first = this.buttons[button]++ === 0;
+			var first = this.activeButtonCount[button]++ === 0;
 			this.trigger(this.EVENT.DOWN, button, pointer.target, first);
 		},
 
 		releaseButton: function (pointer, button) {
 			// decrement counter for released button and trigger UP
-			var last = --this.buttons[button] === 0;
+			var last = --this.activeButtonCount[button] === 0;
 			this.trigger(this.EVENT.UP, button, pointer.target, last);
 
 			// release active type lock if no buttons are pressed
-			if (!_.some(this.buttons))
+			if (!_.some(this.activeButtonCount))
 				this.activeTypeLocked = false;
 		},
 
