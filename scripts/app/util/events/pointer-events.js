@@ -21,14 +21,9 @@ define([
 			var PointerEvent = window.PointerEvent || window.MSPointerEvent;
 			if (!PointerEvent) throw 'PointerEvents are not supported, check PointerEvents.isSupported';
 
-			this.activeType = null;			// active pointer type: 'mouse', 'pen', 'touch' or null
-			this.activeTypeLocked = false;	// when a pointer button is pressed, it locks the active type
+			this.activePointerType = null;	// active pointer type: 'mouse', 'pen' or 'touch'
 			this.activeButtonCount = [];    // counts pressed buttons for the active pointer type
-			this.pointers = {       		// stores all pointers found on the element per type
-				mouse: [],
-				touch: [],
-				pen: []
-			};
+			this.activePointers = [];    	// stores all pointers for the active pointer type
 
 			this.setPointer = this.setPointer.bind(this);
 			this.unsetPointer = this.unsetPointer.bind(this);
@@ -54,67 +49,65 @@ define([
 		},
 
 		setPointer: function (event) {
-			// find pointer in array of stored pointers
-			var pointer = this.copyPointer(event);
-			var pointers = this.pointers[pointer.pointerType];
-			var pointerIndex = this.getIndex(pointers, pointer.pointerId);
-			var pointerIsNew = pointerIndex === -1;
-			var pointerMoved = !pointerIsNew && this.pointerMoved(pointer, pointers[pointerIndex]);
-			var previousButtons = pointerIsNew ? 0 : pointers[pointerIndex].buttons;
-
-			// add / update pointer
-			pointerIsNew
-				? pointers.push(pointer)
-				: pointers.splice(pointerIndex, 1, pointer);
-
-			// check active type properties
-			var activeTypeChanged = false;
-			if (this.activeType !== pointer.pointerType && !this.activeTypeLocked) {
-				this.activeType = pointer.pointerType;
-				activeTypeChanged = true;
+			// check if this pointer is of the active type, change the type if no buttons are pressed
+			if (this.activePointerType !== event.pointerType && !_.some(this.activeButtonCount)) {
+				this.activePointerType = event.pointerType;
+				this.activeButtonCount = [];
+				this.activePointers = [];
 			}
 
-			// only trigger events for the active type
-			if (this.activeType === pointer.pointerType) {
+			// only process events for the active pointer type
+			if (this.activePointerType !== event.pointerType) return;
 
-				// trigger CHANGE when there is a new pointer configuration
-				if (pointerIsNew || activeTypeChanged)
-					this.trigger(this.EVENT.CHANGE, pointers);
+			// find the stored pointer
+			var pointer = this.copyPointer(event);
+			var pointerIndex = this.getPointerIndex(pointer.pointerId);
+			var previousPointer = pointerIndex > -1 ? this.activePointers[pointerIndex] : null;
+			var previousButtons = previousPointer ? previousPointer.buttons : 0;
+
+			if (previousPointer) {
+				// update the stored pointer
+				this.activePointers.splice(pointerIndex, 1, pointer);
 
 				// trigger MOVE if the pointer position changed
-				if (pointerMoved)
-					this.trigger(this.EVENT.MOVE, pointers);
+				if (this.pointerMoved(pointer, previousPointer))
+					this.trigger(this.EVENT.MOVE, this.activePointers);
 
-				// trigger DOWN or UP when the pointer buttons changed
-				if (pointer.buttons !== previousButtons)
-					this.compareButtons(pointer, previousButtons);
+			} else {
+				// store the new pointer
+				this.activePointers.push(pointer);
+
+				// trigger CHANGE for the new pointer configuration
+				this.trigger(this.EVENT.CHANGE, this.activePointers);
 			}
+
+			// trigger DOWN or UP when the pointer buttons changed
+			if (pointer.buttons !== previousButtons)
+				this.compareButtons(pointer, previousButtons);
 		},
 
 		unsetPointer: function (event) {
-			// find pointer in array of stored pointers
-			var pointers = this.pointers[event.pointerType];
-			var pointerIndex = this.getIndex(pointers, event.pointerId);
+			// only process events for the active pointer type
+			if (this.activePointerType !== event.pointerType) return;
+
+			// find the stored pointer
+			var pointerIndex = this.getPointerIndex(event.pointerId);
 
 			// do nothing if pointer wasn't stored
 			if (pointerIndex === -1) return;
 
-			// remove pointer
-			var pointer = pointers.splice(pointerIndex, 1)[0];
+			// remove the stored pointer
+			var pointer = this.activePointers.splice(pointerIndex, 1)[0];
 
-			// only trigger events for the active type
-			if (this.activeType === pointer.pointerType) {
-
-				// trigger UP for any pressed buttons
-				if (pointer.buttons !== 0) {
-					var final = this.copyPointer(event);
-					final.buttons = 0;
-					this.compareButtons(final, pointer.buttons);
-				}
-
-				// trigger CHANGE event
-				this.trigger(this.EVENT.CHANGE, pointers);
+			// trigger UP for any pressed buttons
+			if (pointer.buttons !== 0) {
+				var finalPointer = this.copyPointer(event);
+				finalPointer.buttons = 0;
+				this.compareButtons(finalPointer, pointer.buttons);
 			}
+
+			// trigger CHANGE event
+			this.trigger(this.EVENT.CHANGE, this.activePointers);
 		},
 
 		compareButtons: function (pointer, previousButtons) {
@@ -140,9 +133,6 @@ define([
 		},
 
 		captureButton: function (pointer, button) {
-			// prevent active type from changing
-			this.activeTypeLocked = true;
-
 			// create counter for button type if not yet exists
 			if (typeof this.activeButtonCount[button] === 'undefined')
 				this.activeButtonCount[button] = 0;
@@ -156,15 +146,11 @@ define([
 			// decrement counter for released button and trigger UP
 			var last = --this.activeButtonCount[button] === 0;
 			this.trigger(this.EVENT.UP, button, pointer.target, last);
-
-			// release active type lock if no buttons are pressed
-			if (!_.some(this.activeButtonCount))
-				this.activeTypeLocked = false;
 		},
 
-		getIndex: function (pointers, pointerId) {
-			return _.findIndex(pointers, function (pointer) {
-				return pointer.pointerId == pointerId;
+		getPointerIndex: function (pointerId) {
+			return _.findIndex(this.activePointers, function (pointer) {
+				return pointer.pointerId === pointerId;
 			});
 		},
 
