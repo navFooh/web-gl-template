@@ -160,7 +160,6 @@ define([
 				clientX: pointer.clientX,
 				clientY: pointer.clientY,
 				pointerId: pointer.pointerId,
-				pointerType: pointer.pointerType,
 				target: pointer.target
 			}
 		},
