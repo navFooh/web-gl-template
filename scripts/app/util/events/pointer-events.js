@@ -143,6 +143,10 @@ define([
 		},
 
 		releaseButton: function (pointer, button) {
+			// prevent releasing button if not registered as pressed
+			if (typeof this.activeButtonCount[button] === 'undefined' || this.activeButtonCount[button] === 0)
+				return;
+
 			// decrement counter for released button and trigger UP
 			var last = --this.activeButtonCount[button] === 0;
 			this.trigger(this.EVENT.UP, button, pointer.target, last);
