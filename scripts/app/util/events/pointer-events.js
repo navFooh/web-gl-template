@@ -83,7 +83,7 @@ define([
 
 			// trigger DOWN or UP when the pointer buttons changed
 			if (pointer.buttons !== previousButtons)
-				this.compareButtons(pointer, previousButtons);
+				this.compareButtons(pointer.buttons, previousButtons, event.target);
 		},
 
 		unsetPointer: function (event) {
@@ -100,19 +100,16 @@ define([
 			var pointer = this.activePointers.splice(pointerIndex, 1)[0];
 
 			// trigger UP for any pressed buttons
-			if (pointer.buttons !== 0) {
-				var finalPointer = this.copyPointer(event);
-				finalPointer.buttons = 0;
-				this.compareButtons(finalPointer, pointer.buttons);
-			}
+			if (pointer.buttons !== 0)
+				this.compareButtons(0, pointer.buttons, event.target);
 
 			// trigger CHANGE event
 			this.trigger(this.EVENT.CHANGE, this.activePointers);
 		},
 
-		compareButtons: function (pointer, previousButtons) {
-			// copy buttons so original doesn't alter
-			var buttons = pointer.buttons, bit = 0;
+		compareButtons: function (buttons, previousButtons, target) {
+			// keep track of the bit we're checking
+			var bit = 0;
 
 			// iterate over the buttons bitmask
 			while (buttons || previousButtons) {
@@ -123,8 +120,8 @@ define([
 					button = BIT_TO_BUTTON[bit++];
 
 				// capture and release buttons according to states
-				isDown && !wasDown && this.captureButton(pointer, button);
-				!isDown && wasDown && this.releaseButton(pointer, button);
+				isDown && !wasDown && this.captureButton(button, target);
+				!isDown && wasDown && this.releaseButton(button, target);
 
 				// shift the bits
 				buttons >>= 1;
@@ -132,24 +129,24 @@ define([
 			}
 		},
 
-		captureButton: function (pointer, button) {
+		captureButton: function (button, target) {
 			// create counter for button type if not yet exists
 			if (typeof this.activeButtonCount[button] === 'undefined')
 				this.activeButtonCount[button] = 0;
 
 			// increment counter for pressed button and trigger DOWN
 			var first = this.activeButtonCount[button]++ === 0;
-			this.trigger(this.EVENT.DOWN, button, pointer.target, first);
+			this.trigger(this.EVENT.DOWN, button, target, first);
 		},
 
-		releaseButton: function (pointer, button) {
+		releaseButton: function (button, target) {
 			// prevent releasing button if not registered as pressed
 			if (typeof this.activeButtonCount[button] === 'undefined' || this.activeButtonCount[button] === 0)
 				return;
 
 			// decrement counter for released button and trigger UP
 			var last = --this.activeButtonCount[button] === 0;
-			this.trigger(this.EVENT.UP, button, pointer.target, last);
+			this.trigger(this.EVENT.UP, button, target, last);
 		},
 
 		getPointerIndex: function (pointerId) {
@@ -163,8 +160,7 @@ define([
 				buttons: pointer.buttons,
 				clientX: pointer.clientX,
 				clientY: pointer.clientY,
-				pointerId: pointer.pointerId,
-				target: pointer.target
+				pointerId: pointer.pointerId
 			}
 		},
 
