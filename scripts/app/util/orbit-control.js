@@ -15,6 +15,8 @@ define([
 			zoomSpeed: 1,
 			enableRotate: true,
 			rotateSpeed: 1,
+			rotatePanX: 0,
+			rotatePanZ: 0,
 			minDistance: 0,
 			maxDistance: Infinity,
 			minPolarAngle: 0,
@@ -34,7 +36,13 @@ define([
 			if (this.enabled) return;
 			this.enabled = true;
 
-			this.orbit.update();
+			if (this.rotatePanX)
+				this._startTargetX = this.orbit.target.x;
+
+			if (this.rotatePanZ)
+				this._startTargetZ = this.orbit.target.z;
+
+			this.setAngles(this.orbit.spherical.theta, this.orbit.spherical.phi);
 
 			this.enableRotate && this.listenTo(PointerModel, PointerModel.EVENT.DOWN, this.onPointerDown);
 			this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.WHEEL, this.onMouseWheel);
@@ -96,6 +104,13 @@ define([
 			this.orbit.spherical.theta = Math.max(this.minAzimuthAngle, Math.min(this.maxAzimuthAngle, theta));
 			this.orbit.spherical.phi = Math.max(this.minPolarAngle, Math.min(this.maxPolarAngle, phi));
 			this.orbit.spherical.makeSafe();
+
+			if (this.rotatePanX)
+				this.orbit.target.x = this._startTargetX + this.rotatePanX * Math.sin(this.orbit.spherical.theta);
+
+			if (this.rotatePanZ)
+				this.orbit.target.z = this._startTargetZ - Math.abs(this.rotatePanZ * (1 - Math.sin(this.orbit.spherical.phi)));
+
 			this.orbit.update();
 		},
 
