@@ -59,10 +59,7 @@ define([
 				deltaY = aspect > 1 ? event.normalDeltaY / aspect : event.normalDeltaY,
 				theta = this.orbit.spherical.theta - 2 * Math.PI * deltaX * this.rotateSpeed,
 				phi = this.orbit.spherical.phi - 2 * Math.PI * deltaY * this.rotateSpeed;
-			this.orbit.spherical.theta = Math.max(this.minAzimuthAngle, Math.min(this.maxAzimuthAngle, theta));
-			this.orbit.spherical.phi = Math.max(this.minPolarAngle, Math.min(this.maxPolarAngle, phi));
-			this.orbit.spherical.makeSafe();
-			this.orbit.update();
+			this.setAngles(theta, phi);
 		},
 
 		onPointerUp: function (event) {
@@ -76,7 +73,6 @@ define([
 			this.setRadius(event.deltaY > 0
 				? this.orbit.spherical.radius * scale
 				: this.orbit.spherical.radius / scale);
-			this.orbit.update();
 		},
 
 		onPinchStart: function () {
@@ -88,7 +84,6 @@ define([
 
 		onPinchMove: function (event) {
 			this.setRadius(this._pinchStartRadius / event.scale);
-			!this.enableRotate && this.orbit.update();
 		},
 
 		onPinchEnd: function () {
@@ -97,8 +92,16 @@ define([
 			this.listenTo(PointerModel, PointerModel.EVENT.WHEEL, this.onMouseWheel);
 		},
 
+		setAngles: function (theta, phi) {
+			this.orbit.spherical.theta = Math.max(this.minAzimuthAngle, Math.min(this.maxAzimuthAngle, theta));
+			this.orbit.spherical.phi = Math.max(this.minPolarAngle, Math.min(this.maxPolarAngle, phi));
+			this.orbit.spherical.makeSafe();
+			this.orbit.update();
+		},
+
 		setRadius: function (radius) {
 			this.orbit.spherical.radius = Math.max(this.minDistance, Math.min(this.maxDistance, radius));
+			this.orbit.update();
 		}
 	});
 
