@@ -54,8 +54,11 @@ define([
 		},
 
 		onPointerMove: function (event) {
-			var theta = this.orbit.spherical.theta - 2 * Math.PI * event.pointerDeltaX / DisplayModel.get('width') * this.rotateSpeed,
-				phi = this.orbit.spherical.phi - 2 * Math.PI * event.pointerDeltaY / DisplayModel.get('height') * this.rotateSpeed;
+			var aspect = DisplayModel.get('aspect'),
+				deltaX = aspect > 1 ? event.normalDeltaX : event.normalDeltaX * aspect,
+				deltaY = aspect > 1 ? event.normalDeltaY / aspect : event.normalDeltaY,
+				theta = this.orbit.spherical.theta - 2 * Math.PI * deltaX * this.rotateSpeed,
+				phi = this.orbit.spherical.phi - 2 * Math.PI * deltaY * this.rotateSpeed;
 			this.orbit.spherical.theta = Math.max(this.minAzimuthAngle, Math.min(this.maxAzimuthAngle, theta));
 			this.orbit.spherical.phi = Math.max(this.minPolarAngle, Math.min(this.maxPolarAngle, phi));
 			this.orbit.spherical.makeSafe();
