@@ -68,7 +68,7 @@ define([
 			}
 
 			var element = this.get('element');
-			if (element == document) throw 'PointerEvents do not fire pointerleave on document in IE / Edge';
+			if (element === document) throw 'PointerEvents do not fire pointerleave on document in IE / Edge';
 			if (!element) return;
 
 			element.addEventListener('click', this.onClick);
@@ -192,7 +192,7 @@ define([
 		},
 
 		onMouseDown: function (button, target) {
-			if (button == 0) {
+			if (button === 0) {
 				if (this.touchDown) return;
 				this.mouseDown = true;
 			}
@@ -200,7 +200,7 @@ define([
 		},
 
 		onMouseUp: function (button, target) {
-			if (button == 0) {
+			if (button === 0) {
 				if (!this.mouseDown) return;
 				this.mouseDown = false;
 			}
@@ -210,7 +210,7 @@ define([
 		// HANDLE PINCH START, MOVE & END
 
 		setPinching: function (pointers) {
-			var pinching = pointers && pointers.length == 2;
+			var pinching = pointers && pointers.length === 2;
 			if (pinching && !this.pinching) this.onPinchStart(pointers);
 			if (!pinching && this.pinching) this.onPinchEnd();
 		},
@@ -222,7 +222,7 @@ define([
 		},
 
 		onPinchMove: function (pointers) {
-			if (!this.pinching || !pointers || pointers.length != 2) return;
+			if (!this.pinching || !pointers || pointers.length !== 2) return;
 			var scale = this.getPinchLength(pointers) / this.pinchStart;
 			this.trigger(this.EVENT.PINCH_MOVE, { scale: scale });
 		},
@@ -280,7 +280,7 @@ define([
 			var add = function (a, b) { return a + b };
 			return function (pointers) {
 				if (!pointers || !pointers.length) return;
-				return pointers.length == 1 ? pointers[0] : {
+				return pointers.length === 1 ? pointers[0] : {
 					clientX: _.reduce(_.pluck(pointers, 'clientX'), add) / pointers.length,
 					clientY: _.reduce(_.pluck(pointers, 'clientY'), add) / pointers.length
 				}
