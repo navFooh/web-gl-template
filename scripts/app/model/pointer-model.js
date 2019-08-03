@@ -253,16 +253,12 @@ define([
 
 		onPointerMove: function (event) {
 			if (!event) return;
-			var pointerPrevX = this.get('pointerX'),
-				pointerPrevY = this.get('pointerY'),
-				normalPrevX = this.get('normalX'),
-				normalPrevY = this.get('normalY');
 			this.setPointer(event);
 			this.trigger(this.EVENT.MOVE, {
-				pointerDeltaX: this.get('pointerX') - pointerPrevX,
-				pointerDeltaY: this.get('pointerY') - pointerPrevY,
-				normalDeltaX: this.get('normalX') - normalPrevX,
-				normalDeltaY: this.get('normalY') - normalPrevY
+				pointerDeltaX: this.get('pointerX') - this.previous('pointerX'),
+				pointerDeltaY: this.get('pointerY') - this.previous('pointerY'),
+				normalDeltaX: this.get('normalX') - this.previous('normalX'),
+				normalDeltaY: this.get('normalY') - this.previous('normalY')
 			});
 		},
 
