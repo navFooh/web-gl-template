@@ -3,13 +3,16 @@ define([
 	'underscore',
 	'model/display-model',
 	'model/pointer-model',
+	'model/webgl-model',
 	'util/orbit'
-], function (Backbone, _, DisplayModel, PointerModel, Orbit) {
+], function (Backbone, _, DisplayModel, PointerModel, WebGLModel, Orbit) {
 
 	var OrbitControl = function (object, target, options) {
 
 		_.extend(this, {
 			autoStart: true,
+			cinematic: false,
+			cinematicSpeed: 1,
 			button: 0,
 			enableZoom: true,
 			zoomSpeed: 1,
@@ -44,9 +47,15 @@ define([
 
 			this.setAngles(this.orbit.spherical.theta, this.orbit.spherical.phi);
 
-			this.enableRotate && this.listenTo(PointerModel, PointerModel.EVENT.DOWN, this.onPointerDown);
-			this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.WHEEL, this.onMouseWheel);
-			this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.PINCH_START, this.onPinchStart);
+			if (this.cinematic) {
+				this._cinematicSpeedX = 0;
+				this._cinematicSpeedY = 0;
+				this.listenTo(WebGLModel, 'update', this.updateCinematic);
+			} else {
+				this.enableRotate && this.listenTo(PointerModel, PointerModel.EVENT.DOWN, this.onPointerDown);
+				this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.WHEEL, this.onMouseWheel);
+				this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.PINCH_START, this.onPinchStart);
+			}
 		},
 
 		stop: function () {
@@ -117,6 +126,25 @@ define([
 		setRadius: function (radius) {
 			this.orbit.spherical.radius = Math.max(this.minDistance, Math.min(this.maxDistance, radius));
 			this.orbit.update();
+		},
+
+		updateCinematic: function (delta) {
+			var normalX = PointerModel.get('normalX');
+			var normalY = PointerModel.get('normalY');
+			var deltaX = normalX > 0.5 ? normalX - 0.5 : normalX < -0.5 ? normalX + 0.5 : 0;
+			var deltaY = normalY > 0.5 ? normalY - 0.5 : normalY < -0.5 ? normalY + 0.5 : 0;
+
+			this._cinematicSpeedX += delta * deltaX * -this.cinematicSpeed;
+			this._cinematicSpeedY += delta * deltaY * -this.cinematicSpeed;
+
+			if (Math.abs(this._cinematicSpeedX) > 0.001 || Math.abs(this._cinematicSpeedY) > 0.001) {
+				var theta = this.orbit.spherical.theta - 2 * Math.PI * delta * this._cinematicSpeedX;
+				var phi = this.orbit.spherical.phi - 2 * Math.PI * delta * this._cinematicSpeedY;
+				this.setAngles(theta, phi);
+			}
+
+			this._cinematicSpeedX -= Math.min(delta, 1) * this._cinematicSpeedX;
+			this._cinematicSpeedY -= Math.min(delta, 1) * this._cinematicSpeedY;
 		}
 	});
 
