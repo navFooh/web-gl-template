@@ -268,14 +268,11 @@ define([
 
 		setPointer: function (event) {
 			if (!event) return;
-			var width = DisplayModel.get('width'),
-				height = DisplayModel.get('height'),
-				normal = Math.max(width, height) * 0.5;
 			this.set({
 				pointerX: event.clientX,
 				pointerY: event.clientY,
-				normalX: event.clientX / normal - 1,
-				normalY: event.clientY / normal - 1
+				normalX: event.clientX / (DisplayModel.get('width') * 0.5) - 1,
+				normalY: event.clientY / (DisplayModel.get('height') * 0.5) - 1
 			})
 		},
 
