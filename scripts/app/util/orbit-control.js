@@ -10,7 +10,6 @@ define([
 	var OrbitControl = function (object, target, options) {
 
 		_.extend(this, {
-			autoStart: true,
 			cinematic: false,
 			cinematicSpeed: 1,
 			button: 0,
@@ -28,16 +27,14 @@ define([
 			maxAzimuthAngle: Infinity
 		}, options);
 
-		this.enabled = false;
 		this.orbit = new Orbit(object, target);
-		this.autoStart && this.start();
+
+		this._initialize();
 	};
 
 	_.extend(OrbitControl.prototype, Backbone.Events, {
 
-		start: function () {
-			if (this.enabled) return;
-			this.enabled = true;
+		_initialize: function () {
 
 			if (this.rotatePanX)
 				this._startTargetX = this.orbit.target.x;
@@ -56,12 +53,6 @@ define([
 				this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.WHEEL, this.onMouseWheel);
 				this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.PINCH_START, this.onPinchStart);
 			}
-		},
-
-		stop: function () {
-			if (!this.enabled) return;
-			this.enabled = false;
-			this.stopListening();
 		},
 
 		onPointerDown: function (event) {
