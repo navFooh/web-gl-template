@@ -42,7 +42,7 @@ define([
 			if (this.rotatePanZ)
 				this._startTargetZ = this.orbit.target.z;
 
-			this.setAngles(this.orbit.spherical.theta, this.orbit.spherical.phi);
+			this.setRotation(0, 0);
 
 			if (this.cinematic) {
 				this._cinematicSpeedX = 0;
@@ -64,10 +64,8 @@ define([
 		onPointerMove: function (event) {
 			var aspect = DisplayModel.get('aspect'),
 				deltaX = aspect > 1 ? event.normalDeltaX : event.normalDeltaX * aspect,
-				deltaY = aspect > 1 ? event.normalDeltaY / aspect : event.normalDeltaY,
-				theta = this.orbit.spherical.theta - 2 * Math.PI * deltaX * this.rotateSpeed,
-				phi = this.orbit.spherical.phi - 2 * Math.PI * deltaY * this.rotateSpeed;
-			this.setAngles(theta, phi);
+				deltaY = aspect > 1 ? event.normalDeltaY / aspect : event.normalDeltaY;
+			this.setRotation(deltaX * this.rotateSpeed, deltaY * this.rotateSpeed);
 		},
 
 		onPointerUp: function (event) {
@@ -100,7 +98,9 @@ define([
 			this.listenTo(PointerModel, PointerModel.EVENT.WHEEL, this.onMouseWheel);
 		},
 
-		setAngles: function (theta, phi) {
+		setRotation: function (deltaX, deltaY) {
+			var theta = this.orbit.spherical.theta - 2 * Math.PI * deltaX,
+				phi = this.orbit.spherical.phi - 2 * Math.PI * deltaY;
 			this.orbit.spherical.theta = Math.max(this.minAzimuthAngle, Math.min(this.maxAzimuthAngle, theta));
 			this.orbit.spherical.phi = Math.max(this.minPolarAngle, Math.min(this.maxPolarAngle, phi));
 			this.orbit.spherical.makeSafe();
@@ -128,11 +128,8 @@ define([
 			this._cinematicSpeedX += delta * deltaX * -this.cinematicSpeed;
 			this._cinematicSpeedY += delta * deltaY * -this.cinematicSpeed;
 
-			if (Math.abs(this._cinematicSpeedX) > 0.001 || Math.abs(this._cinematicSpeedY) > 0.001) {
-				var theta = this.orbit.spherical.theta - 2 * Math.PI * delta * this._cinematicSpeedX;
-				var phi = this.orbit.spherical.phi - 2 * Math.PI * delta * this._cinematicSpeedY;
-				this.setAngles(theta, phi);
-			}
+			if (Math.abs(this._cinematicSpeedX) > 0.001 || Math.abs(this._cinematicSpeedY) > 0.001)
+				this.setRotation(delta * this._cinematicSpeedX, delta * this._cinematicSpeedY);
 
 			this._cinematicSpeedX -= Math.min(delta, 1) * this._cinematicSpeedX;
 			this._cinematicSpeedY -= Math.min(delta, 1) * this._cinematicSpeedY;
