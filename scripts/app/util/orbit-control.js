@@ -133,6 +133,24 @@ define([
 
 			this._cinematicSpeedX -= Math.min(delta, 1) * this._cinematicSpeedX;
 			this._cinematicSpeedY -= Math.min(delta, 1) * this._cinematicSpeedY;
+
+			WebGLModel.set({ cursorStyle: this.getCursorStyle(deltaY < 0, deltaY > 0, deltaX < 0, deltaX > 0) });
+		},
+
+		getCursorStyle: function (n, s, w, e) {
+			if (n) {
+				if (e) return 'ne-resize';
+				if (w) return 'nw-resize';
+				return 'n-resize';
+			}
+			if (s) {
+				if (e) return 'se-resize';
+				if (w) return 'sw-resize';
+				return 's-resize';
+			}
+			if (e) return 'e-resize';
+			if (w) return 'w-resize';
+			return 'default';
 		}
 	});
 
