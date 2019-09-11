@@ -109,7 +109,7 @@ define([
 				this.orbit.target.x = this._startTargetX + this.rotatePanX * Math.sin(this.orbit.spherical.theta);
 
 			if (this.rotatePanZ)
-				this.orbit.target.z = this._startTargetZ - Math.abs(this.rotatePanZ * (1 - Math.sin(this.orbit.spherical.phi)));
+				this.orbit.target.z = this._startTargetZ - this.rotatePanZ * (1 - Math.sin(this.orbit.spherical.phi));
 
 			this.orbit.update();
 		},
