@@ -10,7 +10,8 @@ define([
 
 			defaults: {
 				scene: null,
-				camera: null
+				camera: null,
+				cursorStyle: null
 			},
 
 			initialize: function () {
