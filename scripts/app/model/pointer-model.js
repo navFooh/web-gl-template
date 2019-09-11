@@ -44,7 +44,8 @@ define([
 			pointerX: 0,
 			pointerY: 0,
 			normalX: 0,
-			normalY: 0
+			normalY: 0,
+			count: 0
 		},
 
 		initialize: function () {
@@ -241,6 +242,7 @@ define([
 		// HANDLE MULTIPLE AND SINGLE POINTER MOVES
 
 		onPointersChange: function (pointers) {
+			this.set({ count: pointers && pointers.length || 0 });
 			this.setPointer(this.getAverage(pointers));
 			this.setPinching(pointers);
 			this.trigger(this.EVENT.CHANGE);
