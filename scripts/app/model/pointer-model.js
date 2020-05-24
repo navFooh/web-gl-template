@@ -44,7 +44,8 @@ define([
 			pointerX: 0,
 			pointerY: 0,
 			normalX: 0,
-			normalY: 0
+			normalY: 0,
+			count: 0
 		},
 
 		initialize: function () {
@@ -68,7 +69,7 @@ define([
 			}
 
 			var element = this.get('element');
-			if (element == document) throw 'PointerEvents do not fire pointerleave on document in IE / Edge';
+			if (element === document) throw 'PointerEvents do not fire pointerleave on document in IE / Edge';
 			if (!element) return;
 
 			element.addEventListener('click', this.onClick);
@@ -192,7 +193,7 @@ define([
 		},
 
 		onMouseDown: function (button, target) {
-			if (button == 0) {
+			if (button === 0) {
 				if (this.touchDown) return;
 				this.mouseDown = true;
 			}
@@ -200,7 +201,7 @@ define([
 		},
 
 		onMouseUp: function (button, target) {
-			if (button == 0) {
+			if (button === 0) {
 				if (!this.mouseDown) return;
 				this.mouseDown = false;
 			}
@@ -210,7 +211,7 @@ define([
 		// HANDLE PINCH START, MOVE & END
 
 		setPinching: function (pointers) {
-			var pinching = pointers && pointers.length == 2;
+			var pinching = pointers && pointers.length === 2;
 			if (pinching && !this.pinching) this.onPinchStart(pointers);
 			if (!pinching && this.pinching) this.onPinchEnd();
 		},
@@ -222,7 +223,7 @@ define([
 		},
 
 		onPinchMove: function (pointers) {
-			if (!this.pinching || !pointers || pointers.length != 2) return;
+			if (!this.pinching || !pointers || pointers.length !== 2) return;
 			var scale = this.getPinchLength(pointers) / this.pinchStart;
 			this.trigger(this.EVENT.PINCH_MOVE, { scale: scale });
 		},
@@ -241,6 +242,7 @@ define([
 		// HANDLE MULTIPLE AND SINGLE POINTER MOVES
 
 		onPointersChange: function (pointers) {
+			this.set({ count: pointers && pointers.length || 0 });
 			this.setPointer(this.getAverage(pointers));
 			this.setPinching(pointers);
 			this.trigger(this.EVENT.CHANGE);
@@ -253,29 +255,22 @@ define([
 
 		onPointerMove: function (event) {
 			if (!event) return;
-			var pointerPrevX = this.get('pointerX'),
-				pointerPrevY = this.get('pointerY'),
-				normalPrevX = this.get('normalX'),
-				normalPrevY = this.get('normalY');
 			this.setPointer(event);
 			this.trigger(this.EVENT.MOVE, {
-				pointerDeltaX: this.get('pointerX') - pointerPrevX,
-				pointerDeltaY: this.get('pointerY') - pointerPrevY,
-				normalDeltaX: this.get('normalX') - normalPrevX,
-				normalDeltaY: this.get('normalY') - normalPrevY
+				pointerDeltaX: this.get('pointerX') - this.previous('pointerX'),
+				pointerDeltaY: this.get('pointerY') - this.previous('pointerY'),
+				normalDeltaX: this.get('normalX') - this.previous('normalX'),
+				normalDeltaY: this.get('normalY') - this.previous('normalY')
 			});
 		},
 
 		setPointer: function (event) {
 			if (!event) return;
-			var width = DisplayModel.get('width'),
-				height = DisplayModel.get('height'),
-				normal = Math.max(width, height) * 0.5;
 			this.set({
 				pointerX: event.clientX,
 				pointerY: event.clientY,
-				normalX: event.clientX / normal - 1,
-				normalY: event.clientY / normal - 1
+				normalX: event.clientX / (DisplayModel.get('width') * 0.5) - 1,
+				normalY: event.clientY / (DisplayModel.get('height') * 0.5) - 1
 			})
 		},
 
@@ -283,7 +278,7 @@ define([
 			var add = function (a, b) { return a + b };
 			return function (pointers) {
 				if (!pointers || !pointers.length) return;
-				return pointers.length == 1 ? pointers[0] : {
+				return pointers.length === 1 ? pointers[0] : {
 					clientX: _.reduce(_.pluck(pointers, 'clientX'), add) / pointers.length,
 					clientY: _.reduce(_.pluck(pointers, 'clientY'), add) / pointers.length
 				}

@@ -1,8 +1,9 @@
 define([
 	'backbone',
+	'underscore',
 	'util/detector',
 	'json!../../../metadata.json'
-], function (Backbone, Detector, metadata) {
+], function (Backbone, _, Detector, metadata) {
 
 	var AppModel = Backbone.Model.extend({
 

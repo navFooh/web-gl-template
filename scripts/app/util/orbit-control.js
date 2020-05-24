@@ -3,18 +3,22 @@ define([
 	'underscore',
 	'model/display-model',
 	'model/pointer-model',
+	'model/webgl-model',
 	'util/orbit'
-], function (Backbone, _, DisplayModel, PointerModel, Orbit) {
+], function (Backbone, _, DisplayModel, PointerModel, WebGLModel, Orbit) {
 
 	var OrbitControl = function (object, target, options) {
 
 		_.extend(this, {
-			autoStart: true,
+			cinematic: false,
+			cinematicSpeed: 1,
 			button: 0,
 			enableZoom: true,
 			zoomSpeed: 1,
 			enableRotate: true,
 			rotateSpeed: 1,
+			rotatePanX: 0,
+			rotatePanZ: 0,
 			minDistance: 0,
 			maxDistance: Infinity,
 			minPolarAngle: 0,
@@ -23,28 +27,32 @@ define([
 			maxAzimuthAngle: Infinity
 		}, options);
 
-		this.enabled = false;
 		this.orbit = new Orbit(object, target);
-		this.autoStart && this.start();
+
+		this._initialize();
 	};
 
 	_.extend(OrbitControl.prototype, Backbone.Events, {
 
-		start: function () {
-			if (this.enabled) return;
-			this.enabled = true;
+		_initialize: function () {
 
-			this.orbit.update();
+			if (this.rotatePanX)
+				this._startTargetX = this.orbit.target.x;
 
-			this.enableRotate && this.listenTo(PointerModel, PointerModel.EVENT.DOWN, this.onPointerDown);
-			this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.WHEEL, this.onMouseWheel);
-			this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.PINCH_START, this.onPinchStart);
-		},
+			if (this.rotatePanZ)
+				this._startTargetZ = this.orbit.target.z;
 
-		stop: function () {
-			if (!this.enabled) return;
-			this.enabled = false;
-			this.stopListening();
+			this.setRotation(0, 0);
+
+			if (this.cinematic) {
+				this._cinematicSpeedX = 0;
+				this._cinematicSpeedY = 0;
+				this.listenTo(WebGLModel, 'update', this.updateCinematic);
+			} else {
+				this.enableRotate && this.listenTo(PointerModel, PointerModel.EVENT.DOWN, this.onPointerDown);
+				this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.WHEEL, this.onMouseWheel);
+				this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.PINCH_START, this.onPinchStart);
+			}
 		},
 
 		onPointerDown: function (event) {
@@ -54,12 +62,10 @@ define([
 		},
 
 		onPointerMove: function (event) {
-			var theta = this.orbit.spherical.theta - 2 * Math.PI * event.pointerDeltaX / DisplayModel.get('width') * this.rotateSpeed,
-				phi = this.orbit.spherical.phi - 2 * Math.PI * event.pointerDeltaY / DisplayModel.get('height') * this.rotateSpeed;
-			this.orbit.spherical.theta = Math.max(this.minAzimuthAngle, Math.min(this.maxAzimuthAngle, theta));
-			this.orbit.spherical.phi = Math.max(this.minPolarAngle, Math.min(this.maxPolarAngle, phi));
-			this.orbit.spherical.makeSafe();
-			this.orbit.update();
+			var aspect = DisplayModel.get('aspect'),
+				deltaX = aspect > 1 ? event.normalDeltaX : event.normalDeltaX * aspect,
+				deltaY = aspect > 1 ? event.normalDeltaY / aspect : event.normalDeltaY;
+			this.setRotation(deltaX * this.rotateSpeed, deltaY * this.rotateSpeed);
 		},
 
 		onPointerUp: function (event) {
@@ -73,7 +79,6 @@ define([
 			this.setRadius(event.deltaY > 0
 				? this.orbit.spherical.radius * scale
 				: this.orbit.spherical.radius / scale);
-			this.orbit.update();
 		},
 
 		onPinchStart: function () {
@@ -85,7 +90,6 @@ define([
 
 		onPinchMove: function (event) {
 			this.setRadius(this._pinchStartRadius / event.scale);
-			!this.enableRotate && this.orbit.update();
 		},
 
 		onPinchEnd: function () {
@@ -94,8 +98,59 @@ define([
 			this.listenTo(PointerModel, PointerModel.EVENT.WHEEL, this.onMouseWheel);
 		},
 
+		setRotation: function (deltaX, deltaY) {
+			var theta = this.orbit.spherical.theta - 2 * Math.PI * deltaX,
+				phi = this.orbit.spherical.phi - 2 * Math.PI * deltaY;
+			this.orbit.spherical.theta = Math.max(this.minAzimuthAngle, Math.min(this.maxAzimuthAngle, theta));
+			this.orbit.spherical.phi = Math.max(this.minPolarAngle, Math.min(this.maxPolarAngle, phi));
+			this.orbit.spherical.makeSafe();
+
+			if (this.rotatePanX)
+				this.orbit.target.x = this._startTargetX + this.rotatePanX * Math.sin(this.orbit.spherical.theta);
+
+			if (this.rotatePanZ)
+				this.orbit.target.z = this._startTargetZ - this.rotatePanZ * (1 - Math.sin(this.orbit.spherical.phi));
+
+			this.orbit.update();
+		},
+
 		setRadius: function (radius) {
 			this.orbit.spherical.radius = Math.max(this.minDistance, Math.min(this.maxDistance, radius));
+			this.orbit.update();
+		},
+
+		updateCinematic: function (delta) {
+			var normalX = PointerModel.get('normalX');
+			var normalY = PointerModel.get('normalY');
+			var deltaX = normalX > 0.5 ? normalX - 0.5 : normalX < -0.5 ? normalX + 0.5 : 0;
+			var deltaY = normalY > 0.5 ? normalY - 0.5 : normalY < -0.5 ? normalY + 0.5 : 0;
+
+			this._cinematicSpeedX += delta * deltaX * -this.cinematicSpeed;
+			this._cinematicSpeedY += delta * deltaY * -this.cinematicSpeed;
+
+			if (Math.abs(this._cinematicSpeedX) > 0.001 || Math.abs(this._cinematicSpeedY) > 0.001)
+				this.setRotation(delta * this._cinematicSpeedX, delta * this._cinematicSpeedY);
+
+			this._cinematicSpeedX -= Math.min(delta, 1) * this._cinematicSpeedX;
+			this._cinematicSpeedY -= Math.min(delta, 1) * this._cinematicSpeedY;
+
+			WebGLModel.set({ cursorStyle: this.getCursorStyle(deltaY < 0, deltaY > 0, deltaX < 0, deltaX > 0) });
+		},
+
+		getCursorStyle: function (n, s, w, e) {
+			if (n) {
+				if (e) return 'ne-resize';
+				if (w) return 'nw-resize';
+				return 'n-resize';
+			}
+			if (s) {
+				if (e) return 'se-resize';
+				if (w) return 'sw-resize';
+				return 's-resize';
+			}
+			if (e) return 'e-resize';
+			if (w) return 'w-resize';
+			return 'default';
 		}
 	});
 

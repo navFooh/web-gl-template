@@ -25,12 +25,13 @@ define([
 		initialize: function () {
 			var fov = this.getFOV();
 			var aspect = DisplayModel.get('aspect');
+			var target = new THREE.Vector3(0, 0, 0);
 
 			this.camera = new THREE.PerspectiveCamera(fov, aspect, this.near, this.far);
 			this.camera.position.set(0, 0, 500);
-			this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+			this.camera.lookAt(target);
 
-			this.control = new OrbitControl(this.camera);
+			this.control = new OrbitControl(this.camera, target);
 
 			this.listenTo(DisplayModel, 'resize', this.onResize);
 		},
