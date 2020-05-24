@@ -1,10 +1,10 @@
 define([
 	'backbone',
-	'TweenMax',
+	'gsap',
 	'model/app-model',
 	'view/dots',
 	'templates/preloader'
-], function (Backbone, TweenMax, AppModel, Dots, template) {
+], function (Backbone, gsap, AppModel, Dots, template) {
 
 	return Backbone.View.extend({
 
@@ -25,9 +25,10 @@ define([
 		},
 
 		fadeOut: function (callback) {
-			TweenMax.to(this.el, 1.2, {
+			gsap.gsap.to(this.el, {
 				autoAlpha: 0,
-				ease: Power2.easeInOut,
+				duration: 1.2,
+				ease: 'power2.inOut',
 				onComplete: callback
 			});
 		}

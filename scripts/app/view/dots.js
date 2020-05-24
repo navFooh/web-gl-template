@@ -1,8 +1,8 @@
 define([
 	'backbone',
-	'underscore',
-	'TimelineMax'
-], function (Backbone, _, TimelineMax) {
+	'gsap',
+	'underscore'
+], function (Backbone, gsap, _) {
 
 	return Backbone.View.extend({
 
@@ -35,32 +35,42 @@ define([
 		},
 
 		createTimeline: function () {
-			this.timeline = new TimelineMax({
+
+			this.timeline = gsap.gsap.timeline({
 				repeat: -1,
 				repeatDelay: this.delay
 			});
+
 			// hide all dots initially
 			this.timeline.set(this.dots, { autoAlpha: 0 });
+
 			// fade in dots one by one
-			this.timeline.staggerTo(this.dots, this.duration, {
+			this.timeline.to(this.dots, {
 				autoAlpha: 1,
-				ease: Power1.easeOut
-			}, this.stagger);
+				duration: this.duration,
+				stagger: this.stagger,
+				ease: 'power1'
+			});
+
 			// fade out all dots
-			this.timeline.to(this.dots, this.duration, {
+			this.timeline.to(this.dots, {
 				autoAlpha: 0,
+				duration: this.duration,
 				delay: this.delay,
-				ease: Power1.easeOut
+				ease: 'power1'
 			});
 		},
 
 		remove: function () {
+
 			// remove dot elements
 			_.invoke(this.dots, 'remove');
 			delete this.dots;
+
 			// cleanup timeline
 			this.timeline.kill();
 			delete this.timeline;
+
 			Backbone.View.prototype.remove.apply(this);
 		}
 	});
