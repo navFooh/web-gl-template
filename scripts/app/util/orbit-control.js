@@ -63,9 +63,9 @@ define([
 
 		onPointerMove: function (event) {
 			var aspect = DisplayModel.get('aspect'),
-				deltaX = aspect > 1 ? event.normalDeltaX : event.normalDeltaX * aspect,
-				deltaY = aspect > 1 ? event.normalDeltaY / aspect : event.normalDeltaY;
-			this.setRotation(deltaX * this.rotateSpeed, deltaY * this.rotateSpeed);
+				deltaX = this.rotateSpeed * (aspect > 1 ? event.normalDeltaX : event.normalDeltaX * aspect),
+				deltaY = this.rotateSpeed * (aspect > 1 ? event.normalDeltaY / aspect : event.normalDeltaY);
+			this.setRotation(deltaX, deltaY);
 		},
 
 		onPointerUp: function (event) {
