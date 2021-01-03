@@ -35,6 +35,11 @@ define([
 	_.extend(OrbitControl.prototype, Backbone.Events, {
 
 		_initialize: function () {
+			this._pointerTime = 0;
+			this._pointerDeltaX = 0;
+			this._pointerDeltaY = 0;
+			this._velocityX = 0;
+			this._velocityY = 0;
 
 			if (this.rotatePanX)
 				this._startTargetX = this.orbit.target.x;
@@ -57,6 +62,7 @@ define([
 
 		onPointerDown: function (event) {
 			if (event.button != this.button) return;
+			this._pointerTime = WebGLModel.getElapsedTime();
 			this.listenTo(PointerModel, PointerModel.EVENT.MOVE, this.onPointerMove);
 			this.listenTo(PointerModel, PointerModel.EVENT.UP, this.onPointerUp);
 		},
@@ -64,7 +70,18 @@ define([
 		onPointerMove: function (event) {
 			var aspect = DisplayModel.get('aspect'),
 				deltaX = this.rotateSpeed * (aspect > 1 ? event.normalDeltaX : event.normalDeltaX * aspect),
-				deltaY = this.rotateSpeed * (aspect > 1 ? event.normalDeltaY / aspect : event.normalDeltaY);
+				deltaY = this.rotateSpeed * (aspect > 1 ? event.normalDeltaY / aspect : event.normalDeltaY),
+				currentTime = WebGLModel.getElapsedTime(),
+				deltaTime = currentTime - this._pointerTime;
+			this._pointerTime = currentTime;
+			this._pointerDeltaX += deltaX;
+			this._pointerDeltaY += deltaY;
+			if (deltaTime > 0) {
+				this._velocityX = this._pointerDeltaX / deltaTime;
+				this._velocityY = this._pointerDeltaY / deltaTime;
+				this._pointerDeltaX = 0;
+				this._pointerDeltaY = 0;
+			}
 			this.setRotation(deltaX, deltaY);
 		},
 
