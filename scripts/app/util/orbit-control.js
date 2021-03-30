@@ -63,6 +63,8 @@ define([
 		onPointerDown: function (event) {
 			if (event.button != this.button) return;
 			this._pointerTime = WebGLModel.getElapsedTime();
+			this._pointerDeltaX = 0;
+			this._pointerDeltaY = 0;
 			this.listenTo(PointerModel, PointerModel.EVENT.MOVE, this.onPointerMove);
 			this.listenTo(PointerModel, PointerModel.EVENT.UP, this.onPointerUp);
 		},
