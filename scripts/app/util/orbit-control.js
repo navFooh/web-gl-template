@@ -48,7 +48,9 @@ define([
 			this._startTargetX = this.orbit.target.x;
 			this._startTargetZ = this.orbit.target.z;
 
-			this.setRotation(this.startTheta, this.startPhi);
+			this.orbit.spherical.theta = this.startTheta;
+			this.orbit.spherical.phi = this.startPhi;
+			this.updateRotation();
 
 			this.enableRotate && this.listenTo(PointerModel, PointerModel.EVENT.DOWN, this.onPointerDown);
 			this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.WHEEL, this.onMouseWheel);
@@ -88,7 +90,9 @@ define([
 				this._pointerMoveTheta = 0;
 				this._pointerMovePhi = 0;
 			}
-			this.addRotation(deltaTheta, deltaPhi);
+			this.orbit.spherical.theta += deltaTheta;
+			this.orbit.spherical.phi += deltaPhi;
+			this.updateRotation();
 		},
 
 		onPointerUp: function (event) {
@@ -122,16 +126,7 @@ define([
 			this.listenTo(PointerModel, PointerModel.EVENT.WHEEL, this.onMouseWheel);
 		},
 
-		addRotation: function (theta, phi) {
-			this.setRotation(
-				this.orbit.spherical.theta + theta,
-				this.orbit.spherical.phi + phi
-			);
-		},
-
-		setRotation: function (theta, phi) {
-			this.orbit.spherical.theta = theta;
-			this.orbit.spherical.phi = phi;
+		updateRotation: function () {
 			this.orbit.spherical.makeSafe();
 
 			if (this.rotatePanX)
@@ -157,7 +152,9 @@ define([
 				this._velocityPhi += delta * edgePushBackPhi * this.edgePushBack;
 
 				// Set velocity-based rotation
-				this.addRotation(this._velocityTheta * delta, this._velocityPhi * delta);
+				this.orbit.spherical.theta += this._velocityTheta * delta;
+				this.orbit.spherical.phi += this._velocityPhi * delta;
+				this.updateRotation();
 
 				// Apply natural damping
 				this._velocityTheta -= Math.min(delta * this.naturalDamping, 1) * this._velocityTheta;
