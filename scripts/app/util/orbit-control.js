@@ -27,6 +27,8 @@ define([
 			maxPhi: Math.PI,
 			edgeSlackTheta: 0.25 * Math.PI,
 			edgeSlackPhi: 0.1 * Math.PI,
+			edgeBounce: false,
+			edgeDamping: 25,
 			edgePushBack: 25,
 			naturalDamping: 5
 		}, options);
@@ -145,6 +147,13 @@ define([
 
 		update: function (delta) {
 			if (!this._pointerDown) {
+
+				// Apply edge damping
+				var edgeDampingTheta = this.getEdgeDamping(this.orbit.spherical.theta, this.minTheta, this.maxTheta, this._velocityTheta),
+					edgeDampingPhi = this.getEdgeDamping(this.orbit.spherical.phi, this.minPhi, this.maxPhi, this._velocityPhi);
+				this._velocityTheta -= Math.min(delta * this.edgeDamping, 1) * edgeDampingTheta * this._velocityTheta;
+				this._velocityPhi -= Math.min(delta * this.edgeDamping, 1) * edgeDampingPhi * this._velocityPhi;
+
 				// Apply edge push-back
 				var edgePushBackTheta = this.getEdgePushBack(this.orbit.spherical.theta, this.minTheta, this.maxTheta),
 					edgePushBackPhi = this.getEdgePushBack(this.orbit.spherical.phi, this.minPhi, this.maxPhi);
@@ -195,6 +204,10 @@ define([
 
 		getEdgeDistance: function (angle, min, max) {
 			return Math.max(Math.max(min - angle, angle - max), 0);
+		},
+
+		getEdgeDamping: function(angle, min, max, v) {
+			return angle < min && v < 0 || angle > max && v > 0 ? 1 : 0;
 		},
 
 		getEdgePushBack: function (angle, min, max) {
