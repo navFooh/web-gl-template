@@ -151,7 +151,7 @@ define([
 				this._velocityTheta += delta * edgePushBackTheta * this.edgePushBack;
 				this._velocityPhi += delta * edgePushBackPhi * this.edgePushBack;
 
-				// Set velocity-based rotation
+				// Add velocity-based rotation
 				this.orbit.spherical.theta += this._velocityTheta * delta;
 				this.orbit.spherical.phi += this._velocityPhi * delta;
 
