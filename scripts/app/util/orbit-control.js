@@ -10,8 +10,6 @@ define([
 	var OrbitControl = function (object, target, options) {
 
 		_.extend(this, {
-			cinematic: false,
-			cinematicSpeed: 1,
 			button: 0,
 			enableZoom: true,
 			zoomSpeed: 1,
@@ -46,15 +44,9 @@ define([
 
 			this.setRotation(0, 0);
 
-			if (this.cinematic) {
-				this._cinematicSpeedX = 0;
-				this._cinematicSpeedY = 0;
-				this.listenTo(WebGLModel, 'update', this.updateCinematic);
-			} else {
-				this.enableRotate && this.listenTo(PointerModel, PointerModel.EVENT.DOWN, this.onPointerDown);
-				this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.WHEEL, this.onMouseWheel);
-				this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.PINCH_START, this.onPinchStart);
-			}
+			this.enableRotate && this.listenTo(PointerModel, PointerModel.EVENT.DOWN, this.onPointerDown);
+			this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.WHEEL, this.onMouseWheel);
+			this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.PINCH_START, this.onPinchStart);
 		},
 
 		onPointerDown: function (event) {
@@ -136,40 +128,6 @@ define([
 			this.orbit.spherical.radius = Math.max(this.minDistance, Math.min(this.maxDistance, radius));
 			this.orbit.update();
 		},
-
-		updateCinematic: function (delta) {
-			var normalX = PointerModel.get('normalX');
-			var normalY = PointerModel.get('normalY');
-			var deltaX = normalX > 0.5 ? normalX - 0.5 : normalX < -0.5 ? normalX + 0.5 : 0;
-			var deltaY = normalY > 0.5 ? normalY - 0.5 : normalY < -0.5 ? normalY + 0.5 : 0;
-
-			this._cinematicSpeedX += delta * deltaX * -this.cinematicSpeed;
-			this._cinematicSpeedY += delta * deltaY * -this.cinematicSpeed;
-
-			if (Math.abs(this._cinematicSpeedX) > 0.001 || Math.abs(this._cinematicSpeedY) > 0.001)
-				this.setRotation(delta * this._cinematicSpeedX, delta * this._cinematicSpeedY);
-
-			this._cinematicSpeedX -= Math.min(delta, 1) * this._cinematicSpeedX;
-			this._cinematicSpeedY -= Math.min(delta, 1) * this._cinematicSpeedY;
-
-			WebGLModel.set({ cursorStyle: this.getCursorStyle(deltaY < 0, deltaY > 0, deltaX < 0, deltaX > 0) });
-		},
-
-		getCursorStyle: function (n, s, w, e) {
-			if (n) {
-				if (e) return 'ne-resize';
-				if (w) return 'nw-resize';
-				return 'n-resize';
-			}
-			if (s) {
-				if (e) return 'se-resize';
-				if (w) return 'sw-resize';
-				return 's-resize';
-			}
-			if (e) return 'e-resize';
-			if (w) return 'w-resize';
-			return 'default';
-		}
 	});
 
 	return OrbitControl;
