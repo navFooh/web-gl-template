@@ -25,8 +25,8 @@ define([
 			maxTheta: Infinity,
 			minPhi: 0,
 			maxPhi: Math.PI,
-			polarEdgeSlack: 0.1 * Math.PI,
-			azimuthEdgeSlack: 0.25 * Math.PI,
+			edgeSlackTheta: 0.25 * Math.PI,
+			edgeSlackPhi: 0.1 * Math.PI,
 			edgePushBack: 25,
 			naturalDamping: 5
 		}, options);
@@ -73,8 +73,8 @@ define([
 				deltaY = (aspect > 1 ? event.normalDeltaY / aspect : event.normalDeltaY),
 				edgeDistTheta = this.getEdgeDistance(this.orbit.spherical.theta, this.minTheta, this.maxTheta),
 				edgeDistPhi = this.getEdgeDistance(this.orbit.spherical.phi, this.minPhi, this.maxPhi),
-				edgeFactorX = Math.max(0, 1 - edgeDistTheta / this.azimuthEdgeSlack),
-				edgeFactorY = Math.max(0, 1 - edgeDistPhi / this.polarEdgeSlack),
+				edgeFactorX = Math.max(0, 1 - edgeDistTheta / this.edgeSlackTheta),
+				edgeFactorY = Math.max(0, 1 - edgeDistPhi / this.edgeSlackPhi),
 				deltaTheta = this.rotateSpeed * this.planarToRadial(deltaX) * edgeFactorX,
 				deltaPhi = this.rotateSpeed * this.planarToRadial(deltaY) * edgeFactorY,
 				currentTime = WebGLModel.getElapsedTime(),
