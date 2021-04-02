@@ -111,10 +111,8 @@ define([
 		},
 
 		setRotation: function (deltaX, deltaY) {
-			var theta = this.orbit.spherical.theta - 2 * Math.PI * deltaX,
-				phi = this.orbit.spherical.phi - 2 * Math.PI * deltaY;
-			this.orbit.spherical.theta = Math.max(this.minAzimuthAngle, Math.min(this.maxAzimuthAngle, theta));
-			this.orbit.spherical.phi = Math.max(this.minPolarAngle, Math.min(this.maxPolarAngle, phi));
+			this.orbit.spherical.theta -= 2 * Math.PI * deltaX;
+			this.orbit.spherical.phi -= 2 * Math.PI * deltaY;
 			this.orbit.spherical.makeSafe();
 
 			if (this.rotatePanX)
