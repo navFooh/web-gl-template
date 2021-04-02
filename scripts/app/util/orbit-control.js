@@ -35,6 +35,7 @@ define([
 	_.extend(OrbitControl.prototype, Backbone.Events, {
 
 		_initialize: function () {
+			this._pointerDown = false;
 			this._pointerTime = 0;
 			this._pointerDeltaX = 0;
 			this._pointerDeltaY = 0;
@@ -62,6 +63,7 @@ define([
 
 		onPointerDown: function (event) {
 			if (event.button != this.button) return;
+			this._pointerDown = true;
 			this._pointerTime = WebGLModel.getElapsedTime();
 			this._pointerDeltaX = 0;
 			this._pointerDeltaY = 0;
@@ -89,6 +91,7 @@ define([
 
 		onPointerUp: function (event) {
 			if (event.button != this.button) return;
+			this._pointerDown = false;
 			this.stopListening(PointerModel, PointerModel.EVENT.MOVE);
 			this.stopListening(PointerModel, PointerModel.EVENT.UP);
 		},
