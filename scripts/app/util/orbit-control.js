@@ -155,6 +155,32 @@ define([
 				this.orbit.spherical.theta += this._velocityTheta * delta;
 				this.orbit.spherical.phi += this._velocityPhi * delta;
 
+				// Apply edge bounce
+				if (this.orbit.spherical.theta > this.maxTheta + this.edgeSlackTheta) {
+					this.orbit.spherical.theta = this.maxTheta + this.edgeSlackTheta;
+					if (this._velocityTheta > 0) {
+						this._velocityTheta *= this.edgeBounce ? -1 : 0;
+					}
+				}
+				if (this.orbit.spherical.theta < this.minTheta - this.edgeSlackTheta) {
+					this.orbit.spherical.theta = this.minTheta - this.edgeSlackTheta;
+					if (this._velocityTheta < 0) {
+						this._velocityTheta *= this.edgeBounce ? -1 : 0;
+					}
+				}
+				if (this.orbit.spherical.phi > this.maxPhi + this.edgeSlackPhi) {
+					this.orbit.spherical.phi = this.maxPhi + this.edgeSlackPhi;
+					if (this._velocityPhi > 0) {
+						this._velocityPhi *= this.edgeBounce ? -1 : 0;
+					}
+				}
+				if (this.orbit.spherical.phi < this.minPhi - this.edgeSlackPhi) {
+					this.orbit.spherical.phi = this.minPhi - this.edgeSlackPhi;
+					if (this._velocityPhi < 0) {
+						this._velocityPhi *= this.edgeBounce ? -1 : 0;
+					}
+				}
+
 				// Apply natural damping
 				this._velocityTheta -= Math.min(delta * this.naturalDamping, 1) * this._velocityTheta;
 				this._velocityPhi -= Math.min(delta * this.naturalDamping, 1) * this._velocityPhi;
