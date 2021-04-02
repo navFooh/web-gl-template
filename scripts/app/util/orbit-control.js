@@ -21,11 +21,11 @@ define([
 			startPhi: Math.PI * 0.5,
 			minDistance: 0,
 			maxDistance: Infinity,
-			minPolarAngle: 0,
-			maxPolarAngle: Math.PI,
+			minTheta: -Infinity,
+			maxTheta: Infinity,
+			minPhi: 0,
+			maxPhi: Math.PI,
 			polarEdgeSlack: 0.1 * Math.PI,
-			minAzimuthAngle: -Infinity,
-			maxAzimuthAngle: Infinity,
 			azimuthEdgeSlack: 0.25 * Math.PI,
 			edgePushBack: 25,
 			naturalDamping: 5
@@ -71,8 +71,8 @@ define([
 			var aspect = DisplayModel.get('aspect'),
 				deltaX = (aspect > 1 ? event.normalDeltaX : event.normalDeltaX * aspect),
 				deltaY = (aspect > 1 ? event.normalDeltaY / aspect : event.normalDeltaY),
-				edgeDistTheta = this.getEdgeDistance(this.orbit.spherical.theta, this.minAzimuthAngle, this.maxAzimuthAngle),
-				edgeDistPhi = this.getEdgeDistance(this.orbit.spherical.phi, this.minPolarAngle, this.maxPolarAngle),
+				edgeDistTheta = this.getEdgeDistance(this.orbit.spherical.theta, this.minTheta, this.maxTheta),
+				edgeDistPhi = this.getEdgeDistance(this.orbit.spherical.phi, this.minPhi, this.maxPhi),
 				edgeFactorX = Math.max(0, 1 - edgeDistTheta / this.azimuthEdgeSlack),
 				edgeFactorY = Math.max(0, 1 - edgeDistPhi / this.polarEdgeSlack),
 				deltaTheta = this.rotateSpeed * this.planarToRadial(deltaX) * edgeFactorX,
@@ -151,8 +151,8 @@ define([
 		update: function (delta) {
 			if (!this._pointerDown) {
 				// Apply edge push-back
-				var edgePushBackTheta = this.getEdgePushBack(this.orbit.spherical.theta, this.minAzimuthAngle, this.maxAzimuthAngle),
-					edgePushBackPhi = this.getEdgePushBack(this.orbit.spherical.phi, this.minPolarAngle, this.maxPolarAngle);
+				var edgePushBackTheta = this.getEdgePushBack(this.orbit.spherical.theta, this.minTheta, this.maxTheta),
+					edgePushBackPhi = this.getEdgePushBack(this.orbit.spherical.phi, this.minPhi, this.maxPhi);
 				this._velocityTheta += delta * edgePushBackTheta * this.edgePushBack;
 				this._velocityPhi += delta * edgePushBackPhi * this.edgePushBack;
 
