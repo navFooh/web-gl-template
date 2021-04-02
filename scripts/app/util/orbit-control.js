@@ -10,8 +10,6 @@ define([
 	var OrbitControl = function (object, target, options) {
 
 		_.extend(this, {
-			cinematic: false,
-			cinematicSpeed: 1,
 			button: 0,
 			enableZoom: true,
 			zoomSpeed: 1,
@@ -19,12 +17,20 @@ define([
 			rotateSpeed: 1,
 			rotatePanX: 0,
 			rotatePanZ: 0,
+			startTheta: 0,
+			startPhi: Math.PI * 0.5,
 			minDistance: 0,
 			maxDistance: Infinity,
-			minPolarAngle: 0,
-			maxPolarAngle: Math.PI,
-			minAzimuthAngle: -Infinity,
-			maxAzimuthAngle: Infinity
+			minTheta: -Infinity,
+			maxTheta: Infinity,
+			minPhi: 0,
+			maxPhi: Math.PI,
+			edgeSlackTheta: 0.25 * Math.PI,
+			edgeSlackPhi: 0.1 * Math.PI,
+			edgeBounce: false,
+			edgeDamping: 25,
+			edgePushBack: 25,
+			naturalDamping: 5
 		}, options);
 
 		this.orbit = new Orbit(object, target);
@@ -35,41 +41,66 @@ define([
 	_.extend(OrbitControl.prototype, Backbone.Events, {
 
 		_initialize: function () {
+			this._pointerDown = false;
+			this._pointerMoveTime = 0;
+			this._pointerMoveTheta = 0;
+			this._pointerMovePhi = 0;
+			this._velocityTheta = 0;
+			this._velocityPhi = 0;
+			this._startTargetX = this.orbit.target.x;
+			this._startTargetZ = this.orbit.target.z;
 
-			if (this.rotatePanX)
-				this._startTargetX = this.orbit.target.x;
+			this.orbit.spherical.theta = this.startTheta;
+			this.orbit.spherical.phi = this.startPhi;
+			this.updateRotation();
 
-			if (this.rotatePanZ)
-				this._startTargetZ = this.orbit.target.z;
+			this.enableRotate && this.listenTo(PointerModel, PointerModel.EVENT.DOWN, this.onPointerDown);
+			this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.WHEEL, this.onMouseWheel);
+			this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.PINCH_START, this.onPinchStart);
 
-			this.setRotation(0, 0);
-
-			if (this.cinematic) {
-				this._cinematicSpeedX = 0;
-				this._cinematicSpeedY = 0;
-				this.listenTo(WebGLModel, 'update', this.updateCinematic);
-			} else {
-				this.enableRotate && this.listenTo(PointerModel, PointerModel.EVENT.DOWN, this.onPointerDown);
-				this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.WHEEL, this.onMouseWheel);
-				this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.PINCH_START, this.onPinchStart);
-			}
+			this.listenTo(WebGLModel, 'update', this.update);
 		},
 
 		onPointerDown: function (event) {
 			if (event.button != this.button) return;
+			this._pointerDown = true;
+			this._pointerMoveTime = WebGLModel.getElapsedTime();
+			this._pointerMoveTheta = 0;
+			this._pointerMovePhi = 0;
 			this.listenTo(PointerModel, PointerModel.EVENT.MOVE, this.onPointerMove);
 			this.listenTo(PointerModel, PointerModel.EVENT.UP, this.onPointerUp);
 		},
 
 		onPointerMove: function (event) {
 			var aspect = DisplayModel.get('aspect'),
-				deltaX = aspect > 1 ? event.normalDeltaX : event.normalDeltaX * aspect,
-				deltaY = aspect > 1 ? event.normalDeltaY / aspect : event.normalDeltaY;
-			this.setRotation(deltaX * this.rotateSpeed, deltaY * this.rotateSpeed);
+				deltaX = (aspect > 1 ? event.normalDeltaX : event.normalDeltaX * aspect),
+				deltaY = (aspect > 1 ? event.normalDeltaY / aspect : event.normalDeltaY),
+				edgeDistTheta = this.getEdgeDistance(this.orbit.spherical.theta, this.minTheta, this.maxTheta),
+				edgeDistPhi = this.getEdgeDistance(this.orbit.spherical.phi, this.minPhi, this.maxPhi),
+				edgeFactorX = Math.max(0, 1 - edgeDistTheta / this.edgeSlackTheta),
+				edgeFactorY = Math.max(0, 1 - edgeDistPhi / this.edgeSlackPhi),
+				deltaTheta = this.rotateSpeed * this.planarToRadial(deltaX) * edgeFactorX,
+				deltaPhi = this.rotateSpeed * this.planarToRadial(deltaY) * edgeFactorY,
+				currentTime = WebGLModel.getElapsedTime(),
+				deltaTime = currentTime - this._pointerMoveTime;
+			this._pointerMoveTime = currentTime;
+			this._pointerMoveTheta += deltaTheta;
+			this._pointerMovePhi += deltaPhi;
+			if (deltaTime > 0) {
+				this._velocityTheta = this._pointerMoveTheta / deltaTime;
+				this._velocityPhi = this._pointerMovePhi / deltaTime;
+				this._pointerMoveTheta = 0;
+				this._pointerMovePhi = 0;
+			}
+			this.orbit.spherical.theta += deltaTheta;
+			this.orbit.spherical.phi += deltaPhi;
+			this.updateRotation();
 		},
 
 		onPointerUp: function (event) {
 			if (event.button != this.button) return;
+			this._pointerDown = false;
+			this.applyNaturalDamping(WebGLModel.getElapsedTime() - this._pointerMoveTime);
 			this.stopListening(PointerModel, PointerModel.EVENT.MOVE);
 			this.stopListening(PointerModel, PointerModel.EVENT.UP);
 		},
@@ -98,11 +129,7 @@ define([
 			this.listenTo(PointerModel, PointerModel.EVENT.WHEEL, this.onMouseWheel);
 		},
 
-		setRotation: function (deltaX, deltaY) {
-			var theta = this.orbit.spherical.theta - 2 * Math.PI * deltaX,
-				phi = this.orbit.spherical.phi - 2 * Math.PI * deltaY;
-			this.orbit.spherical.theta = Math.max(this.minAzimuthAngle, Math.min(this.maxAzimuthAngle, theta));
-			this.orbit.spherical.phi = Math.max(this.minPolarAngle, Math.min(this.maxPolarAngle, phi));
+		updateRotation: function () {
 			this.orbit.spherical.makeSafe();
 
 			if (this.rotatePanX)
@@ -119,38 +146,76 @@ define([
 			this.orbit.update();
 		},
 
-		updateCinematic: function (delta) {
-			var normalX = PointerModel.get('normalX');
-			var normalY = PointerModel.get('normalY');
-			var deltaX = normalX > 0.5 ? normalX - 0.5 : normalX < -0.5 ? normalX + 0.5 : 0;
-			var deltaY = normalY > 0.5 ? normalY - 0.5 : normalY < -0.5 ? normalY + 0.5 : 0;
+		update: function (delta) {
+			if (!this._pointerDown) {
 
-			this._cinematicSpeedX += delta * deltaX * -this.cinematicSpeed;
-			this._cinematicSpeedY += delta * deltaY * -this.cinematicSpeed;
+				// Apply edge damping
+				var edgeDampingTheta = this.getEdgeDamping(this.orbit.spherical.theta, this.minTheta, this.maxTheta, this._velocityTheta),
+					edgeDampingPhi = this.getEdgeDamping(this.orbit.spherical.phi, this.minPhi, this.maxPhi, this._velocityPhi);
+				this._velocityTheta -= Math.min(delta * this.edgeDamping, 1) * edgeDampingTheta * this._velocityTheta;
+				this._velocityPhi -= Math.min(delta * this.edgeDamping, 1) * edgeDampingPhi * this._velocityPhi;
 
-			if (Math.abs(this._cinematicSpeedX) > 0.001 || Math.abs(this._cinematicSpeedY) > 0.001)
-				this.setRotation(delta * this._cinematicSpeedX, delta * this._cinematicSpeedY);
+				// Apply edge push-back
+				var edgePushBackTheta = this.getEdgePushBack(this.orbit.spherical.theta, this.minTheta, this.maxTheta),
+					edgePushBackPhi = this.getEdgePushBack(this.orbit.spherical.phi, this.minPhi, this.maxPhi);
+				this._velocityTheta += delta * edgePushBackTheta * this.edgePushBack;
+				this._velocityPhi += delta * edgePushBackPhi * this.edgePushBack;
 
-			this._cinematicSpeedX -= Math.min(delta, 1) * this._cinematicSpeedX;
-			this._cinematicSpeedY -= Math.min(delta, 1) * this._cinematicSpeedY;
+				// Add velocity-based rotation
+				this.orbit.spherical.theta += this._velocityTheta * delta;
+				this.orbit.spherical.phi += this._velocityPhi * delta;
 
-			WebGLModel.set({ cursorStyle: this.getCursorStyle(deltaY < 0, deltaY > 0, deltaX < 0, deltaX > 0) });
+				// Apply edge clamp and bounce
+				if (this.orbit.spherical.theta > this.maxTheta + this.edgeSlackTheta) {
+					this.orbit.spherical.theta = this.maxTheta + this.edgeSlackTheta;
+					if (this._velocityTheta > 0) {
+						this._velocityTheta *= this.edgeBounce ? -1 : 0;
+					}
+				}
+				if (this.orbit.spherical.theta < this.minTheta - this.edgeSlackTheta) {
+					this.orbit.spherical.theta = this.minTheta - this.edgeSlackTheta;
+					if (this._velocityTheta < 0) {
+						this._velocityTheta *= this.edgeBounce ? -1 : 0;
+					}
+				}
+				if (this.orbit.spherical.phi > this.maxPhi + this.edgeSlackPhi) {
+					this.orbit.spherical.phi = this.maxPhi + this.edgeSlackPhi;
+					if (this._velocityPhi > 0) {
+						this._velocityPhi *= this.edgeBounce ? -1 : 0;
+					}
+				}
+				if (this.orbit.spherical.phi < this.minPhi - this.edgeSlackPhi) {
+					this.orbit.spherical.phi = this.minPhi - this.edgeSlackPhi;
+					if (this._velocityPhi < 0) {
+						this._velocityPhi *= this.edgeBounce ? -1 : 0;
+					}
+				}
+
+				this.applyNaturalDamping(delta);
+				this.updateRotation();
+			}
 		},
 
-		getCursorStyle: function (n, s, w, e) {
-			if (n) {
-				if (e) return 'ne-resize';
-				if (w) return 'nw-resize';
-				return 'n-resize';
-			}
-			if (s) {
-				if (e) return 'se-resize';
-				if (w) return 'sw-resize';
-				return 's-resize';
-			}
-			if (e) return 'e-resize';
-			if (w) return 'w-resize';
-			return 'default';
+		planarToRadial: function (value) {
+			return -2 * Math.PI * value;
+		},
+
+		getEdgeDistance: function (angle, min, max) {
+			return Math.max(Math.max(min - angle, angle - max), 0);
+		},
+
+		getEdgeDamping: function(angle, min, max, v) {
+			return angle < min && v < 0 || angle > max && v > 0 ? 1 : 0;
+		},
+
+		getEdgePushBack: function (angle, min, max) {
+			return angle < min ? 1 : angle > max ? -1 : 0;
+		},
+
+		applyNaturalDamping: function(deltaTime) {
+			var damping = Math.min(deltaTime * this.naturalDamping, 1);
+			this._velocityTheta -= damping * this._velocityTheta;
+			this._velocityPhi -= damping * this._velocityPhi;
 		}
 	});
 

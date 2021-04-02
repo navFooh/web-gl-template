@@ -58,6 +58,10 @@ define([
 
 				// end measuring stats
 				this.stats && this.stats.end();
+			},
+
+			getElapsedTime: function () {
+				return clock.elapsedTime;
 			}
 		});
 
