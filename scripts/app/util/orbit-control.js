@@ -47,6 +47,8 @@ define([
 			this.enableRotate && this.listenTo(PointerModel, PointerModel.EVENT.DOWN, this.onPointerDown);
 			this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.WHEEL, this.onMouseWheel);
 			this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.PINCH_START, this.onPinchStart);
+
+			this.listenTo(WebGLModel, 'update', this.update);
 		},
 
 		onPointerDown: function (event) {
@@ -127,6 +129,11 @@ define([
 		setRadius: function (radius) {
 			this.orbit.spherical.radius = Math.max(this.minDistance, Math.min(this.maxDistance, radius));
 			this.orbit.update();
+		},
+
+		update: function (delta) {
+			if (!this._pointerDown) {
+			}
 		},
 	});
 
