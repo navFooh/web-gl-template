@@ -100,6 +100,7 @@ define([
 		onPointerUp: function (event) {
 			if (event.button != this.button) return;
 			this._pointerDown = false;
+			this.applyNaturalDamping(WebGLModel.getElapsedTime() - this._pointerMoveTime);
 			this.stopListening(PointerModel, PointerModel.EVENT.MOVE);
 			this.stopListening(PointerModel, PointerModel.EVENT.UP);
 		},
@@ -190,10 +191,7 @@ define([
 					}
 				}
 
-				// Apply natural damping
-				this._velocityTheta -= Math.min(delta * this.naturalDamping, 1) * this._velocityTheta;
-				this._velocityPhi -= Math.min(delta * this.naturalDamping, 1) * this._velocityPhi;
-
+				this.applyNaturalDamping(delta);
 				this.updateRotation();
 			}
 		},
@@ -212,6 +210,12 @@ define([
 
 		getEdgePushBack: function (angle, min, max) {
 			return angle < min ? 1 : angle > max ? -1 : 0;
+		},
+
+		applyNaturalDamping: function(deltaTime) {
+			var damping = Math.min(deltaTime * this.naturalDamping, 1);
+			this._velocityTheta -= damping * this._velocityTheta;
+			this._velocityPhi -= damping * this._velocityPhi;
 		}
 	});
 
