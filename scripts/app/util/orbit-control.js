@@ -24,7 +24,8 @@ define([
 			minPolarAngle: 0,
 			maxPolarAngle: Math.PI,
 			minAzimuthAngle: -Infinity,
-			maxAzimuthAngle: Infinity
+			maxAzimuthAngle: Infinity,
+			naturalDamping: 5
 		}, options);
 
 		this.orbit = new Orbit(object, target);
@@ -146,6 +147,12 @@ define([
 
 		update: function (delta) {
 			if (!this._pointerDown) {
+				// Set velocity-based rotation
+				this.addRotation(this._velocityTheta * delta, this._velocityPhi * delta);
+
+				// Apply natural damping
+				this._velocityTheta -= Math.min(delta * this.naturalDamping, 1) * this._velocityTheta;
+				this._velocityPhi -= Math.min(delta * this.naturalDamping, 1) * this._velocityPhi;
 			}
 		},
 
