@@ -154,11 +154,12 @@ define([
 				// Set velocity-based rotation
 				this.orbit.spherical.theta += this._velocityTheta * delta;
 				this.orbit.spherical.phi += this._velocityPhi * delta;
-				this.updateRotation();
 
 				// Apply natural damping
 				this._velocityTheta -= Math.min(delta * this.naturalDamping, 1) * this._velocityTheta;
 				this._velocityPhi -= Math.min(delta * this.naturalDamping, 1) * this._velocityPhi;
+
+				this.updateRotation();
 			}
 		},
 
