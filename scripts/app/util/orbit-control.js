@@ -23,8 +23,11 @@ define([
 			maxDistance: Infinity,
 			minPolarAngle: 0,
 			maxPolarAngle: Math.PI,
+			polarEdgeSlack: 0.1 * Math.PI,
 			minAzimuthAngle: -Infinity,
 			maxAzimuthAngle: Infinity,
+			azimuthEdgeSlack: 0.25 * Math.PI,
+			edgePushBack: 25,
 			naturalDamping: 5
 		}, options);
 
@@ -147,6 +150,12 @@ define([
 
 		update: function (delta) {
 			if (!this._pointerDown) {
+				// Apply edge push-back
+				var edgePushBackTheta = this.getEdgePushBack(this.orbit.spherical.theta, this.minAzimuthAngle, this.maxAzimuthAngle),
+					edgePushBackPhi = this.getEdgePushBack(this.orbit.spherical.phi, this.minPolarAngle, this.maxPolarAngle);
+				this._velocityTheta += delta * edgePushBackTheta * this.edgePushBack;
+				this._velocityPhi += delta * edgePushBackPhi * this.edgePushBack;
+
 				// Set velocity-based rotation
 				this.addRotation(this._velocityTheta * delta, this._velocityPhi * delta);
 
@@ -163,6 +172,10 @@ define([
 		getEdgeDistance: function (angle, min, max) {
 			return Math.max(Math.max(min - angle, angle - max), 0);
 		},
+
+		getEdgePushBack: function (angle, min, max) {
+			return angle < min ? 1 : angle > max ? -1 : 0;
+		}
 	});
 
 	return OrbitControl;
