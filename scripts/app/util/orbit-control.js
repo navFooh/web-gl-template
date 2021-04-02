@@ -41,12 +41,8 @@ define([
 			this._pointerDeltaY = 0;
 			this._velocityX = 0;
 			this._velocityY = 0;
-
-			if (this.rotatePanX)
-				this._startTargetX = this.orbit.target.x;
-
-			if (this.rotatePanZ)
-				this._startTargetZ = this.orbit.target.z;
+			this._startTargetX = this.orbit.target.x;
+			this._startTargetZ = this.orbit.target.z;
 
 			this.setRotation(0, 0);
 
