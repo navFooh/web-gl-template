@@ -17,6 +17,8 @@ define([
 			rotateSpeed: 1,
 			rotatePanX: 0,
 			rotatePanZ: 0,
+			startTheta: 0,
+			startPhi: Math.PI * 0.5,
 			minDistance: 0,
 			maxDistance: Infinity,
 			minPolarAngle: 0,
@@ -42,7 +44,7 @@ define([
 			this._startTargetX = this.orbit.target.x;
 			this._startTargetZ = this.orbit.target.z;
 
-			this.setRotation(0, 0);
+			this.setRotation(this.startTheta, this.startPhi);
 
 			this.enableRotate && this.listenTo(PointerModel, PointerModel.EVENT.DOWN, this.onPointerDown);
 			this.enableZoom && this.listenTo(PointerModel, PointerModel.EVENT.WHEEL, this.onMouseWheel);
@@ -76,7 +78,7 @@ define([
 				this._pointerDeltaX = 0;
 				this._pointerDeltaY = 0;
 			}
-			this.setRotation(deltaX, deltaY);
+			this.addRotation(-2 * Math.PI * deltaX, -2 * Math.PI * deltaY);
 		},
 
 		onPointerUp: function (event) {
@@ -110,9 +112,16 @@ define([
 			this.listenTo(PointerModel, PointerModel.EVENT.WHEEL, this.onMouseWheel);
 		},
 
-		setRotation: function (deltaX, deltaY) {
-			this.orbit.spherical.theta -= 2 * Math.PI * deltaX;
-			this.orbit.spherical.phi -= 2 * Math.PI * deltaY;
+		addRotation: function (theta, phi) {
+			this.setRotation(
+				this.orbit.spherical.theta + theta,
+				this.orbit.spherical.phi + phi
+			);
+		},
+
+		setRotation: function (theta, phi) {
+			this.orbit.spherical.theta = theta;
+			this.orbit.spherical.phi = phi;
 			this.orbit.spherical.makeSafe();
 
 			if (this.rotatePanX)
