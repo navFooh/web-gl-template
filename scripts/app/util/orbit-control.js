@@ -155,7 +155,7 @@ define([
 				this.orbit.spherical.theta += this._velocityTheta * delta;
 				this.orbit.spherical.phi += this._velocityPhi * delta;
 
-				// Apply edge bounce
+				// Apply edge clamp and bounce
 				if (this.orbit.spherical.theta > this.maxTheta + this.edgeSlackTheta) {
 					this.orbit.spherical.theta = this.maxTheta + this.edgeSlackTheta;
 					if (this._velocityTheta > 0) {
