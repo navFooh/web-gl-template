@@ -36,11 +36,11 @@ define([
 
 		_initialize: function () {
 			this._pointerDown = false;
-			this._pointerTime = 0;
-			this._pointerDeltaX = 0;
-			this._pointerDeltaY = 0;
-			this._velocityX = 0;
-			this._velocityY = 0;
+			this._pointerMoveTime = 0;
+			this._pointerMoveTheta = 0;
+			this._pointerMovePhi = 0;
+			this._velocityTheta = 0;
+			this._velocityPhi = 0;
 			this._startTargetX = this.orbit.target.x;
 			this._startTargetZ = this.orbit.target.z;
 
@@ -56,29 +56,35 @@ define([
 		onPointerDown: function (event) {
 			if (event.button != this.button) return;
 			this._pointerDown = true;
-			this._pointerTime = WebGLModel.getElapsedTime();
-			this._pointerDeltaX = 0;
-			this._pointerDeltaY = 0;
+			this._pointerMoveTime = WebGLModel.getElapsedTime();
+			this._pointerMoveTheta = 0;
+			this._pointerMovePhi = 0;
 			this.listenTo(PointerModel, PointerModel.EVENT.MOVE, this.onPointerMove);
 			this.listenTo(PointerModel, PointerModel.EVENT.UP, this.onPointerUp);
 		},
 
 		onPointerMove: function (event) {
 			var aspect = DisplayModel.get('aspect'),
-				deltaX = this.rotateSpeed * (aspect > 1 ? event.normalDeltaX : event.normalDeltaX * aspect),
-				deltaY = this.rotateSpeed * (aspect > 1 ? event.normalDeltaY / aspect : event.normalDeltaY),
+				deltaX = (aspect > 1 ? event.normalDeltaX : event.normalDeltaX * aspect),
+				deltaY = (aspect > 1 ? event.normalDeltaY / aspect : event.normalDeltaY),
+				edgeDistTheta = this.getEdgeDistance(this.orbit.spherical.theta, this.minAzimuthAngle, this.maxAzimuthAngle),
+				edgeDistPhi = this.getEdgeDistance(this.orbit.spherical.phi, this.minPolarAngle, this.maxPolarAngle),
+				edgeFactorX = Math.max(0, 1 - edgeDistTheta / this.azimuthEdgeSlack),
+				edgeFactorY = Math.max(0, 1 - edgeDistPhi / this.polarEdgeSlack),
+				deltaTheta = this.rotateSpeed * this.planarToRadial(deltaX) * edgeFactorX,
+				deltaPhi = this.rotateSpeed * this.planarToRadial(deltaY) * edgeFactorY,
 				currentTime = WebGLModel.getElapsedTime(),
-				deltaTime = currentTime - this._pointerTime;
-			this._pointerTime = currentTime;
-			this._pointerDeltaX += deltaX;
-			this._pointerDeltaY += deltaY;
+				deltaTime = currentTime - this._pointerMoveTime;
+			this._pointerMoveTime = currentTime;
+			this._pointerMoveTheta += deltaTheta;
+			this._pointerMovePhi += deltaPhi;
 			if (deltaTime > 0) {
-				this._velocityX = this._pointerDeltaX / deltaTime;
-				this._velocityY = this._pointerDeltaY / deltaTime;
-				this._pointerDeltaX = 0;
-				this._pointerDeltaY = 0;
+				this._velocityTheta = this._pointerMoveTheta / deltaTime;
+				this._velocityPhi = this._pointerMovePhi / deltaTime;
+				this._pointerMoveTheta = 0;
+				this._pointerMovePhi = 0;
 			}
-			this.addRotation(-2 * Math.PI * deltaX, -2 * Math.PI * deltaY);
+			this.addRotation(deltaTheta, deltaPhi);
 		},
 
 		onPointerUp: function (event) {
@@ -143,7 +149,11 @@ define([
 			}
 		},
 
-		getEdgeDistance: function(angle, min, max) {
+		planarToRadial: function (value) {
+			return -2 * Math.PI * value;
+		},
+
+		getEdgeDistance: function (angle, min, max) {
 			return Math.max(Math.max(min - angle, angle - max), 0);
 		},
 	});
