@@ -133,6 +133,10 @@ define([
 			if (!this._pointerDown) {
 			}
 		},
+
+		getEdgeDistance: function(angle, min, max) {
+			return Math.max(Math.max(min - angle, angle - max), 0);
+		},
 	});
 
 	return OrbitControl;
