@@ -1,9 +1,9 @@
 define([
 	'backbone',
-	'TweenMax',
+	'gsap',
 	'model/app-model',
 	'templates/main-menu'
-], function (Backbone, TweenMax, AppModel, template) {
+], function (Backbone, gsap, AppModel, template) {
 
 	return Backbone.View.extend({
 
@@ -27,10 +27,11 @@ define([
 
 		onInfoOpen: function () {
 			var open = AppModel.get('infoOpen');
-			TweenMax.to(this.el, 0.4, {
-				delay: open ? 0 : 0.6,
+			gsap.gsap.to(this.el, {
 				autoAlpha: open ? 0 : 1,
-				ease: Power4.easeOut
+				duration: 0.4,
+				delay: open ? 0 : 0.6,
+				ease: 'power4.out'
 			});
 		}
 	});
