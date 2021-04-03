@@ -1,10 +1,10 @@
 define([
 	'backbone',
-	'TweenMax',
+	'gsap',
 	'model/app-model',
 	'view/logo',
 	'templates/info'
-], function (Backbone, TweenMax, AppModel, Logo, template) {
+], function (Backbone, gsap, AppModel, Logo, template) {
 
 	return Backbone.View.extend({
 
@@ -30,8 +30,8 @@ define([
 			this.fadeOut.className = 'fade-out';
 			this.el.appendChild(this.fadeOut);
 
-			TweenMax.set(this.el, { autoAlpha: 0 });
-			TweenMax.set(this.fadeOut, { autoAlpha: 0 });
+			gsap.gsap.set(this.el, { autoAlpha: 0 });
+			gsap.gsap.set(this.fadeOut, { autoAlpha: 0 });
 
 			this.initFacebook();
 			this.initTwitter();
@@ -47,9 +47,10 @@ define([
 		onClickLogo: function (url) {
 			this.stopListening();
 			this.undelegateEvents();
-			TweenMax.to(this.fadeOut, 0.3, {
+			gsap.gsap.to(this.fadeOut, {
 				autoAlpha: 1,
-				ease: Power2.easeOut,
+				duration: 0.3,
+				ease: 'power2.out',
 				onComplete: function () {
 					window.top.location = url;
 				}
@@ -59,16 +60,21 @@ define([
 		onInfoOpen: function () {
 			var open = AppModel.get('infoOpen');
 
-			TweenMax.to(this.el, 0.7, {
+			gsap.gsap.to(this.el, {
 				autoAlpha: open ? 1 : 0,
-				ease: open ? Power3.easeInOut : Power4.easeOut,
+				duration: 0.7,
+				ease: open ? 'power3.inOut' : 'power4.out',
 				onComplete: open ? this.logo.show : this.logo.hide,
-				onCompleteScope: this.logo
+				callbackScope: this.logo
 			});
 
-			open && TweenMax.fromTo(this.slideUp, 0.9,
+			open && gsap.gsap.fromTo(this.slideUp,
 				{ y: this.slideOffset },
-				{ y: 0, ease: Power3.easeOut });
+				{
+					y: 0,
+					duration: 0.9,
+					ease: 'power3.out'
+				});
 		},
 
 		initFacebook: function () {
