@@ -22,6 +22,8 @@ define([
 			createStats: function () {
 				this.stats = new Stats();
 				this.stats.showPanel(1);
+				this.stats.dom.style.top = null;
+				this.stats.dom.style.bottom = '48px';
 				return this.stats.dom;
 			},
 
