@@ -1,11 +1,10 @@
 define([
 	'backbone',
+	'gsap',
 	'underscore',
-	'TimelineMax',
-	'TweenMax',
 	'model/app-model',
 	'templates/logo-letter'
-], function (Backbone, _, TimelineMax, TweenMax, AppModel, template) {
+], function (Backbone, gsap, _, AppModel, template) {
 
 	return Backbone.View.extend({
 
@@ -41,43 +40,43 @@ define([
 			this.drop1 = this.el.getElementsByClassName('drop1');
 			this.drop3 = this.el.getElementsByClassName('drop3');
 
-			TweenMax.set(this.maskIn, { y: -7 });
+			gsap.gsap.set(this.maskIn, { y: -7 });
 		},
 
 		createTimeline: function () {
-			this.timeline = new TimelineMax({
+			this.timeline = gsap.gsap.timeline({
 				paused: true,
 				onComplete: this.onComplete,
-				onCompleteScope: this
+				callbackScope: this
 			});
 
 			// SHOW TIMELINE
 			this.timeline.add('showing');
 			this.timeline.set(this.maskOut, { x: 0 }, 0.5);
-			this.timeline.to(this.maskIn, 0.3, { y: 0, ease: Power3.easeOut });
-			this.timeline.to(this.maskIn, 0.15, { y: 6, ease: Power3.easeIn });
+			this.timeline.to(this.maskIn, { y: 0, duration: 0.3, ease: 'power3.out' });
+			this.timeline.to(this.maskIn, { y: 6, duration: 0.15, ease: 'power3.in' });
 			this.timeline.set(this.el, { skewX: '15deg' });
 			this.timeline.set(this.maskIn, { y: 7 });
 			this.timeline.set(this.maskOut1, { x: 3 });
 			this.timeline.set(this.maskOut2, { x: 1 });
 			this.timeline.set(this.maskOut3, { x: -1 });
-			this.timeline.to(this.maskIn, 1.2, { y: -7, ease: Power3.easeOut });
+			this.timeline.to(this.maskIn, { y: -7, duration: 1.2, ease: 'power3.out' });
 			this.timeline.set(this.maskOut, { x: 0 });
 			this.timeline.set(this.el, { skewX: '-10deg' });
-			this.timeline.to(this.maskIn, 0.4, { y: 0, ease: Power1.easeIn });
+			this.timeline.to(this.maskIn, { y: 0, duration: 0.4, ease: 'power1.in' });
 			this.timeline.set(this.maskOut, { overflow: 'visible' });
 			this.timeline.add([
-				TweenMax.to(this.drop1, 0.4, { y: 1, ease: Power3.easeOut }),
-				TweenMax.to(this.drop3, 0.4, { y: 3, ease: Power3.easeOut })
+				gsap.gsap.to(this.drop1, { y: 1, duration: 0.4, ease: 'power3.out' }),
+				gsap.gsap.to(this.drop3, { y: 3, duration: 0.4, ease: 'power3.out' })
 			]);
 			this.timeline.set(this.letter, { overflow: 'hidden' });
-			this.timeline.call(this.onShown, [], this);
+			this.timeline.call(this.onShown.bind(this), []);
 			this.timeline.add('shown');
 
 			// HOVER TIMELINE
 			var stagger = [this.maskOut1, this.maskOut2, this.maskOut3];
-			this.timeline.staggerTo(stagger, 0.3, { x: 26, ease: Power4.easeIn }, 0.1);
-			this.timeline.staggerFromTo(stagger, 0.6, { x: -26 }, { x: 0, ease: Power4.easeOut }, 0.1, '-=0.2');
+			this.timeline.to(stagger, { x: 26, stagger: 0.05, duration: 0.25, ease: 'power4.in' });
+			this.timeline.fromTo(stagger, { x: -26 }, { x: 0, stagger: 0.1, duration: 0.5, ease: 'power4.out' }, '-=0.2');
 		},
 
 		hide: function () {
