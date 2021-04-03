@@ -35,6 +35,7 @@ define([
 
 			this.initFacebook();
 			this.initTwitter();
+			this.createTweetButton();
 
 			return this;
 		},
@@ -102,6 +103,14 @@ define([
 				};
 				return t;
 			}(document, 'script', 'twitter-wjs'));
+		},
+
+		createTweetButton: function () {
+			window.twttr.ready(function() {
+				var url = AppModel.get('metadata').url;
+				var el = this.el.getElementsByClassName('tweet-button')[0];
+				window.twttr.widgets.createShareButton(url, el);
+			}.bind(this));
 		}
 	});
 });
