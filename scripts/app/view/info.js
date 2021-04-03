@@ -35,6 +35,7 @@ define([
 
 			this.initFacebook();
 			this.initTwitter();
+			this.initPinterest();
 			this.createTweetButton();
 
 			return this;
@@ -103,6 +104,17 @@ define([
 				};
 				return t;
 			}(document, 'script', 'twitter-wjs'));
+		},
+
+		initPinterest: function() {
+			(function (d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) return;
+				js = d.createElement(s);
+				js.id = id;
+				js.src = "https://assets.pinterest.com/js/pinit.js";
+				fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'pinterest-js'));
 		},
 
 		createTweetButton: function () {
