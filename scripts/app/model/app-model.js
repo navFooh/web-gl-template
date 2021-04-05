@@ -12,7 +12,8 @@ define([
 			dev: document.body.hasAttribute('data-dev'),
 			testFeatures: ['webgl'],
 			testResults: null,
-			testSuccess: null
+			testSuccess: null,
+			infoOpen: false
 		},
 
 		runFeatureTests: function () {

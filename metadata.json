@@ -1,5 +1,6 @@
 {
-  "url": "http://ttt.technology",
+  "url": "https://ttt.technology",
+  "home": "https://ttt.technology",
   "title": "WebGL Template",
   "description": "A template for WebGL",
   "keywords": "webgl, template",
