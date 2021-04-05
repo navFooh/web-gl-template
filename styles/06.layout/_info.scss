@@ -16,17 +16,6 @@
 		padding: 3rem 1.5rem;
 	}
 
-	.social {
-		margin: 1.5rem 0;
-
-		> div,
-		> iframe {
-			margin: 0 2px !important;
-			display: inline-block !important;
-			vertical-align: text-bottom !important;
-		}
-	}
-
 	.fade-out {
 		@include fill(fixed);
 		background: $black;
