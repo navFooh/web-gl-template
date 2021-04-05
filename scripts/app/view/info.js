@@ -33,10 +33,10 @@ define([
 			gsap.gsap.set(this.el, { autoAlpha: 0 });
 			gsap.gsap.set(this.fadeOut, { autoAlpha: 0 });
 
-			this.initFacebook();
-			this.initTwitter();
-			this.initPinterest();
-			this.createTweetButton();
+			this.addScript('facebook-jssdk', 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0');
+			this.addScript('twitter-wjs', 'https://platform.twitter.com/widgets.js');
+			this.addScript('linkedin-js', 'https://platform.linkedin.com/in.js');
+			this.addScript('pinterest-js', 'https://assets.pinterest.com/js/pinit.js');
 
 			return this;
 		},
@@ -79,51 +79,13 @@ define([
 				});
 		},
 
-		initFacebook: function () {
-			(function (d, s, id) {
-				var js, fjs = d.getElementsByTagName(s)[0];
-				if (d.getElementById(id)) return;
-				js = d.createElement(s);
-				js.id = id;
-				js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
-				fjs.parentNode.insertBefore(js, fjs);
-			}(document, 'script', 'facebook-jssdk'));
-		},
-
-		initTwitter: function () {
-			window.twttr = (function (d, s, id) {
-				var js, fjs = d.getElementsByTagName(s)[0],
-					t = window.twttr || {};
-				if (d.getElementById(id)) return t;
-				js = d.createElement(s);
-				js.id = id;
-				js.src = "https://platform.twitter.com/widgets.js";
-				fjs.parentNode.insertBefore(js, fjs);
-				t._e = [];
-				t.ready = function (f) {
-					t._e.push(f);
-				};
-				return t;
-			}(document, 'script', 'twitter-wjs'));
-		},
-
-		initPinterest: function() {
-			(function (d, s, id) {
-				var js, fjs = d.getElementsByTagName(s)[0];
-				if (d.getElementById(id)) return;
-				js = d.createElement(s);
-				js.id = id;
-				js.src = "https://assets.pinterest.com/js/pinit.js";
-				fjs.parentNode.insertBefore(js, fjs);
-			}(document, 'script', 'pinterest-js'));
-		},
-
-		createTweetButton: function () {
-			window.twttr.ready(function() {
-				var url = AppModel.get('metadata').url;
-				var el = this.el.getElementsByClassName('tweet-button')[0];
-				window.twttr.widgets.createShareButton(url, el);
-			}.bind(this));
+		addScript: function(id, src) {
+			if (document.getElementById(id)) return;
+			var first = document.getElementsByTagName('script')[0],
+				script = document.createElement('script');
+			script.id = id;
+			script.src = src;
+			first.parentNode.insertBefore(script, first);
 		}
 	});
 });
