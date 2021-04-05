@@ -16,4 +16,47 @@
 
 	</div>
 
+	<div class="social-buttons">
+
+		<div class="social-button">
+			<div class="fb-like"
+				data-action="like"
+				data-colorscheme="dark"
+				data-href="{{metadata.url}}"
+				data-layout="button"
+				data-share="true"
+				data-size="small"
+			></div>
+		</div>
+
+		<span class="social-separator">
+			&middot;
+		</span>
+
+		<div class="social-button">
+			<a class="twitter-share-button"
+				href="https://twitter.com/intent/tweet"
+				data-text="{{metadata.title}}"
+				data-url="{{metadata.url}}"
+			></a>
+		</div>
+
+		<span class="social-separator">
+			&middot;
+		</span>
+
+		<div class="social-button">
+			<script type="IN/Share" data-url="{{metadata.url}}"></script>
+		</div>
+
+		<span class="social-separator">
+			&middot;
+		</span>
+
+		<div class="social-button">
+			<a data-pin-do="buttonBookmark" href="https://www.pinterest.com/pin/create/button/"></a>
+		</div>
+
+	</div>
+
 </div>
