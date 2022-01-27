@@ -28,7 +28,7 @@
     "requirejs": "^2.3.6",
     "requirejs-plugins": "^1.0.2",
     "stats.js": "^0.17.0",
-    "three": "^0.127.0",
+    "three": "^0.137.0",
     "underscore": "^1.12.1",
     "yargs": "^16.2.0"
   }
